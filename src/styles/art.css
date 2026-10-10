@@ -1,0 +1,49 @@
+/* Project illustrations — ported verbatim from reference/index.html; Polish edits are marked "polish:" (see DESIGN.md › Polish, PARITY.md › deviations). */
+/* project art */
+.art { display: block; }
+.art svg { display: block; width: 100%; height: 100%; }
+.k-card { fill: var(--art-card); stroke: var(--art-stroke); stroke-width: 1.2; }
+.k-chip { fill: var(--art-soft); stroke: var(--art-mid); stroke-width: 1; }
+.k-bar { fill: var(--art-bar); }
+.k-soft { fill: var(--art-soft); }
+.k-mid { fill: var(--art-mid); }
+.k-mid2 { fill: var(--art-mid-2); }
+.k-muted { fill: var(--art-muted); }
+.k-acc { fill: var(--accent); }
+.k-acc2 { fill: var(--accent-2); }
+.k-ok { fill: var(--ok); }
+.k-warn { fill: var(--warn); }
+.k-warnsoft { fill: var(--warn-soft-solid); }
+.k-ln-acc { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.k-ln-acc2 { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.k-ln-mid { fill: none; stroke: var(--art-mid); stroke-width: 1.6; }
+.k-ln-warn { fill: none; stroke: var(--warn); stroke-width: 1.6; }
+.k-ln-on { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.k-ln-ink { fill: none; stroke: var(--art-inkbox-text); stroke-width: 1.5; stroke-linejoin: round; }
+.k-ln-lock { fill: none; stroke: var(--art-inkbox); stroke-width: 1.6; }
+.k-inkbox { fill: var(--art-inkbox); }
+.k-inktext { fill: var(--art-inkbox-text); font: 600 9.5px var(--f-body); }
+.k-inksub { fill: var(--art-inkbox-sub); font: 500 8.5px var(--f-mono); }
+.k-tag { fill: var(--warn-text); font: 600 8.5px var(--f-mono); }
+.k-ai { fill: var(--accent-text); font: 700 8px var(--f-body); }
+.k-whitetext { fill: #FFFFFF; }
+.k-fade { fill: var(--accent); fill-opacity: .08; }
+.k-grid { fill: none; stroke: var(--art-bar); stroke-width: 1; }
+.a-blink { animation: artBlink 2.4s ease-in-out infinite; }
+.a-draw { stroke-dasharray: 100; animation: artDraw 3.6s ease-in-out infinite; }
+.a-float { animation: artFloat 4.6s ease-in-out infinite; }
+.a-scan { animation: artScan 3.6s linear infinite; }
+.a-ring { transform-box: fill-box; transform-origin: center; animation: artRing 2s ease-out infinite; }
+.a-drop { animation: artDrop 4.4s ease-in-out infinite; }
+.a-fill { transform-box: fill-box; transform-origin: 0 50%; animation: artFill 4s ease-in-out infinite; }
+.a-dash { stroke-dasharray: 4 4; animation: artDash 1.2s linear infinite; }
+.d1 { animation-delay: .8s; }
+.d2 { animation-delay: 1.6s; }
+@keyframes artBlink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes artDraw { 0% { stroke-dashoffset: 100; } 45%, 100% { stroke-dashoffset: 0; } }
+@keyframes artFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes artScan { 0% { transform: translateY(0); opacity: 0; } 10%, 90% { opacity: .5; } 100% { transform: translateY(190px); opacity: 0; } }
+@keyframes artRing { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes artDrop { 0% { transform: translateY(-8px); opacity: 0; } 10%, 80% { transform: none; opacity: 1; } 92%, 100% { transform: translateY(-8px); opacity: 0; } }
+@keyframes artFill { 0% { transform: scaleX(.2); } 60%, 100% { transform: scaleX(1); } }
+@keyframes artDash { to { stroke-dashoffset: -16; } }

@@ -1,0 +1,37 @@
+/* Tailwind without preflight: the reference relies on browser defaults (content-box sizing,
+   inline SVGs), so its reset would shift metrics. Theme + utilities only. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/chrome.css";
+@import "../styles/art.css";
+
+/* Tokens as Tailwind utilities (bg-bg, text-ink, border-line, font-display, …). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-tint: var(--tint);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-deep: var(--deep);
+  --color-on-deep: var(--on-deep);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --font-display: var(--f-display);
+  --font-body: var(--f-body);
+  --font-mono: var(--f-mono);
+  --font-serif: var(--f-serif);
+  --font-script: var(--f-script);
+}

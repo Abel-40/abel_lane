@@ -1,0 +1,1157 @@
+{
+  "projects": [
+    {
+      "id": "insight",
+      "num": "01",
+      "name": "Insight Stream",
+      "tagline": "AI-powered content intelligence",
+      "art": "insight",
+      "cats": [
+        "ai",
+        "async"
+      ],
+      "kindLabel": "AI and async pipeline",
+      "caseId": "insight",
+      "status": null,
+      "role": null,
+      "hook": "Ever scrolled through hundreds of articles and Reddit threads just to find the few that matter to your work?",
+      "meet": "Insight Stream is a topic-based content intelligence platform that brings relevant information to you, shows public sentiment, and keeps you current on the areas you care about.",
+      "what": "It collects content from sources like RSS feeds and Reddit, organises it around the topics each user follows, and uses AI to classify sentiment, surface trends and power semantic search, so people find content by meaning instead of exact keywords.",
+      "features": [
+        "Personalised, topic-based content feeds",
+        "Ingestion from RSS feeds and Reddit",
+        "AI sentiment classification: Good, Bad or Neither",
+        "Trending topic discovery",
+        "Semantic search over embeddings",
+        "Background processing, caching and authenticated access"
+      ],
+      "chips": [
+        "FastAPI",
+        "Celery",
+        "pgvector",
+        "LLMs"
+      ],
+      "flow": [
+        "RSS and Reddit sources",
+        "Celery + Redis workers",
+        "LLM sentiment",
+        "Embeddings in pgvector",
+        "Feed and search API"
+      ],
+      "stack": [
+        [
+          "Backend",
+          [
+            "FastAPI",
+            "Python"
+          ]
+        ],
+        [
+          "Data",
+          [
+            "PostgreSQL",
+            "SQLAlchemy",
+            "Alembic",
+            "pgvector"
+          ]
+        ],
+        [
+          "Jobs, cache",
+          [
+            "Celery",
+            "Redis"
+          ]
+        ],
+        [
+          "AI",
+          [
+            "OpenAI",
+            "Gemini",
+            "DeepSeek",
+            "Groq",
+            "Embedding search"
+          ]
+        ],
+        [
+          "Frontend",
+          [
+            "Vue 3",
+            "TypeScript",
+            "Pinia"
+          ]
+        ],
+        [
+          "Infra",
+          [
+            "Docker",
+            "Docker Compose",
+            "JWT auth",
+            "Rate limiting"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "mood",
+      "num": "02",
+      "name": "MoodVerse",
+      "tagline": "AI-powered spiritual reflection",
+      "art": "mood",
+      "cats": [
+        "ai",
+        "mobile"
+      ],
+      "kindLabel": "AI, retrieval, mobile",
+      "caseId": "mood",
+      "status": "In development",
+      "role": null,
+      "hook": "Ever known exactly how you feel, but not which words to search for to find scripture that speaks to it?",
+      "meet": "MoodVerse is a spiritual reflection app that connects what people are going through with relevant passages from a trusted, curated collection of the Bible and the Quran.",
+      "what": "People describe their situation in natural language. AI analyses the reflection for emotional themes and meaning, and retrieval finds matching passages in a verified corpus. The model interprets the request; it never writes the scripture.",
+      "features": [
+        "Natural-language emotional and spiritual reflections",
+        "AI-assisted emotion and semantic analysis",
+        "Retrieval from a curated, verified scripture corpus",
+        "Semantic search with vector embeddings",
+        "Mobile-first reflection experience"
+      ],
+      "chips": [
+        "FastAPI",
+        "Gemini",
+        "pgvector",
+        "React Native"
+      ],
+      "flow": [
+        "Reflection",
+        "Gemini analysis",
+        "Retrieval with pgvector",
+        "Ranking",
+        "Passage card"
+      ],
+      "stack": [
+        [
+          "Mobile",
+          [
+            "React Native",
+            "TypeScript"
+          ]
+        ],
+        [
+          "Backend",
+          [
+            "FastAPI",
+            "Python",
+            "Pydantic v2"
+          ]
+        ],
+        [
+          "Data",
+          [
+            "Supabase PostgreSQL",
+            "SQLAlchemy 2.x",
+            "Alembic"
+          ]
+        ],
+        [
+          "Retrieval",
+          [
+            "pgvector"
+          ]
+        ],
+        [
+          "AI",
+          [
+            "Gemini structured analysis"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "seo",
+      "num": "03",
+      "name": "SEO Maker",
+      "tagline": "AI-powered SEO intelligence",
+      "art": "seo",
+      "cats": [
+        "ai",
+        "async"
+      ],
+      "kindLabel": "AI, crawling, queues",
+      "caseId": "seo",
+      "status": "In development",
+      "role": "My part: the AI backend",
+      "hook": "Ever wondered why a site isn’t getting the search visibility it deserves, when the problems are buried across hundreds of pages?",
+      "meet": "SEO Maker is an AI-powered SEO intelligence platform that understands a website, finds the optimisation opportunities that matter, and recommends fixes based on real page data and business context.",
+      "what": "A crawling layer discovers and extracts pages, a processing pipeline analyses structure and SEO signals, and a rule engine with site context decides which findings matter. AI then explains issues and helps prioritise fixes, grounded in what was actually measured.",
+      "features": [
+        "Website crawling and page data extraction",
+        "Page intelligence and structured SEO analysis",
+        "Background processing for long-running jobs",
+        "SEO rule evaluation with site-context awareness",
+        "AI recommendations grounded in real page data"
+      ],
+      "chips": [
+        "Crawlee",
+        "BullMQ",
+        "LLMs",
+        "Next.js"
+      ],
+      "flow": [
+        "Crawl",
+        "Store",
+        "Check with rules",
+        "Explain with AI",
+        "Re-crawl"
+      ],
+      "stack": [
+        [
+          "App, APIs",
+          [
+            "Next.js",
+            "TypeScript"
+          ]
+        ],
+        [
+          "Crawling",
+          [
+            "Crawlee"
+          ]
+        ],
+        [
+          "Queues",
+          [
+            "BullMQ",
+            "Redis"
+          ]
+        ],
+        [
+          "AI",
+          [
+            "LLM integrations",
+            "Structured outputs",
+            "Site context"
+          ]
+        ],
+        [
+          "Analysis",
+          [
+            "SEO rule engine",
+            "Page intelligence"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "alert",
+      "num": "04",
+      "name": "AlertChain",
+      "tagline": "Automated crypto price alerts",
+      "art": "alert",
+      "cats": [
+        "async"
+      ],
+      "kindLabel": "Scheduled jobs, notifications",
+      "caseId": "alert",
+      "status": "Adding an AI trading assistant",
+      "role": null,
+      "hook": "Ever waited for a coin to hit a price, then missed the moment because you weren’t watching the chart?",
+      "meet": "AlertChain, also called Crypto Mate, is a crypto monitoring and alert platform that watches market prices and notifies people when their conditions are met.",
+      "what": "It pulls price data from CoinGecko, stores market snapshots and evaluates user-defined rules, such as a coin moving above or below a target, on a schedule. Email and in-app notifications go out when a rule triggers, so nobody has to stare at charts.",
+      "features": [
+        "Price monitoring with CoinGecko data",
+        "User-defined ABOVE and BELOW conditions",
+        "Watchlists and target-based alerts",
+        "Scheduled checks as background jobs",
+        "Email and in-app notifications",
+        "Stored market snapshots and alert rules"
+      ],
+      "chips": [
+        "FastAPI",
+        "Celery",
+        "Redis",
+        "PostgreSQL"
+      ],
+      "flow": [
+        "CoinGecko",
+        "Scheduled fetch with Celery",
+        "Snapshots in PostgreSQL",
+        "Rule check: ABOVE or BELOW",
+        "Email and in-app alert"
+      ],
+      "stack": [
+        [
+          "Backend",
+          [
+            "FastAPI",
+            "Python"
+          ]
+        ],
+        [
+          "Data",
+          [
+            "PostgreSQL"
+          ]
+        ],
+        [
+          "Jobs, cache",
+          [
+            "Celery",
+            "Redis"
+          ]
+        ],
+        [
+          "Market data",
+          [
+            "CoinGecko API"
+          ]
+        ],
+        [
+          "Notify",
+          [
+            "FastAPI Mail"
+          ]
+        ],
+        [
+          "Infra",
+          [
+            "Docker",
+            "Docker Compose"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "work",
+      "num": "05",
+      "name": "Workroom",
+      "tagline": "Business operations platform",
+      "art": "work",
+      "cats": [
+        "fullstack",
+        "ai"
+      ],
+      "kindLabel": "Full-stack, access control",
+      "caseId": "work",
+      "status": null,
+      "role": null,
+      "hook": "Ever worked on a team where projects, tasks and decisions are scattered across tools, and nobody is sure who owns what?",
+      "meet": "Workroom is a business operations platform that helps companies organise projects, coordinate teams and streamline everyday workflows, with the right permissions and an AI assistant built in.",
+      "what": "It centres on departments, projects, collaboration and access control, so people only see the projects and information they are authorised to see. AI features run in a separate FastAPI service that complements the main Django application.",
+      "features": [
+        "Project and task management",
+        "Department and team-based workflows",
+        "Role-based access and project visibility",
+        "AI-assisted workflows via a dedicated AI service",
+        "Structured, validated APIs"
+      ],
+      "chips": [
+        "Django Ninja",
+        "FastAPI",
+        "Pydantic",
+        "Next.js"
+      ],
+      "flow": [
+        "Next.js client",
+        "Django Ninja API",
+        "Role and project permissions",
+        "FastAPI AI service"
+      ],
+      "stack": [
+        [
+          "Main backend",
+          [
+            "Django",
+            "Django Ninja"
+          ]
+        ],
+        [
+          "Validation",
+          [
+            "Pydantic"
+          ]
+        ],
+        [
+          "AI service",
+          [
+            "FastAPI"
+          ]
+        ],
+        [
+          "Frontend",
+          [
+            "Next.js",
+            "Tailwind CSS"
+          ]
+        ]
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "mood",
+      "projectId": "mood",
+      "num": "01",
+      "project": "MoodVerse",
+      "status": "Published",
+      "read": "3 min read",
+      "title": "Trustworthy AI retrieval from curated knowledge",
+      "q": "How can an AI system understand a natural-language reflection and retrieve real source material without inventing the material itself?",
+      "covers": [
+        "Separating emotion analysis from retrieval",
+        "Curating and validating the corpus",
+        "Embeddings and pgvector",
+        "Handling weak matches",
+        "Structured outputs and failures"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "People often know exactly how they feel but not which words to search for. A general-purpose LLM can meet them in natural language, but on its own it can also produce text that sounds like scripture and isn’t. In a spiritual product, an invented verse isn’t a minor bug. It breaks trust completely."
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "I split the problem in two. Interpretation belongs to the model: Gemini reads the reflection and returns structured emotional themes. The text belongs to retrieval: semantic search with pgvector over a curated, verified corpus. Anything shown as scripture comes from a stored passage, never from generated output.",
+          "points": [
+            "FastAPI with Pydantic v2 for typed request and response contracts",
+            "Supabase PostgreSQL with SQLAlchemy 2.x and Alembic migrations",
+            "pgvector keeps embeddings next to the source passages, with no separate vector store to sync",
+            "React Native client for a mobile-first reflection flow"
+          ]
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "todo": [
+            [
+              "Curating and validating the corpus",
+              "[ Your validation rules and why ]"
+            ],
+            [
+              "Handling reflections with weak matches",
+              "[ What happens when nothing is relevant enough ]"
+            ],
+            [
+              "Structured outputs and failure handling",
+              "[ Schema, retries and fallbacks, with a snippet ]"
+            ]
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "The results",
+          "metrics": [
+            [
+              "[ __ % ]",
+              "Retrieval relevance on the eval set"
+            ],
+            [
+              "[ __ queries ]",
+              "Size of the labelled eval set"
+            ],
+            [
+              "[ __ ms ]",
+              "p95 end-to-end latency"
+            ]
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "todo": [
+            [
+              "What I would do differently",
+              "[ One honest lesson ]"
+            ],
+            [
+              "What comes next",
+              "[ The next milestone for MoodVerse ]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seo",
+      "projectId": "seo",
+      "num": "02",
+      "project": "SEO Maker",
+      "status": "In writing",
+      "read": "",
+      "title": "Designing a scalable website intelligence pipeline",
+      "q": "How do you analyse hundreds or thousands of pages without overwhelming target servers or losing track of unfinished jobs?",
+      "covers": [
+        "Discovering and extracting pages with Crawlee",
+        "Managing crawl jobs with BullMQ and Redis",
+        "Controlling concurrency, retries, timeouts and failed jobs",
+        "Turning raw HTML into structured page intelligence",
+        "Combining deterministic SEO rules with AI explanations",
+        "Crawl boundaries, robots.txt and private-network protection"
+      ]
+    },
+    {
+      "id": "insight",
+      "projectId": "insight",
+      "num": "03",
+      "project": "Insight Stream",
+      "status": "Planned",
+      "read": "",
+      "title": "Building an AI content intelligence pipeline",
+      "q": "How do you turn content from many sources into relevant, searchable insights without blocking the application?",
+      "covers": [
+        "Ingesting content from multiple sources",
+        "Background workers and Redis for async processing",
+        "Where sentiment and semantic search fit in the pipeline",
+        "Duplicates, failed jobs, caching and unreliable APIs",
+        "Keyword search versus vector search trade-offs"
+      ]
+    },
+    {
+      "id": "alert",
+      "projectId": "alert",
+      "num": "04",
+      "project": "AlertChain",
+      "status": "Planned",
+      "read": "",
+      "title": "Building a reliable price-alert system",
+      "q": "How do scheduled data collection, threshold checks and notifications work together without duplicate or stale alerts?",
+      "covers": [
+        "Scheduled market-data collection",
+        "Threshold evaluation",
+        "Duplicate alerts and stale prices",
+        "Retries and delivery failures"
+      ]
+    },
+    {
+      "id": "work",
+      "projectId": "work",
+      "num": "05",
+      "project": "Workroom",
+      "status": "Planned",
+      "read": "",
+      "title": "Designing secure project-level access control",
+      "q": "How do you make sure people only see the projects they are authorised to see, including from a separate AI service?",
+      "covers": [
+        "Authorization flow",
+        "Permission matrix",
+        "Boundary between the main app and the AI service",
+        "Tests for unauthorised access"
+      ]
+    }
+  ],
+  "xp": [
+    [
+      "2026, current",
+      "Freelance engineer",
+      "Backend and AI systems",
+      "Building and shipping backend and AI-focused projects for clients and portfolio work.",
+      "Now",
+      [
+        "Backend",
+        "AI integration",
+        "Client projects"
+      ]
+    ],
+    [
+      "Oct 2025 – Jun 2026",
+      "Backend Engineer",
+      "Andela",
+      "Shipped production FastAPI services with AI-integrated features, using Celery and Redis for heavy jobs.",
+      "2025–26",
+      [
+        "FastAPI",
+        "LLM APIs",
+        "Celery",
+        "Redis"
+      ]
+    ],
+    [
+      "Feb 2025 – Aug 2025",
+      "Full-Stack Developer Intern",
+      "Santim Pay",
+      "Built merchant-dashboard features with Vue.js, Nuxt, Pinia, FastAPI and PostgreSQL.",
+      "2025",
+      [
+        "Vue.js",
+        "Nuxt",
+        "FastAPI",
+        "PostgreSQL"
+      ]
+    ],
+    [
+      "Oct 2023 – Feb 2024",
+      "UI/UX Designer Intern",
+      "Rabit Delta",
+      "Wireframes and usability testing that shaped product and feature decisions.",
+      "2023",
+      [
+        "Wireframes",
+        "Usability testing"
+      ]
+    ]
+  ],
+  "history": [
+    {
+      "period": "2026, current",
+      "label": "Freelance",
+      "org": "Backend and AI engineering",
+      "head": true,
+      "items": [
+        "Building and shipping backend and AI-focused projects for clients and portfolio work."
+      ]
+    },
+    {
+      "period": "Jun 2026",
+      "label": "Graduation",
+      "org": "Arba Minch University",
+      "items": [
+        "Graduated with a BSc in Software Engineering from Arba Minch University."
+      ]
+    },
+    {
+      "period": "Oct 2025 – Jun 2026",
+      "label": "Backend Engineer",
+      "org": "Andela",
+      "items": [
+        "Shipped production FastAPI services with AI-integrated features.",
+        "Connected LLM APIs to real product endpoints.",
+        "Used Celery and Redis for background and data-heavy jobs.",
+        "Worked with frontend engineers through code review and Agile delivery."
+      ]
+    },
+    {
+      "period": "Feb 2025 – Aug 2025",
+      "label": "Full-Stack Developer Intern",
+      "org": "Santim Pay",
+      "items": [
+        "Built merchant-dashboard features with Vue.js, Nuxt, Pinia, FastAPI and PostgreSQL.",
+        "Worked inside an Agile team and shipped real product features."
+      ]
+    },
+    {
+      "period": "Oct 2023 – Feb 2024",
+      "label": "UI/UX Designer Intern",
+      "org": "Rabit Delta",
+      "items": [
+        "Created wireframes and supported usability testing.",
+        "Used user feedback to influence product and feature decisions."
+      ]
+    }
+  ],
+  "stack": [
+    [
+      "backend",
+      "Backend",
+      [
+        [
+          "Python",
+          "python"
+        ],
+        [
+          "FastAPI",
+          "fastapi"
+        ],
+        [
+          "Django",
+          "django"
+        ],
+        [
+          "SQLAlchemy",
+          "sqlalchemy"
+        ],
+        [
+          "Pydantic",
+          "pydantic"
+        ],
+        [
+          "REST APIs",
+          "g:api"
+        ]
+      ]
+    ],
+    [
+      "data",
+      "Data and async",
+      [
+        [
+          "PostgreSQL",
+          "postgresql"
+        ],
+        [
+          "pgvector",
+          "g:vector"
+        ],
+        [
+          "Redis",
+          "redis"
+        ],
+        [
+          "Celery",
+          "celery"
+        ],
+        [
+          "Qdrant",
+          "qdrant"
+        ]
+      ]
+    ],
+    [
+      "ai",
+      "AI and LLMs",
+      [
+        [
+          "OpenAI",
+          "g:llm"
+        ],
+        [
+          "Gemini",
+          "googlegemini"
+        ],
+        [
+          "DeepSeek",
+          "deepseek"
+        ],
+        [
+          "Groq",
+          "g:chip"
+        ],
+        [
+          "RAG",
+          "g:rag"
+        ],
+        [
+          "Semantic search",
+          "g:semantic"
+        ],
+        [
+          "LangGraph",
+          "langgraph"
+        ],
+        [
+          "MCP",
+          "modelcontextprotocol"
+        ]
+      ]
+    ],
+    [
+      "frontend",
+      "Frontend",
+      [
+        [
+          "Vue",
+          "vuedotjs"
+        ],
+        [
+          "Nuxt",
+          "nuxt"
+        ],
+        [
+          "React",
+          "react"
+        ],
+        [
+          "Next.js",
+          "nextdotjs"
+        ],
+        [
+          "TypeScript",
+          "typescript"
+        ],
+        [
+          "Tailwind CSS",
+          "tailwindcss"
+        ],
+        [
+          "shadcn/ui",
+          "shadcnui"
+        ]
+      ]
+    ],
+    [
+      "cloud",
+      "Cloud and DevOps",
+      [
+        [
+          "AWS",
+          "aws"
+        ],
+        [
+          "Docker",
+          "docker"
+        ],
+        [
+          "Nginx",
+          "nginx"
+        ],
+        [
+          "Linux",
+          "linux"
+        ],
+        [
+          "CI/CD",
+          "g:cicd"
+        ]
+      ]
+    ],
+    [
+      "workflow",
+      "Workflow",
+      [
+        [
+          "Git",
+          "git"
+        ],
+        [
+          "GitHub",
+          "github"
+        ],
+        [
+          "Postman",
+          "postman"
+        ],
+        [
+          "Agile and Scrum",
+          "g:agile"
+        ]
+      ]
+    ]
+  ],
+  "rules": [
+    [
+      "box",
+      "Ship, don’t just prototype",
+      "I prefer working features that survive real requests, failures and changing requirements.",
+      "Production FastAPI services with AI-integrated features at Andela.",
+      [
+        [
+          "Andela",
+          "about"
+        ]
+      ]
+    ],
+    [
+      "spark",
+      "AI must earn its place",
+      "Use an LLM where it creates real product value, not simply because an AI API is available.",
+      "In MoodVerse, Gemini interprets the reflection and never writes the verse.",
+      [
+        [
+          "MoodVerse",
+          "mood"
+        ]
+      ]
+    ],
+    [
+      "swap",
+      "Keep systems replaceable",
+      "Design integrations so providers, models and infrastructure can change without rewriting core application logic.",
+      "Insight Stream integrates OpenAI, Gemini, DeepSeek and Groq.",
+      [
+        [
+          "Insight Stream",
+          "insight"
+        ]
+      ]
+    ],
+    [
+      "queue",
+      "Async when it matters",
+      "Move slow or heavy work out of the request path when it improves reliability and response time.",
+      "Celery and Redis run ingestion in Insight Stream and price checks in AlertChain.",
+      [
+        [
+          "Insight Stream",
+          "insight"
+        ],
+        [
+          "AlertChain",
+          "alert"
+        ]
+      ]
+    ],
+    [
+      "db",
+      "Data before guessing",
+      "For knowledge-based AI, use retrieval and trusted data instead of asking a model to invent facts.",
+      "SEO Maker’s AI explains findings from measured page data.",
+      [
+        [
+          "SEO Maker",
+          "seo"
+        ]
+      ]
+    ],
+    [
+      "simple",
+      "Simple systems scale better",
+      "Prefer clear boundaries, observable workflows and boring infrastructure over unnecessary complexity.",
+      "Workroom keeps its AI service separate from the main Django app.",
+      [
+        [
+          "Workroom",
+          "work"
+        ]
+      ]
+    ]
+  ],
+  "journey": [
+    {
+      "title": "User or system",
+      "tech": "Web, mobile or service-to-service",
+      "state": "receiving",
+      "desc": "A person or another service sends a request: a question, a search, or an event to process.",
+      "code": "POST /v1/ask\n{\n  \"user\": \"u_42\",\n  \"q\": \"Which plan fits a 5-person team?\"\n}"
+    },
+    {
+      "title": "API endpoint",
+      "tech": "FastAPI, Pydantic, Celery",
+      "state": "validating",
+      "desc": "A typed endpoint validates the input, checks auth and rate limits, then routes the work. Slow jobs go to a background queue.",
+      "code": "✓ schema valid (Pydantic)\n✓ token verified\n✓ under rate limit\n→ answers.create()"
+    },
+    {
+      "title": "Database",
+      "tech": "PostgreSQL, pgvector, Qdrant",
+      "state": "querying",
+      "desc": "Two lookups run side by side: exact records from PostgreSQL, and meaning-based matches from a vector index.",
+      "code": "sql:    plans WHERE seats >= 5\nvector: top_k=5 \"team pricing\"\n→ 2 rows, 5 chunks"
+    },
+    {
+      "title": "Knowledge",
+      "tech": "RAG, ranking, citations",
+      "state": "grounding",
+      "desc": "Results are ranked and trimmed into grounded context: the right facts, each with a source the answer can cite.",
+      "code": "context = [\n  plan:team,\n  doc:pricing#3,\n  doc:faq#7\n]"
+    },
+    {
+      "title": "AI model",
+      "tech": "OpenAI, Gemini, DeepSeek, Groq",
+      "state": "reasoning",
+      "desc": "The model reasons over that context only and returns structured output. Providers can change without touching the app.",
+      "code": "llm.generate(\n  context,\n  schema=Answer\n)\n→ { answer, citations }"
+    },
+    {
+      "title": "Response",
+      "tech": "JSON, streamed to the UI",
+      "state": "delivered",
+      "desc": "The user gets an answer grounded in real data, with sources they can check, streamed back to the interface.",
+      "code": "200 OK\n{\n  \"answer\": \"The Team plan covers 5 seats…\",\n  \"sources\": 3\n}"
+    }
+  ],
+  "jnodes": [
+    {
+      "s": 0,
+      "k": "user",
+      "node": "User",
+      "sub": "app or service",
+      "ic": "user",
+      "x": 80,
+      "y": 90
+    },
+    {
+      "s": 1,
+      "k": "api",
+      "node": "API endpoint",
+      "sub": "FastAPI",
+      "ic": "bolt",
+      "x": 255,
+      "y": 90
+    },
+    {
+      "s": 1,
+      "k": "queue",
+      "node": "Job queue",
+      "sub": "Celery + Redis",
+      "ic": "queue",
+      "x": 255,
+      "y": 200,
+      "side": true
+    },
+    {
+      "s": 2,
+      "k": "sql",
+      "node": "PostgreSQL",
+      "sub": "relational",
+      "ic": "db",
+      "x": 450,
+      "y": 36
+    },
+    {
+      "s": 2,
+      "k": "vec",
+      "node": "Vector DB",
+      "sub": "pgvector, Qdrant",
+      "ic": "vec",
+      "x": 450,
+      "y": 144
+    },
+    {
+      "s": 3,
+      "k": "kn",
+      "node": "Knowledge",
+      "sub": "RAG context",
+      "ic": "layers",
+      "x": 450,
+      "y": 310
+    },
+    {
+      "s": 4,
+      "k": "ai",
+      "node": "AI model",
+      "sub": "any LLM",
+      "ic": "spark",
+      "x": 265,
+      "y": 310
+    },
+    {
+      "s": 5,
+      "k": "res",
+      "node": "Response",
+      "sub": "200 OK",
+      "ic": "done",
+      "x": 80,
+      "y": 310
+    }
+  ],
+  "marquee": [
+    [
+      "FastAPI",
+      "Django",
+      "PostgreSQL",
+      "pgvector",
+      "Redis",
+      "Celery",
+      "SQLAlchemy",
+      "Pydantic"
+    ],
+    [
+      "OpenAI",
+      "Gemini",
+      "DeepSeek",
+      "Groq",
+      "LangGraph",
+      "MCP",
+      "Docker",
+      "AWS",
+      "Nginx"
+    ]
+  ],
+  "heroConsole": {
+    "_note": "Illustrative sample requests replayed in the hero glass console. Numbers are NOT real measurements; keep the \"sample request\" label.",
+    "scenarios": [
+      {
+        "p": "MoodVerse",
+        "path": "/v1/reflect",
+        "req": "{ \"text\": \"anxious about tomorrow\" }",
+        "sp": [
+          "validate",
+          "retrieve",
+          "llm"
+        ],
+        "ms": [
+          4,
+          41,
+          367
+        ],
+        "p95": 184,
+        "res": [
+          "{",
+          "  \"themes\": [\"worry\", \"trust\"],",
+          "  \"passages\": 3,",
+          "  \"grounded\": true",
+          "}"
+        ]
+      },
+      {
+        "p": "Insight Stream",
+        "path": "/v1/digest",
+        "req": "{ \"topic\": \"LLM infra\", \"sources\": 128 }",
+        "sp": [
+          "validate",
+          "enqueue",
+          "respond"
+        ],
+        "ms": [
+          3,
+          6,
+          2
+        ],
+        "p95": 162,
+        "res": [
+          "{",
+          "  \"status\": \"queued\",",
+          "  \"worker\": \"celery\",",
+          "  \"eta_s\": 42",
+          "}"
+        ]
+      },
+      {
+        "p": "SEO Maker",
+        "path": "/v1/audit",
+        "req": "{ \"url\": \"example.com\", \"depth\": 2 }",
+        "sp": [
+          "crawl",
+          "rules",
+          "llm"
+        ],
+        "ms": [
+          96,
+          24,
+          281
+        ],
+        "p95": 171,
+        "res": [
+          "{",
+          "  \"pages\": 214,",
+          "  \"issues\": 37,",
+          "  \"ai_summary\": \"ready\"",
+          "}"
+        ]
+      },
+      {
+        "p": "AlertChain",
+        "path": "/v1/alerts",
+        "req": "{ \"coin\": \"BTC\", \"above\": 70000 }",
+        "sp": [
+          "validate",
+          "store",
+          "schedule"
+        ],
+        "ms": [
+          3,
+          9,
+          4
+        ],
+        "p95": 158,
+        "res": [
+          "{",
+          "  \"id\": \"al_92\",",
+          "  \"status\": \"watching\",",
+          "  \"check\": \"every 60s\"",
+          "}"
+        ]
+      }
+    ],
+    "rotatingWords": [
+      "systems",
+      "APIs",
+      "workers",
+      "pipelines",
+      "retrieval"
+    ],
+    "stackChips": [
+      "fastapi",
+      "postgresql",
+      "redis",
+      "celery",
+      "googlegemini"
+    ]
+  },
+  "_note": "Extracted from reference/index.html (the D object plus hero console data). Page copy that lives in markup (hero, statement, CTA, about, contact, footer) is in index.html."
+}
