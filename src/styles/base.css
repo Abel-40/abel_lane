@@ -117,3 +117,21 @@ section { position: relative; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ---------- build adaptations (not in the reference file) ---------- */
+/* The reference screenshots are full-bleed; the live file keeps the UA 8px body margin (PARITY D16). */
+body { margin: 0; }
+/* The live reference lets `display:flex|grid` beat the hidden attribute (menu covers the page); its screenshots do not (PARITY D17). */
+[hidden] { display: none !important; }
+/* Real links replace the reference's <button data-go>: same box, no underline. */
+a.link, a.menu-link, a.brand, a.next-link, a.po-next, a.cb-item, a.rp-tag, a.cs-row-btn, a.pcard, a.rd-back, a.crumb-link, a.link-arrow, a.cta-ball, a.wc-open { text-decoration: none; }
+a.link { display: inline-flex; align-items: center; }
+a.cta-ball, a.rd-back, a.next-link, a.po-next, a.cb-item { color: inherit; }
+/* Programmatic focus targets (page h1s, dialog titles) show no ring. */
+[tabindex="-1"]:focus, #main:focus { outline: none; }
+/* polish: the focus ring stays visible on navy and accent fills */
+.on-deep :focus-visible, .menu :focus-visible, .wend :focus-visible, .g-color :focus-visible, .loader :focus-visible, .cta-ball:focus-visible { outline-color: var(--on-deep); }
+.cta-ball:focus-visible { outline-color: var(--accent); }
+/* polish: press feedback within 100ms (D13) */
+/* `scale` (not transform) so it composes with GSAP inline transforms on magnetic buttons */
+.btn:active, .icon-btn:active, .mini-btn:active, .tab:active, .filter:active, .menu-btn:active, .rp-tag:active, .crumb-link:active, .cta-ball:active { scale: .97; }

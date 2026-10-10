@@ -96,3 +96,17 @@
 @media (prefers-reduced-motion: reduce) {
   .loader { display: none; }
 }
+
+/* polish: the loader is skippable (D2); hidden when the pre-paint script decides it won't run */
+.loader-skip { position: absolute; right: var(--gut); bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); z-index: 2; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--deep-line); background: rgba(255, 255, 255, .06); color: var(--on-deep); font: 600 14px var(--f-body); cursor: pointer; transition: background-color .3s, border-color .3s; }
+.loader-skip:hover { background: rgba(255, 255, 255, .12); border-color: var(--accent-on-deep); }
+html[data-loader="off"] .loader { display: none; }
+html[data-js] .loader:not(.js-run) .ll { visibility: hidden; }
+
+/* improvement: theme toggle (system / light / dark) — sized like the availability chip's neighbours, 44px target */
+.theme-btn { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--glass-edge); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .3s, color .3s; }
+.theme-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+.theme-menu { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--deep-line); background: var(--chip-deep); color: var(--on-deep); font: 600 13px var(--f-body); cursor: pointer; }
+@media (max-width: 899.98px) {
+  .nav-end > .theme-btn { display: none; }
+}
