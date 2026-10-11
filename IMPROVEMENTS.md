@@ -15,7 +15,7 @@ underneath, and what was measured.
   moves to the new page's `h1`.
 - **Content.**
   - Generated and typed from `reference/content.json` (`pnpm gen:content`).
-  - Case studies are MDX with Zod-validated frontmatter, so malformed frontmatter fails the build.
+  - Case studies are data in `src/content/case-studies.json`, Zod-validated, so a malformed entry fails `pnpm gen:content`.
 - **Static output.** Every page and Open Graph image is prerendered. Only `/api/contact` runs on demand.
 
 ## Accessibility (WCAG 2.2 AA)

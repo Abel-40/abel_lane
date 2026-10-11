@@ -29,7 +29,7 @@ pnpm start               # http://localhost:3000
 | Script | What it does |
 |---|---|
 | `pnpm dev` / `build` / `start` | Next.js |
-| `pnpm gen:content` | Regenerates `src/content/*.ts` from `reference/content.json`, `reference/icons.json`, the case-study MDX frontmatter and the images kit JSON (`kits/images/data`) |
+| `pnpm gen:content` | Regenerates `src/content/*.ts` from `reference/content.json`, `reference/icons.json`, `src/content/case-studies.json` and the images kit JSON (`kits/images/data`) |
 | `pnpm gen:images [--force]` | Derives 360/480/720w WebP variants from the images kit's 1800w files in `public/images` (run after adding or replacing a screen; the output is committed) |
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit` |
 | `pnpm test:e2e` | Playwright: e2e, axe (both themes), overflow, pins, Firefox/WebKit smoke. Run `pnpm build` first, then `pnpm exec playwright install` once |
@@ -40,7 +40,7 @@ pnpm start               # http://localhost:3000
 
 - **Projects, experience, tools, principles, journey, hero console:** `reference/content.json`. Edit it,
   then run `pnpm gen:content`.
-- **Case studies:** `src/content/case-studies/<slug>.mdx` (typed frontmatter, see `src/content/case-schema.ts`).
+- **Case studies:** `src/content/case-studies.json` (Zod-validated by `pnpm gen:content`, schema in `src/content/case-schema.ts`). Edit the text there, then run `pnpm gen:content`.
   Text in `[ brackets ]` renders as a visible TODO tag.
 - **Facts used across pages** (email, links): `src/content/site.ts`.
 - **Photo:** `src/assets/abel.webp`. **Résumé:** `public/resume.pdf` (the button appears when the file exists).
@@ -73,7 +73,7 @@ src/components/   chrome (nav, loader, shutter, cursor, footer), home/, about/, 
 src/hooks/        useIntroGSAP (entrances after first paint), useIdleGSAP (lazy section setup)
 src/lib/          gsap, flip, anim helpers, intro gate, idle/lazy scheduler, scroll, overlay, seo, og
 src/styles/       tokens + per-area CSS ported from the reference (prefixed class names)
-src/content/      generated typed content + case-study MDX
+src/content/      generated typed content; case-studies.json is the hand-edited source for case studies
 tests/            e2e (Playwright), visual capture
 reference/        the original kit (read-only)
 ```

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { caseBySlug, cases, projectById } from "@/content";
-import { caseFrontmatter } from "@/content/case-schema";
+import { CaseBody } from "@/components/cases/CaseBody";
 import { CaseReader } from "@/components/cases/CaseReader";
 import { tocFor } from "@/components/cases/toc";
 import { pageMeta } from "@/lib/seo";
@@ -16,20 +16,23 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/case-studies/[slug]">): Promise<Metadata> {
   const c = caseBySlug((await params).slug);
   if (!c) return {};
-  return pageMeta({ path: `/case-studies/${c.slug}`, title: c.title, description: c.q, type: "article" });
+  const meta = pageMeta({ path: `/case-studies/${c.slug}`, title: c.title, description: c.q, type: "article" });
+  // the case figure is the share image (file in public/); alt text comes from the figure
+  const image = { url: c.figure.src, width: c.figure.width, height: c.figure.height, alt: c.figure.alt };
+  return {
+    ...meta,
+    openGraph: { ...meta.openGraph, images: [image] },
+    twitter: { ...meta.twitter, images: [image.url] },
+  };
 }
 
-/** Case-study reader. The body is src/content/case-studies/<slug>.mdx; its frontmatter is validated here. */
+/** Case-study reader. The write-up is the case's `sections` in src/content/case-studies.json. */
 export default async function CaseStudyPage({ params }: PageProps<"/case-studies/[slug]">) {
-  const { slug } = await params;
-  const c = caseBySlug(slug);
+  const c = caseBySlug((await params).slug);
   if (!c) notFound();
-  const mod = await import(`@/content/case-studies/${slug}.mdx`);
-  const fm = caseFrontmatter.parse(mod.frontmatter); // fails the build on malformed frontmatter
-  const Body = mod.default;
   return (
-    <CaseReader c={{ ...c, ...fm }} project={projectById(c.projectId)} toc={tocFor({ ...c, ...fm })}>
-      <Body />
+    <CaseReader c={c} project={projectById(c.projectId)} toc={tocFor(c)}>
+      <CaseBody c={c} />
     </CaseReader>
   );
 }

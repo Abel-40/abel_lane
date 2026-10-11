@@ -8,35 +8,14 @@ gracefully until you add it.
 Save it as `public/resume.pdf`. On the next build, the **Résumé** button appears on the About page
 (it is hidden while the file is missing).
 
-## 2. Case-study content (placeholders)
+## 2. Case-study content (placeholder text)
 
-Case studies are MDX files in `src/content/case-studies/`. Anything in `[ brackets ]` renders as a
-dashed "To do" tag on the site, never as invented content. Replace each tag with real text.
-
-**MoodVerse** (`moodverse.mdx`, published):
-
-- [ ] 03 Implementation · Curating and validating the corpus: `[ Your validation rules and why ]`
-- [ ] 03 Implementation · Handling reflections with weak matches: `[ What happens when nothing is relevant enough ]`
-- [ ] 03 Implementation · Structured outputs and failure handling: `[ Schema, retries and fallbacks, with a snippet ]`
-- [ ] 04 Validation · Retrieval relevance on the eval set: `[ __ % ]`
-- [ ] 04 Validation · Size of the labelled eval set: `[ __ queries ]`
-- [ ] 04 Validation · p95 end-to-end latency: `[ __ ms ]`
-- [ ] 05 Reflection · What I would do differently: `[ One honest lesson ]`
-- [ ] 05 Reflection · What comes next: `[ The next milestone for MoodVerse ]`
-
-**Not written yet** (they show an outline and a link to the project):
-
-- [ ] SEO Maker (`seo-maker.mdx`, status "In writing")
-- [ ] Insight Stream (`insight-stream.mdx`, "Planned")
-- [ ] AlertChain (`alertchain.mdx`, "Planned")
-- [ ] Workroom (`workroom.mdx`, "Planned")
-
-To write one, copy the structure of `moodverse.mdx`:
-
-1. Add `sections:` to the frontmatter (n, key, title).
-2. Replace the `<Outline>` block with `<Section>` blocks.
-3. Update `status` and `read`.
-4. Run `pnpm gen:content`. It also runs before every build, and fails if the frontmatter is malformed.
+All five case studies are written as placeholder text in `src/content/case-studies.json`. Rewrite it in
+your own words: each case has `sections` (Context, Design, Implementation, Validation, Reflection) made of
+`body`, `points`, `decisions` (chose / over / why), `code` and `parts`. Keep "(simplified)" in code titles.
+The Validation sections say what will be measured; add real numbers only once you have them.
+After editing, run `pnpm gen:content` (it also runs before every build and fails on a malformed entry).
+A case with no `sections` falls back to an outline built from `covers`.
 
 ## 3. Contact form email (Resend)
 

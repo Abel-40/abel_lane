@@ -44,7 +44,7 @@ const DEEP: [string, string][] = [
   ["/about", "From UI/UX"],
   ["/projects", "Five products"],
   ["/projects/workroom", "Workroom"],
-  ["/case-studies/seo-maker", "Designing a scalable website intelligence pipeline"],
+  ["/case-studies/seo-maker", "Grounding AI recommendations in real page data"],
   ["/contact", "Let’s build something reliable."],
 ];
 

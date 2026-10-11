@@ -25,7 +25,7 @@ test("career log commits expand and collapse", async ({ page }) => {
 
 test("case reader table of contents scrolls and tracks the section", async ({ page }) => {
   await page.goto("/case-studies/moodverse");
-  await expect(page.locator(".ph").first()).toContainText("[ Your validation rules and why ]");
+  await expect(page.locator(".rd-sec")).toHaveCount(5);
   await page.locator(".toc a", { hasText: "Validation" }).click();
   await expect(page.locator(".toc a.on")).toHaveText(/Validation/, { timeout: 8000 });
 });

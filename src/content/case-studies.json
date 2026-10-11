@@ -1,0 +1,674 @@
+{
+  "_note": "Replace the whole cases array in content.json with cases below. Each case keeps its id. The figure object points to the case-study images in /images/cases/.",
+  "cases": [
+    {
+      "id": "mood",
+      "projectId": "mood",
+      "num": "01",
+      "project": "MoodVerse",
+      "status": "Published",
+      "read": "4 min read",
+      "title": "Trustworthy AI retrieval from curated knowledge",
+      "q": "How can an AI system understand a natural-language reflection and retrieve real source material without inventing the material itself?",
+      "covers": [
+        "Separating emotion analysis from retrieval",
+        "Curating and validating the corpus",
+        "Embeddings and pgvector",
+        "Handling weak matches",
+        "Structured outputs and failures"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "People often know exactly how they feel but not which words to search for. Keyword search fails them, because “I moved for work and I feel alone” shares almost no words with the passages that would actually help. A general-purpose LLM can meet them in natural language, but on its own it can also produce text that sounds like scripture and isn’t. In a spiritual product, an invented verse isn’t a minor bug. It breaks trust completely.",
+          "points": [
+            "Every passage shown must be exact, attributable and checkable against its source.",
+            "People describe feelings, not keywords, so search has to work on meaning.",
+            "People choose the Bible, the Quran or both, and that choice has to be respected.",
+            "A weak match must never be presented as a confident one."
+          ]
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "I split the problem in two. Interpretation belongs to the model: Gemini reads the reflection and returns structured emotional themes. The text belongs to retrieval: semantic search with pgvector over a curated corpus of 37,338 passages, 31,102 from the Bible and 6,236 from the Quran. Anything shown as scripture comes from a stored record, never from generated output.",
+          "points": [
+            "FastAPI with Pydantic v2 for typed request and response contracts",
+            "Supabase PostgreSQL with SQLAlchemy 2.x and Alembic migrations",
+            "pgvector keeps embeddings next to the source passages, with no separate vector store to sync",
+            "React Native client for a mobile-first reflection flow"
+          ],
+          "decisions": [
+            {
+              "chose": "The model interprets, the database supplies the text",
+              "over": "Letting the model quote scripture",
+              "why": "A generated quote can’t be verified at the moment it’s shown. A stored passage can, every time."
+            },
+            {
+              "chose": "pgvector inside the same PostgreSQL database",
+              "over": "A separate vector database",
+              "why": "Passages, metadata and embeddings live together, so there is nothing to sync and metadata filters run in the same query as the similarity search."
+            },
+            {
+              "chose": "Structured output checked with Pydantic",
+              "over": "Free-text analysis",
+              "why": "The backend can validate the shape before using it and fail clearly when it’s wrong, instead of passing guesses downstream."
+            }
+          ],
+          "code": {
+            "title": "The analysis schema has nowhere to put a verse (simplified)",
+            "lang": "python",
+            "src": "class ReflectionAnalysis(BaseModel):\n    emotions: list[str] = Field(min_length=1, max_length=5)\n    themes: list[str] = Field(max_length=5)\n    need: str  # e.g. \"comfort\", \"guidance\", \"hope\"\n\n# There is deliberately no field for passage text.\n# Whatever the model writes, it can only describe the feeling."
+          }
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "parts": [
+            {
+              "title": "Curating and validating the corpus",
+              "body": "Each passage is stored with its source, translation, book or surah, chapter and verse, so every result can be cited exactly. The import checks structure before anything is embedded: references must be unique, chapter and verse numbers must be in range, and the totals must match the 31,102 and 6,236 expected. Text is normalised for whitespace and quotation marks only. The wording itself is never changed."
+            },
+            {
+              "title": "Retrieval with metadata filters",
+              "body": "The reflection and the themes from the analysis form the search query. Similarity search and the person’s choice of scripture run in one SQL query, so filtering never happens after the fact on a shortened list. The top candidates are then ranked before one passage is chosen.",
+              "code": {
+                "title": "Similarity and filters in one query (simplified)",
+                "lang": "python",
+                "src": "stmt = (\n    select(Passage)\n    .where(Passage.source.in_(sources))  # Bible, Quran or both\n    .order_by(Passage.embedding.cosine_distance(query_vec))\n    .limit(20)\n)"
+              }
+            },
+            {
+              "title": "Handling weak matches",
+              "body": "Similarity scores only mean something relative to each other, so the best result can still be a poor one. A passage is only shown when its score clears a threshold. Below it, the app says it couldn’t find a close match and invites the person to say a little more, instead of forcing a verse onto them."
+            },
+            {
+              "title": "Structured outputs and failures",
+              "body": "Gemini’s response is parsed and validated against the schema before it’s used. If it doesn’t match, the request fails clearly and is logged with the validation error, rather than continuing with a half-understood reflection. The passage text never depends on this step, so a model failure can’t produce a wrong verse."
+            }
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "How I check it",
+          "body": "Retrieval quality is hard to judge from a demo, so I check the system in layers: the guarantees that must always hold, and the quality that should keep improving.",
+          "points": [
+            "Every passage shown is looked up by its ID, and a test fails if the displayed text differs from the stored record.",
+            "Malformed, empty and off-schema model responses are fed to the parser to make sure they are rejected, not shown.",
+            "A fixed set of sample reflections is run after any prompt or model change, and the results are compared by hand.",
+            "Next step: a labelled evaluation set, so I can publish retrieval relevance and latency numbers instead of describing them."
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "parts": [
+            {
+              "title": "Decide what the model is not allowed to do first",
+              "body": "The most important line in MoodVerse is a constraint, not a prompt. Once the model had no way to supply scripture, every later decision got simpler."
+            },
+            {
+              "title": "Keep vectors next to the data they describe",
+              "body": "Putting embeddings in the same database as the passages removed a whole class of sync bugs and made filtering trivial."
+            },
+            {
+              "title": "What comes next",
+              "body": "Finishing the mobile app, adding a full web version, and publishing measured retrieval quality from the evaluation set."
+            }
+          ]
+        }
+      ],
+      "figure": {
+        "file": "cs-1-mood",
+        "label": "Figure 01",
+        "caption": "MoodVerse separates interpretation from retrieval. Gemini returns themes, and every passage shown comes from the verified corpus.",
+        "alt": "Diagram: a reflection goes to Gemini, which returns emotions and themes as JSON. The themes and the reflection query pgvector over a verified Bible and Quran corpus, and the top match, Psalm 34:18, is shown from the stored passage.",
+        "theme": "light",
+        "src": "/images/cases/cs-1-mood.webp",
+        "srcSm": "/images/cases/cs-1-mood-sm.webp",
+        "width": 1800,
+        "height": 1125,
+        "widthSm": 960,
+        "heightSm": 600
+      }
+    },
+    {
+      "id": "seo",
+      "projectId": "seo",
+      "num": "02",
+      "project": "SEO Maker",
+      "status": "Published",
+      "read": "4 min read",
+      "title": "Grounding AI recommendations in real page data",
+      "q": "How do you let an AI explain SEO issues and prioritise fixes without inventing problems the site doesn’t have?",
+      "covers": [
+        "Keeping deterministic analysis separate from AI",
+        "Building an evidence pack per finding",
+        "Structured, validated model output",
+        "A swappable AI provider",
+        "Measuring fixes with a re-crawl"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "SEO tools are good at listing problems and bad at explaining which ones matter for a particular site. LLMs are the opposite: they explain well, but given a page they will happily invent issues, quote rules that don’t apply and guess at numbers they don’t have. SEO Maker crawls a site, stores the page data and runs deterministic checks. My part is the AI backend: turning those facts into explanations and prioritised fixes that people can trust.",
+          "points": [
+            "Every claim the AI makes must trace back to a measured fact.",
+            "The AI may explain and prioritise findings, but never create new ones.",
+            "The model provider must be replaceable without rewriting the system.",
+            "Recommendations must be checkable afterwards, by crawling again."
+          ]
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "Deterministic analysis and AI stay separate. The crawler and the rule engine decide what is true about the site. The AI layer receives an evidence pack built from those facts plus the site’s context, such as its goal and key pages, and must answer in a fixed structure that cites the evidence by ID. Nothing reaches the user until that structure and every citation have been checked.",
+          "points": [
+            "Next.js and TypeScript for the app and APIs",
+            "Crawlee for crawling, with BullMQ and Redis for background jobs",
+            "A provider adapter in front of the LLM, with Groq used during development",
+            "Structured outputs validated before they are stored"
+          ],
+          "decisions": [
+            {
+              "chose": "Rules find the facts, the AI explains them",
+              "over": "Asking the AI to audit raw HTML",
+              "why": "Rules are repeatable and testable. The AI adds judgement and language on top of facts instead of replacing them."
+            },
+            {
+              "chose": "Evidence IDs the model must cite",
+              "over": "Free-form explanations",
+              "why": "A citation can be checked mechanically. A paragraph of advice can’t."
+            },
+            {
+              "chose": "A small provider adapter",
+              "over": "Calling one vendor’s SDK everywhere",
+              "why": "Prompts, schemas and evidence stay vendor-neutral, so a cheaper model during development and a stronger one later is a config change."
+            }
+          ],
+          "code": {
+            "title": "The only shape the backend accepts (simplified)",
+            "lang": "ts",
+            "src": "type Recommendation = {\n  page: string;\n  ruleIds: RuleId[];          // must come from the rule engine\n  priority: \"high\" | \"medium\" | \"low\";\n  summary: string;\n  why: string;\n  evidence: EvidenceId[];     // must exist in this page's pack\n  fix?: { title?: string; metaDescription?: string };\n  needsData?: string[];       // what it would need, stated, not guessed\n};"
+          }
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "parts": [
+            {
+              "title": "Building the evidence pack",
+              "body": "For each page and finding, the backend selects only the facts that matter: the failing values, related pages and the site context. Each fact gets a short ID such as E1 or E2. Keeping the pack small keeps the prompt cheap and gives the model less room to wander."
+            },
+            {
+              "title": "Validating every answer",
+              "body": "A response is parsed as JSON, checked against the schema, and then every evidence ID and rule ID is looked up. If the model cites a fact that isn’t in the pack, the recommendation is rejected and logged, and the user never sees it.",
+              "code": {
+                "title": "Reject anything that cites missing evidence (simplified)",
+                "lang": "ts",
+                "src": "const rec = schema.parse(JSON.parse(raw));\nconst missing = rec.evidence.filter(id => !pack.has(id));\nconst unknownRules = rec.ruleIds.filter(id => !findings.has(id));\nif (missing.length || unknownRules.length) {\n  return reject(rec, { missing, unknownRules });\n}\nreturn store(rec);"
+              }
+            },
+            {
+              "title": "Prioritising with site context",
+              "body": "The same missing meta description matters more on a pricing page than on an old blog post. The site context tells the model which pages drive the business goal, and the model has to explain its ranking with evidence like any other claim."
+            },
+            {
+              "title": "Saying “I don’t know” on purpose",
+              "body": "When a useful answer depends on data the system doesn’t have, such as traffic, the schema has a place to say so. The model states what it would need instead of estimating it."
+            }
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "How I check it",
+          "body": "The strongest check isn’t a model score. It’s whether the site actually changes. Around that, the AI layer has checks that must always hold.",
+          "points": [
+            "Every stored recommendation has evidence and rule IDs that resolve, and tests feed in answers that cite missing facts to make sure they are rejected.",
+            "Saved crawls of sample sites are re-run after prompt or provider changes, to catch regressions in what the AI says.",
+            "After a fix ships, a re-crawl measures whether the finding is gone, which is the real test of a recommendation.",
+            "Next step: tracking how many recommendations are accepted and fixed, so quality can be reported with numbers."
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "parts": [
+            {
+              "title": "Keep the AI on a short leash of facts",
+              "body": "Most of the quality came from what the model was given and what it was allowed to say, not from prompt wording."
+            },
+            {
+              "title": "Design for the provider to change",
+              "body": "A low-cost provider during development kept iteration cheap, and the adapter means that choice isn’t permanent."
+            },
+            {
+              "title": "What comes next",
+              "body": "A reference knowledge base split into authoritative and heuristic guidance, with retrieval on top, followed by competitive intelligence and generative engine optimisation (GEO) analysis."
+            }
+          ]
+        }
+      ],
+      "figure": {
+        "file": "cs-2-seo",
+        "label": "Figure 02",
+        "caption": "The AI layer builds an evidence pack from measured facts, asks for a structured answer and rejects anything that cites a fact it wasn’t given. A re-crawl then checks the fix.",
+        "alt": "Diagram: crawled page data, rule findings and site context feed an evidence pack with IDs E1 to E4. An LLM behind a provider adapter returns structured JSON that cites those IDs. A validator checks the JSON, the schema, the evidence IDs and the rule IDs, and the answer is either stored and shown or rejected. A re-crawl then confirms the finding is gone. A planned knowledge base separates authoritative and heuristic guidance.",
+        "theme": "dark",
+        "src": "/images/cases/cs-2-seo.webp",
+        "srcSm": "/images/cases/cs-2-seo-sm.webp",
+        "width": 1800,
+        "height": 1125,
+        "widthSm": 960,
+        "heightSm": 600
+      }
+    },
+    {
+      "id": "insight",
+      "projectId": "insight",
+      "num": "03",
+      "project": "Insight Stream",
+      "status": "Published",
+      "read": "4 min read",
+      "title": "Building an AI content intelligence pipeline",
+      "q": "How do you turn content from many sources into relevant, searchable insights without blocking the application?",
+      "covers": [
+        "Ingesting content from multiple sources",
+        "Background workers and Redis for async processing",
+        "Where sentiment and semantic search fit in the pipeline",
+        "Duplicates, failed jobs, caching and unreliable APIs",
+        "Keyword search versus vector search trade-offs"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "Staying current on a topic means reading hundreds of articles and Reddit threads to find the few that matter. Insight Stream collects that content, organises it by the topics each person follows, classifies sentiment and makes it searchable by meaning. The catch is that every item needs slow, unreliable work before it is useful: fetching, cleaning, de-duplicating, a model call for sentiment and another for embeddings. Doing any of that while someone waits for their feed would make the app slow and fragile.",
+          "points": [
+            "The feed and search must stay fast, whatever the sources are doing.",
+            "One slow or broken source must not hold up the others.",
+            "The same story must not be processed or paid for twice.",
+            "Search should work on meaning, not only on exact words."
+          ]
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "The system has two paths. The request path is FastAPI reading data that is already prepared, with Redis caching hot feeds. The background path is Celery workers, with Redis as the broker, that ingest sources, remove duplicates, classify sentiment and create embeddings. PostgreSQL with pgvector holds both the content and the vectors.",
+          "points": [
+            "FastAPI, SQLAlchemy and Alembic, with JWT auth and rate limiting",
+            "Celery workers with Redis as broker and cache",
+            "PostgreSQL with pgvector for content and embeddings",
+            "LLM providers behind one interface: OpenAI, Gemini, DeepSeek and Groq",
+            "Vue 3, TypeScript and Pinia on the client"
+          ],
+          "decisions": [
+            {
+              "chose": "Celery workers with Redis",
+              "over": "Running work inside API requests",
+              "why": "Retries, scheduling and separate worker processes mean slow sources and model calls never touch request latency."
+            },
+            {
+              "chose": "pgvector in PostgreSQL",
+              "over": "A separate vector database",
+              "why": "Articles, topics, sentiment and embeddings can be filtered and joined in one query, with one backup and one source of truth."
+            },
+            {
+              "chose": "Three sentiment labels from an LLM",
+              "over": "A classic sentiment library",
+              "why": "Good, Bad or Neither is simple to show and filter on, and an LLM handles context and sarcasm better than word lists."
+            }
+          ],
+          "code": {
+            "title": "A source task that retries on its own (simplified)",
+            "lang": "python",
+            "src": "@celery.task(bind=True, autoretry_for=(httpx.HTTPError,),\n             retry_backoff=True, max_retries=5)\ndef ingest_source(self, source_id: int):\n    items = fetch_and_normalise(source_id)\n    for item in skip_duplicates(items):\n        enrich_item.delay(save(item).id)  # sentiment + embedding"
+          }
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "parts": [
+            {
+              "title": "Ingesting from many sources",
+              "body": "RSS feeds and Reddit look nothing alike, so each source is normalised into one item shape with a title, text, URL, source and time, then tagged with the topic it belongs to. Each source is its own task, so one failing feed can’t stop the rest."
+            },
+            {
+              "title": "Duplicates before model calls",
+              "body": "The same story often arrives from several feeds. URLs are normalised and the content is hashed, and duplicates are skipped before any model call. That keeps the feed clean and stops paying twice for the same item."
+            },
+            {
+              "title": "Unreliable APIs and failed jobs",
+              "body": "Sources and model providers time out, rate-limit and return errors. Tasks retry with backoff, and enrichment runs separately from fetching, so a failed model call is retried on its own without fetching the source again. Tasks are written so running one twice is harmless, which is what makes retries safe."
+            },
+            {
+              "title": "Keyword versus vector search",
+              "body": "Keyword search is precise for names and exact terms, but it misses articles that say the same thing in different words. Embedding search finds those by meaning. Because both live in PostgreSQL, the API can filter by topic and sentiment in the same query as the similarity search."
+            }
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "How I check it",
+          "body": "The pipeline is mostly background work, so the checks focus on what happens when things go wrong, and on whether the results are useful.",
+          "points": [
+            "Tests for the de-duplication rules, with the same story arriving through different URLs and feeds.",
+            "Tasks are run against sources that fail or time out, to check retries and that nothing is stored twice.",
+            "Sentiment labels are spot-checked by hand on a sample of items after any prompt or model change.",
+            "Next step: a small set of queries with expected results, to compare keyword and vector search with numbers."
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "parts": [
+            {
+              "title": "Retries are only safe if repeats are harmless",
+              "body": "Making every task safe to run twice mattered more than any retry setting."
+            },
+            {
+              "title": "Spend model calls last",
+              "body": "Filtering and de-duplicating before calling a model cut cost and noise at the same time."
+            },
+            {
+              "title": "What comes next",
+              "body": "Combining keyword and vector search in one ranking, and publishing measured search quality."
+            }
+          ]
+        }
+      ],
+      "figure": {
+        "file": "cs-3-insight",
+        "label": "Figure 03",
+        "caption": "The request path reads prepared data while Celery workers fetch, de-duplicate, classify and embed content in the background.",
+        "alt": "Diagram: a fast request path from the Vue client through FastAPI and a Redis cache to PostgreSQL with pgvector, and a background Celery path that fetches RSS and Reddit content, removes duplicates, labels sentiment and stores embeddings.",
+        "theme": "light",
+        "src": "/images/cases/cs-3-insight.webp",
+        "srcSm": "/images/cases/cs-3-insight-sm.webp",
+        "width": 1800,
+        "height": 1125,
+        "widthSm": 960,
+        "heightSm": 600
+      }
+    },
+    {
+      "id": "alert",
+      "projectId": "alert",
+      "num": "04",
+      "project": "AlertChain",
+      "status": "Published",
+      "read": "3 min read",
+      "title": "Building a reliable price-alert system",
+      "q": "How do scheduled data collection, threshold checks and notifications work together without duplicate or stale alerts?",
+      "covers": [
+        "Scheduled market-data collection",
+        "Threshold evaluation",
+        "Duplicate alerts and stale prices",
+        "Retries and delivery failures"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "People set a target, look away and miss the moment the price gets there. AlertChain watches prices and tells them, so they don’t have to watch the chart. That sounds simple, but an alert system fails in three quiet ways: it alerts on old data, it alerts again and again while the price hovers around the target, or it loses the alert when an email fails to send.",
+          "points": [
+            "Never evaluate a rule against a stale price.",
+            "One crossing should mean one alert, not a flood.",
+            "A failed email must not mean a lost alert.",
+            "Checks must run on schedule without anyone watching."
+          ]
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "A scheduled Celery task fetches prices from CoinGecko for the coins people watch and stores a snapshot in PostgreSQL. A second step evaluates each rule, ABOVE or BELOW a target, against the latest snapshot. When a rule fires, it records when, and the notifications go out as their own tasks, by email through FastAPI Mail and in the app.",
+          "points": [
+            "FastAPI and PostgreSQL for rules, snapshots and notifications",
+            "Celery for scheduled checks, with Redis as broker",
+            "CoinGecko for market data",
+            "Docker Compose to run the API, workers and scheduler together"
+          ],
+          "decisions": [
+            {
+              "chose": "Scheduled polling",
+              "over": "Streaming prices",
+              "why": "Target alerts don’t need tick-level data, and a schedule keeps API usage predictable and within rate limits."
+            },
+            {
+              "chose": "Storing every snapshot",
+              "over": "Keeping only the latest price",
+              "why": "History powers the charts, and it makes every alert explainable: you can see exactly which price triggered it."
+            },
+            {
+              "chose": "A cooldown on each rule",
+              "over": "One-shot rules that must be re-created",
+              "why": "People keep their rules, and a price hovering around the line doesn’t turn into a stream of emails."
+            }
+          ],
+          "code": {
+            "title": "The check that keeps one crossing to one alert (simplified)",
+            "lang": "python",
+            "src": "def should_fire(rule, snap, now):\n    if now - snap.taken_at > MAX_SNAPSHOT_AGE:\n        return False  # stale: never evaluate old prices\n    hit = (snap.price > rule.target if rule.direction == \"ABOVE\"\n           else snap.price < rule.target)\n    cooling = rule.last_fired_at and now - rule.last_fired_at < rule.cooldown\n    return hit and not cooling"
+          }
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "parts": [
+            {
+              "title": "Scheduled market-data collection",
+              "body": "Each run fetches all watched coins in one batched request instead of one call per rule, which keeps the number of API calls flat as people add rules. Each snapshot is stored with the time it was taken."
+            },
+            {
+              "title": "Stale prices",
+              "body": "If a fetch fails or is delayed, the latest snapshot can be old. Every evaluation checks the snapshot’s age first, and a stale price is skipped rather than compared, because an alert based on old data is worse than a late one."
+            },
+            {
+              "title": "Duplicate alerts",
+              "body": "When a rule fires, the time is saved in the same database transaction that creates the notification. During the cooldown, later checks see that time and stay quiet, so a price moving back and forth across the line still produces one alert."
+            },
+            {
+              "title": "Retries and delivery failures",
+              "body": "The in-app notification is saved first, so it can’t be lost. Email is sent by a separate task that retries with backoff when the mail server fails, without re-running the rule check."
+            }
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "How I check it",
+          "body": "Alert logic is easy to test because prices can be replayed. The checks use fixed price sequences and assert exactly which alerts should fire.",
+          "points": [
+            "A clean crossing fires exactly one alert.",
+            "A price hovering and re-crossing during the cooldown fires nothing more.",
+            "A stale snapshot is never evaluated.",
+            "A failed email is retried, and the in-app notification still exists."
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "parts": [
+            {
+              "title": "Reliability is mostly about the boring cases",
+              "body": "The happy path took a day. Stale data, repeats and failed deliveries are where the real design work was."
+            },
+            {
+              "title": "Store the evidence for every alert",
+              "body": "Keeping snapshots made every alert explainable and made bugs much easier to find."
+            },
+            {
+              "title": "What comes next",
+              "body": "An AI trading assistant that helps people understand market moves around their alerts, built on the same snapshot history."
+            }
+          ]
+        }
+      ],
+      "figure": {
+        "file": "cs-4-alert",
+        "label": "Figure 04",
+        "caption": "Scheduled checks run against fresh snapshots, and a cooldown makes one crossing send one alert.",
+        "alt": "Chart: Bitcoin price moving around a 75,000 alert line with scheduled checks. An alert is sent at the first crossing, nothing repeats during a 30-minute cooldown, and a second alert is sent at a new crossing after it.",
+        "theme": "dark",
+        "src": "/images/cases/cs-4-alert.webp",
+        "srcSm": "/images/cases/cs-4-alert-sm.webp",
+        "width": 1800,
+        "height": 1125,
+        "widthSm": 960,
+        "heightSm": 600
+      }
+    },
+    {
+      "id": "work",
+      "projectId": "work",
+      "num": "05",
+      "project": "Workroom",
+      "status": "Published",
+      "read": "4 min read",
+      "title": "Designing secure project-level access control",
+      "q": "How do you make sure people only see the projects they are authorised to see, including from a separate AI service?",
+      "covers": [
+        "Authorization flow",
+        "Permission matrix",
+        "Boundary between the main app and the AI service",
+        "Tests for unauthorised access"
+      ],
+      "sections": [
+        {
+          "n": "01",
+          "key": "Context",
+          "title": "The problem",
+          "body": "Workroom organises a company’s departments, projects and tasks in one place. That only works if people trust it with sensitive work, which means each person sees the projects they are authorised to see and nothing else. Two things make this harder than it looks. Hiding things in the interface is not security, because the API can still be called directly. And the AI features run in a separate service, which is a second way for data to leak if it isn’t designed carefully.",
+          "points": [
+            "Access rules are enforced by the API, not only hidden in the UI.",
+            "Every route that touches a project checks access, not only the list page.",
+            "The AI service never sees more than the person asking could see.",
+            "The rules live in one place, so the app and the API can’t disagree."
+          ]
+        },
+        {
+          "n": "02",
+          "key": "Design",
+          "title": "The architecture and decisions",
+          "body": "The main backend is Django with Django Ninja and Pydantic schemas. It owns authentication, roles and project membership. Admins, Managers and Employees have different permissions, and project membership decides which projects an Employee can see. The FastAPI AI service is separate. It only receives context that the main API has already filtered for the person making the request.",
+          "points": [
+            "Django and Django Ninja for the main API",
+            "Pydantic for validated request and response schemas",
+            "A separate FastAPI service for AI features",
+            "Next.js and Tailwind CSS on the client"
+          ],
+          "decisions": [
+            {
+              "chose": "Scoping queries to what a user can see",
+              "over": "Fetching data and checking it afterwards",
+              "why": "If the query can only return visible projects, a forgotten check can’t leak anything."
+            },
+            {
+              "chose": "The main API sends the AI scoped context",
+              "over": "Letting the AI service read the database",
+              "why": "The AI service never holds broader access than the person asking, so there is one place where access is decided."
+            },
+            {
+              "chose": "One permission matrix",
+              "over": "Checks scattered across views",
+              "why": "The UI and the API read the same rules, and changing a role means changing one table."
+            }
+          ],
+          "code": {
+            "title": "Every project route starts from the visible set (simplified)",
+            "lang": "python",
+            "src": "def visible_projects(user):\n    if user.role == Role.ADMIN:\n        return Project.objects.all()\n    return Project.objects.filter(\n        Q(members=user) | Q(department__managers=user)\n    ).distinct()\n\n@router.get(\"/projects/{project_id}/tasks\", response=list[TaskOut])\ndef project_tasks(request, project_id: int):\n    project = visible_projects(request.auth).filter(id=project_id).first()\n    if project is None:\n        raise HttpError(403, \"Not a member of this project\")\n    return project.tasks.all()"
+          }
+        },
+        {
+          "n": "03",
+          "key": "Implementation",
+          "title": "The difficult parts",
+          "parts": [
+            {
+              "title": "The authorization flow",
+              "body": "Every request answers three questions in order. Is the person signed in? Does their role allow this action? Are they a member of this project, or do they have a role that sees the whole department? Only then does the handler run."
+            },
+            {
+              "title": "The permission matrix",
+              "body": "Roles and actions are defined once, as a matrix of what Admins, Managers and Employees can do. The API enforces it, and the client reads the same rules to decide what to show, so a hidden button and a refused request always agree."
+            },
+            {
+              "title": "The boundary with the AI service",
+              "body": "When someone asks the AI to plan work for a project, the request goes to the main API first. It checks access, builds the context from projects and tasks that person can see, and only then calls the AI service. The AI’s draft comes back through the main API and is saved only after the person reviews it."
+            },
+            {
+              "title": "Avoiding leaks through IDs",
+              "body": "Guessing another project’s ID shouldn’t reveal anything about it. A project outside the visible set gets a refusal with no details, whichever route is used."
+            }
+          ]
+        },
+        {
+          "n": "04",
+          "key": "Validation",
+          "title": "How I check it",
+          "body": "Access control is only as good as its tests for the wrong person. The test suite is written from the point of view of someone who shouldn’t get in.",
+          "points": [
+            "A non-member gets a refusal on every route of a project, not only the list page.",
+            "Requests with another project’s ID return nothing about that project.",
+            "An AI request for a project the person can’t see is refused before the AI service is called.",
+            "Removing someone from a project removes their access on their next request."
+          ]
+        },
+        {
+          "n": "05",
+          "key": "Reflection",
+          "title": "What I learned and what comes next",
+          "parts": [
+            {
+              "title": "Security belongs in the query",
+              "body": "Starting every lookup from the set of visible projects made the safe path the easy path."
+            },
+            {
+              "title": "A second service needs a clear boundary",
+              "body": "Treating the AI service as untrusted by default kept the design simple: it only knows what it’s given."
+            },
+            {
+              "title": "What comes next",
+              "body": "An AI agent that breaks tasks into implementation steps, a second agent that can carry out some of them, such as generating documentation, and Kanban and timeline views."
+            }
+          ]
+        }
+      ],
+      "figure": {
+        "file": "cs-5-work",
+        "label": "Figure 05",
+        "caption": "Every request, including AI requests, passes the same permission check before project data is returned or sent to the AI service.",
+        "alt": "Diagram: four requests pass one permission check in the Django Ninja API. A project member gets their tasks, a non-member gets 403, and AI requests either get scoped context for the FastAPI AI service or are refused before reaching it.",
+        "theme": "light",
+        "src": "/images/cases/cs-5-work.webp",
+        "srcSm": "/images/cases/cs-5-work-sm.webp",
+        "width": 1800,
+        "height": 1125,
+        "widthSm": 960,
+        "heightSm": 600
+      }
+    }
+  ]
+}

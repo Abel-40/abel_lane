@@ -69,11 +69,22 @@ export interface Project {
   stack: readonly StackGroup[];
 }
 
-/** Table-of-contents entry for a written case study (its body lives in the MDX file). */
-export interface CaseSectionMeta {
-  n: string;
-  key: string;
+export interface CaseCode {
   title: string;
+  lang: "ts" | "python";
+  src: string;
+}
+
+/** One section of a written case study. Blocks render in this order: body, points, decisions, code, parts. */
+export interface CaseSection {
+  n: string;
+  key: "Context" | "Design" | "Implementation" | "Validation" | "Reflection";
+  title: string;
+  body?: string;
+  points?: readonly string[];
+  decisions?: readonly { chose: string; over: string; why: string }[];
+  code?: CaseCode;
+  parts?: readonly { title: string; body: string; code?: CaseCode }[];
 }
 
 export interface CaseStudy {
@@ -87,8 +98,8 @@ export interface CaseStudy {
   title: string;
   q: string;
   covers: readonly string[];
-  /** Present once the write-up exists; the body is src/content/case-studies/<slug>.mdx. */
-  sections?: readonly CaseSectionMeta[];
+  /** The write-up (src/content/case-studies.json). Without it the reader shows the `covers` outline. */
+  sections?: readonly CaseSection[];
   figure: CaseFigure;
 }
 

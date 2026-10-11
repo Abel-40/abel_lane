@@ -1,9 +1,21 @@
 import { z } from "zod";
 
-/** Typed frontmatter for src/content/case-studies/*.mdx (validated by `pnpm gen:content` and the reader). */
-export const caseFrontmatter = z.object({
+const code = z.object({ title: z.string().min(1), lang: z.enum(["ts", "python"]), src: z.string().min(1) });
+
+const section = z.object({
+  n: z.string().regex(/^\d{2}$/),
+  key: z.enum(["Context", "Design", "Implementation", "Validation", "Reflection"]),
+  title: z.string().min(1),
+  body: z.string().optional(),
+  points: z.array(z.string()).optional(),
+  decisions: z.array(z.object({ chose: z.string(), over: z.string(), why: z.string() })).optional(),
+  code: code.optional(),
+  parts: z.array(z.object({ title: z.string(), body: z.string(), code: code.optional() })).optional(),
+});
+
+/** One case in src/content/case-studies.json (validated by `pnpm gen:content`). Edit that file to change the write-ups. */
+export const caseEntry = z.object({
   id: z.enum(["insight", "mood", "seo", "alert", "work"]),
-  slug: z.enum(["insight-stream", "moodverse", "seo-maker", "alertchain", "workroom"]),
   projectId: z.enum(["insight", "mood", "seo", "alert", "work"]),
   num: z.string().regex(/^\d{2}$/),
   project: z.string().min(1),
@@ -12,10 +24,18 @@ export const caseFrontmatter = z.object({
   title: z.string().min(1),
   q: z.string().min(1),
   covers: z.array(z.string()).min(1),
-  /** Present once the write-up exists; drives the reader's table of contents. */
-  sections: z
-    .array(z.object({ n: z.string().regex(/^\d{2}$/), key: z.string().min(1), title: z.string().min(1) }))
-    .optional(),
+  sections: z.array(section).optional(),
+  figure: z.object({
+    file: z.string(),
+    label: z.string(),
+    caption: z.string(),
+    alt: z.string(),
+    theme: z.enum(["light", "dark"]),
+    src: z.string(),
+    srcSm: z.string(),
+    width: z.literal(1800),
+    height: z.literal(1125),
+  }).passthrough(),
 });
 
-export type CaseFrontmatter = z.infer<typeof caseFrontmatter>;
+export const caseFile = z.object({ cases: z.array(caseEntry).length(5) });
