@@ -23,10 +23,16 @@ export function SmoothScroll() {
     if (!enabled) return;
     let raf: ((time: number) => void) | null = null;
     let detach: (() => void) | null = null;
-    // ReactLenis creates the instance in its own effect; pick it up on the next frame.
-    const id = requestAnimationFrame(() => {
+    // ReactLenis creates the instance in its own effect, which can land a few frames later on a busy first load
+    // (loader + hydration). Keep checking every frame: giving up leaves a Lenis that swallows wheel events while
+    // nothing drives it (autoRaf is off), so the wheel stops scrolling.
+    let id = 0;
+    const attach = () => {
       const lenis = ref.current?.lenis;
-      if (!lenis) return;
+      if (!lenis) {
+        id = requestAnimationFrame(attach);
+        return;
+      }
       setLenis(lenis);
       const onScroll = () => ScrollTrigger.update();
       lenis.on("scroll", onScroll);
@@ -34,7 +40,8 @@ export function SmoothScroll() {
       gsap.ticker.add(raf);
       gsap.ticker.lagSmoothing(0);
       detach = () => lenis.off("scroll", onScroll);
-    });
+    };
+    id = requestAnimationFrame(attach);
     return () => {
       cancelAnimationFrame(id);
       if (raf) gsap.ticker.remove(raf);

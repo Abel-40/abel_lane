@@ -8,6 +8,8 @@ let locks = 0;
 
 export function setLenis(instance: Lenis | null) {
   lenis = instance;
+  // a lock taken before Lenis existed (the loader locks on mount) must apply to it too
+  if (lenis && locks > 0) lenis.stop();
 }
 
 export function getLenis() {
