@@ -113,6 +113,9 @@ function allLit(g: XpGeometry | null) {
   if (!g) return;
   g.path.style.strokeDasharray = "";
   g.path.style.strokeDashoffset = "";
+  // no travelling head when everything is already lit
+  g.head.style.display = "none";
+  g.halo.style.display = "none";
   g.rows.forEach((r, i) => {
     r.classList.add("lit");
     g.dots[i].classList.add("on");

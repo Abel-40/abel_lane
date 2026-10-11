@@ -146,3 +146,22 @@ a.link { display: inline-flex; align-items: center; }
 .tl-head { position: absolute; left: 50%; top: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 0 5px var(--accent-soft), 0 0 18px 2px var(--accent-2); opacity: 0; animation: tlBreath 1.8s ease-in-out infinite; }
 @keyframes tlBreath { 50% { box-shadow: 0 0 0 10px transparent, 0 0 26px 5px var(--accent-2); } }
 @keyframes ringOut { from { opacity: .85; transform: scale(1); } to { opacity: 0; transform: scale(2.8); } }
+
+/* Reduce Transparency (and forced colours): glass becomes solid surfaces, no blur, no orbs (PARITY D15) */
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  :root, :root[data-theme] {
+    --surface: var(--surface-solid);
+    --nav-bg: var(--surface-solid);
+    --links-bg: var(--bg-2);
+    --rg-a: var(--surface-solid);
+    --rg-b: var(--surface-solid);
+    --rg-inset: var(--bg-2);
+    --term-bg: var(--surface-solid);
+    --orb-o: 0;
+  }
+  *, *::before, *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .hero-orbs, .rules-orbs, .jr-aura, body::before { display: none !important; }
+  .g-color { background: var(--rc) !important; }
+  .g-color .rule-main::before { display: none; }
+  .nav-in, .hv-card, .rule-in, .fcard, .jr-band { border-color: var(--line-strong); }
+}

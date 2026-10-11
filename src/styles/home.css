@@ -457,3 +457,12 @@
   .jr-grid { display: none; }
   .jr-list { display: block; }
 }
+
+/* reduced motion on desktop: no pinned rail, so stack the work cards vertically instead of a sideways scroller */
+@media (prefers-reduced-motion: reduce) and (min-width: 900px) {
+  .work-pin { min-height: 0; overflow: visible; }
+  .work-scroller { overflow: visible; }
+  .work-track { flex-direction: column; align-items: stretch; width: auto; max-width: 1280px; margin-inline: auto; box-sizing: border-box; padding-inline: var(--gut); }
+  .wcard { width: 100%; }
+  .wend { width: 100%; }
+}
