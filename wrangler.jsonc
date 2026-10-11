@@ -1,0 +1,31 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Cloudflare Worker for the portfolio, built by `pnpm run build` (next build + OpenNext) into .open-next/
+	"name": "abel-lane",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-09-26",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	// abel-addis.com is a zone in the same Cloudflare account; `wrangler deploy` attaches both hostnames
+	"routes": [
+		{ "pattern": "abel-addis.com", "custom_domain": true },
+		{ "pattern": "www.abel-addis.com", "custom_domain": true }
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Self-reference used by OpenNext for caching; the service name must match the worker name
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "abel-lane"
+		}
+	],
+	"images": {
+		// next/image optimisation (the About photo) through Cloudflare Images
+		"binding": "IMAGES"
+	},
+	"observability": {
+		"enabled": true
+	}
+}

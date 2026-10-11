@@ -42,14 +42,18 @@ Requirements: Node 20+ and pnpm 10.
 ```bash
 pnpm install
 pnpm dev                 # http://localhost:3000
-pnpm build && pnpm start # production build
+pnpm build && pnpm preview # the real Cloudflare Worker, locally on http://localhost:8787
 ```
 
 ## Scripts
 
 | Script | What it does |
 |---|---|
-| `pnpm dev` / `build` / `start` | Next.js |
+| `pnpm dev` | Next.js dev server |
+| `pnpm build` | Content → `next build` → Cloudflare Worker in `.open-next/` (OpenNext), with the prerendered pages copied into its static assets |
+| `pnpm preview` | Runs the built Worker locally (`wrangler dev`) |
+| `pnpm run deploy` | `wrangler deploy` from your machine (needs `npx wrangler login` once). Plain `pnpm deploy` is a different, built-in pnpm command |
+| `pnpm build:next` / `start` | Plain `next build` / `next start` (what the e2e tests use by default) |
 | `pnpm gen:content` | `data/*.json` → `src/content/*.ts` (runs automatically before `build`) |
 | `pnpm gen:images [--force]` | Makes 360/480/720w WebP variants of the images in `public/images` |
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit` |
@@ -57,22 +61,42 @@ pnpm build && pnpm start # production build
 
 ## Environment
 
-Copy `.env.example` to `.env.local`, or set these in Vercel:
+All optional. Locally, copy `.env.example` to `.env.local`. On Cloudflare, add them in the Worker's
+**Settings → Variables and Secrets** (use the *Secret* type for `RESEND_API_KEY`).
 
 | Variable | Purpose |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata, sitemap, OG and JSON-LD (falls back to the Vercel production URL) |
+| `NEXT_PUBLIC_SITE_URL` | Override the site origin (defaults to `url` in `data/site.json`, `https://abel-addis.com`) |
 | `RESEND_API_KEY` | Enables real email from the contact form (without it: compose, copy and mailto fallback) |
 | `RESEND_FROM` | Sender on a domain verified in Resend |
 | `CONTACT_TO` | Recipient (default `addis0132@gmail.com`) |
 
-## Deploy to Vercel
+## Deploy to Cloudflare (Workers, free plan)
 
-1. Push this folder to a Git repository and import it in Vercel. Next.js and pnpm are detected automatically.
-2. Set the environment variables above for Production.
-3. Deploy.
+The site runs as a Cloudflare Worker named `abel-lane` (`wrangler.jsonc`), served on `abel-addis.com` and
+`www.abel-addis.com`. Every page is prerendered and read from the Worker's static assets, so there is no R2, KV or
+database to set up.
 
-Or from the CLI: `pnpm dlx vercel`, then `pnpm dlx vercel --prod`.
+In the Cloudflare dashboard: **Workers & Pages → Create → Import a repository** → `Abel-40/abel_lane`, then:
+
+| Setting | Value |
+|---|---|
+| Project name | `abel-lane` (must match `name` in `wrangler.jsonc`) |
+| Build command | `pnpm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Preview command | `npx wrangler preview` |
+
+Every push to `main` then builds and deploys. `wrangler deploy` attaches `abel-addis.com` and `www.abel-addis.com`
+(the domain is in the same Cloudflare account). If either hostname already has a DNS record (for example a parking
+page), delete that record first or the domain can't be attached.
+
+Notes:
+
+- `pnpm-workspace.yaml` uses `nodeLinker: hoisted` because the OpenNext bundler can't read pnpm's symlinks on Windows.
+- `patches/` holds a one-line fix for `@opennextjs/cloudflare` 1.20.8: Next 16.4 added `server/preview-props.json`,
+  which the adapter didn't inline, so every request failed. Drop the patch when the adapter handles it.
+- The About photo is resized by Cloudflare Images through the `IMAGES` binding (free allowance: 5,000 unique
+  transformations a month, far more than this site needs).
 
 ## Code layout
 

@@ -1,13 +1,10 @@
 import { site } from "@/content/site";
 import type { Project } from "@/content/types";
 
-/** Absolute site origin: NEXT_PUBLIC_SITE_URL, else the Vercel production URL, else localhost. */
+/** Absolute site origin: NEXT_PUBLIC_SITE_URL when set (e.g. a preview), else `url` from data/site.json. */
 export function siteUrl(): string {
-  const env = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (env) return env.replace(/\/+$/, "");
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (vercel) return `https://${vercel}`;
-  return "http://localhost:3000";
+  const origin = process.env.NEXT_PUBLIC_SITE_URL?.trim() || site.url;
+  return origin.replace(/\/+$/, "");
 }
 
 export const absolute = (path: string) => `${siteUrl()}${path === "/" ? "" : path}`;

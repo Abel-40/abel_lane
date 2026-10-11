@@ -38,10 +38,9 @@
   ],
   "exclude": [
     "node_modules",
-    "reference",
-    "qa",
+    ".open-next",
+    ".wrangler",
     "test-results",
-    "playwright-report",
-    "kits"
+    "playwright-report"
   ]
 }
