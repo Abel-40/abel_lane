@@ -8,6 +8,10 @@ export const projects: readonly Project[] = [
     "num": "01",
     "name": "Insight Stream",
     "tagline": "AI-powered content intelligence",
+    "links": {
+      "live": null,
+      "repo": null
+    },
     "hue": [
       "#7C4DFF",
       "#2DD4BF"
@@ -153,6 +157,10 @@ export const projects: readonly Project[] = [
     "num": "02",
     "name": "MoodVerse",
     "tagline": "AI-powered spiritual reflection",
+    "links": {
+      "live": null,
+      "repo": null
+    },
     "hue": [
       "#6F5CF0",
       "#F0A27A"
@@ -282,6 +290,10 @@ export const projects: readonly Project[] = [
     "num": "03",
     "name": "SEO Maker",
     "tagline": "AI-powered SEO intelligence",
+    "links": {
+      "live": null,
+      "repo": null
+    },
     "hue": [
       "#0FA37F",
       "#6D5DFC"
@@ -411,6 +423,10 @@ export const projects: readonly Project[] = [
     "num": "04",
     "name": "AlertChain",
     "tagline": "Automated crypto price alerts",
+    "links": {
+      "live": null,
+      "repo": null
+    },
     "hue": [
       "#2F7FEA",
       "#22C3EE"
@@ -544,6 +560,10 @@ export const projects: readonly Project[] = [
     "num": "05",
     "name": "Workroom",
     "tagline": "Business operations platform",
+    "links": {
+      "live": null,
+      "repo": null
+    },
     "hue": [
       "#3B6CF6",
       "#7C5CFA"

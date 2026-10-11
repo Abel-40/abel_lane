@@ -96,7 +96,12 @@ export function ProjectBody({
         <TransitionLink href={`/case-studies/${cs.slug}`} className="btn btn-accent">
           Read the case study <Icon name="arrow" className="ico-arrow" />
         </TransitionLink>
-        <a className="btn btn-ghost" href={site.github.href} target="_blank" rel="noopener noreferrer">
+        {p.links.live && (
+          <a className="btn btn-ghost" href={p.links.live} target="_blank" rel="noopener noreferrer">
+            Visit live site <Icon name="out" />
+          </a>
+        )}
+        <a className="btn btn-ghost" href={p.links.repo ?? site.github.href} target="_blank" rel="noopener noreferrer">
           GitHub <Icon name="out" />
         </a>
       </div>

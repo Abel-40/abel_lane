@@ -62,8 +62,11 @@ URL until you set it.
 
 - [ ] **Contact email.** The kit uses `addis0132@gmail.com` everywhere. An earlier spec used
   `abel.addis.dev@gmail.com`. If that one is current, change `site.email` in `src/content/site.ts`.
-- [ ] **Project GitHub links.** Each project's "GitHub" button points to your profile
-  (`github.com/Abel-40`), as in the reference. Send repo URLs for any public repos and I'll link them directly.
+- [ ] **Project links (live site and repo).** Each project in `reference/content.json` has
+  `"links": { "live": null, "repo": null }`. Fill in an `https://` URL, then run `pnpm gen:content` (or just `pnpm build`).
+  - `live`: the deployed product. When set, the project page shows a "Visit live site" button.
+  - `repo`: the repository. When set, the project's "GitHub" button links to it instead of your profile (`github.com/Abel-40`).
+  - Leave a value `null` if it isn't public. Anything other than `null` or an `https://` URL fails the build.
 
 ## 6. Optional
 

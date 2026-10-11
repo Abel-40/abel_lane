@@ -43,6 +43,11 @@ export interface Project {
   num: string;
   name: string;
   tagline: string;
+  /**
+   * Per-project URLs, null until Abel supplies them (TODO-ABEL.md). `live`: the deployed product, shown as
+   * "Visit live site" on the project page. `repo`: its repository; the GitHub button falls back to the profile.
+   */
+  links: { live: string | null; repo: string | null };
   /** Two cover colours for the tinted panel behind the stacked screens. */
   hue: readonly [string, string];
   /** Indexes into `shots` for the stacked pair on cards and the hero. */

@@ -47,6 +47,13 @@ function emit(file: string, imports: string, body: string) {
 
 const json = (v: unknown) => JSON.stringify(v, null, 2);
 
+/** A project link is null (not supplied yet) or an absolute https URL. */
+function linkOf(id: string, key: string, v: unknown): string | null {
+  if (v == null) return null;
+  if (typeof v !== "string" || !/^https:\/\/\S+$/.test(v)) throw new Error(`projects.${id}.links.${key} must be null or an https URL`);
+  return v;
+}
+
 /* ---------- projects ---------- */
 type RawProject = Record<string, unknown> & { id: string; stack: [string, string[]][] };
 const projects = (content.projects as RawProject[]).map((p) => {
@@ -58,6 +65,10 @@ const projects = (content.projects as RawProject[]).map((p) => {
   num: p.num,
   name: p.name,
   tagline: p.tagline,
+  links: {
+    live: linkOf(p.id, "live", (p.links as Record<string, unknown> | undefined)?.live),
+    repo: linkOf(p.id, "repo", (p.links as Record<string, unknown> | undefined)?.repo),
+  },
   hue: img.hue,
   cover: img.cover,
   shots: img.shots.map(shotOf),

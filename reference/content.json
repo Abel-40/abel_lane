@@ -5,6 +5,7 @@
       "num": "01",
       "name": "Insight Stream",
       "tagline": "AI-powered content intelligence",
+      "links": { "live": null, "repo": null },
       "art": "insight",
       "cats": [
         "ai",
@@ -96,6 +97,7 @@
       "num": "02",
       "name": "MoodVerse",
       "tagline": "AI-powered spiritual reflection",
+      "links": { "live": null, "repo": null },
       "art": "mood",
       "cats": [
         "ai",
@@ -171,6 +173,7 @@
       "num": "03",
       "name": "SEO Maker",
       "tagline": "AI-powered SEO intelligence",
+      "links": { "live": null, "repo": null },
       "art": "seo",
       "cats": [
         "ai",
@@ -246,6 +249,7 @@
       "num": "04",
       "name": "AlertChain",
       "tagline": "Automated crypto price alerts",
+      "links": { "live": null, "repo": null },
       "art": "alert",
       "cats": [
         "async"
@@ -325,6 +329,7 @@
       "num": "05",
       "name": "Workroom",
       "tagline": "Business operations platform",
+      "links": { "live": null, "repo": null },
       "art": "work",
       "cats": [
         "fullstack",
