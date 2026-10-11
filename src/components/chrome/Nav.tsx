@@ -205,7 +205,6 @@ export function Nav() {
           </nav>
           <div className="nav-end">
             <Availability className="avail-nav" />
-            <ThemeToggle />
             <TransitionLink href="/contact" className="btn btn-accent btn-sm nav-cta" data-magnetic="">
               Let’s talk
             </TransitionLink>

@@ -39,8 +39,9 @@ a { color: var(--accent-text); }
 @keyframes blink { 50% { opacity: 0; } }
 
 /* split text */
-.w { display: inline-block; white-space: nowrap; overflow: hidden; vertical-align: top; padding: .1em .03em .16em; margin: -.1em -.03em -.16em; }
-.ch, .wi { display: inline-block; }
+/* GSAP SplitText masks (class "<word class>-mask") carry the reference .w padding so ascenders/descenders are not clipped */
+.sw-mask, .wi-mask { display: inline-block; white-space: nowrap; overflow: clip; vertical-align: top; padding: .1em .03em .16em; margin: -.1em -.03em -.16em; }
+.ch, .wi, .sw { display: inline-block; }
 
 /* type */
 .kicker { display: inline-flex; align-items: center; gap: 12px; margin: 0; font: 600 14.5px/1.3 var(--f-body); color: var(--accent-text); }
@@ -126,7 +127,6 @@ body { margin: 0; }
 /* Real links replace the reference's <button data-go>: same box, no underline. */
 a.link, a.menu-link, a.brand, a.next-link, a.po-next, a.cb-item, a.rp-tag, a.cs-row-btn, a.pcard, a.rd-back, a.crumb-link, a.link-arrow, a.cta-ball, a.wc-open { text-decoration: none; }
 a.link { display: inline-flex; align-items: center; }
-a.cta-ball, a.rd-back, a.next-link, a.po-next, a.cb-item { color: inherit; }
 /* Programmatic focus targets (page h1s, dialog titles) show no ring. */
 [tabindex="-1"]:focus, #main:focus { outline: none; }
 /* polish: the focus ring stays visible on navy and accent fills */

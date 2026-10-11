@@ -103,10 +103,5 @@
 html[data-loader="off"] .loader { display: none; }
 html[data-js] .loader:not(.js-run) .ll { visibility: hidden; }
 
-/* improvement: theme toggle (system / light / dark) — sized like the availability chip's neighbours, 44px target */
-.theme-btn { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--glass-edge); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .3s, color .3s; }
-.theme-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+/* improvement: theme toggle (system / light / dark) lives in the footer icon row and the mobile menu, so the nav pill keeps its reference layout */
 .theme-menu { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--deep-line); background: var(--chip-deep); color: var(--on-deep); font: 600 13px var(--f-body); cursor: pointer; }
-@media (max-width: 899.98px) {
-  .nav-end > .theme-btn { display: none; }
-}

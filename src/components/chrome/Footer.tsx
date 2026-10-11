@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { scrollToY } from "@/lib/scroll";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
 import { MarkupIcon } from "@/components/ui/Icon";
+import { ThemeToggle } from "./ThemeToggle";
 
 /** Footer: bio, icon buttons, back to top, and a giant "Abel Addis" whose letters rise on scroll (scrub .5). */
 export function Footer() {
@@ -38,6 +39,7 @@ export function Footer() {
           <a className="icon-btn" href={site.linkedin.href} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <MarkupIcon name="linkedin" />
           </a>
+          <ThemeToggle />
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => scrollToY(0, true)}>
             Back to top <MarkupIcon name="up" />
           </button>

@@ -39,7 +39,7 @@ const ICONS: Record<Theme, string> = {
   dark: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
 };
 
-export function ThemeToggle({ variant = "nav" }: { variant?: "nav" | "menu" }) {
+export function ThemeToggle({ variant = "icon" }: { variant?: "icon" | "menu" }) {
   const theme = useSyncExternalStore(subscribe, read, () => "system" as Theme);
   const next = ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length];
   const label = `Theme: ${LABEL[theme]}. Switch to ${LABEL[next].toLowerCase()}.`;
@@ -55,7 +55,7 @@ export function ThemeToggle({ variant = "nav" }: { variant?: "nav" | "menu" }) {
     );
   }
   return (
-    <button type="button" className="theme-btn" aria-label={label} title={label} onClick={() => setTheme(next)} suppressHydrationWarning>
+    <button type="button" className="icon-btn theme-btn" aria-label={label} title={label} onClick={() => setTheme(next)} suppressHydrationWarning>
       {icon}
     </button>
   );
