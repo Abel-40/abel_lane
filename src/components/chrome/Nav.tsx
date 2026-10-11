@@ -139,8 +139,8 @@ export function Nav() {
         gsap
           .timeline()
           .fromTo(menu, { clipPath: "circle(0% at 100% 0%)" }, { clipPath: "circle(150% at 100% 0%)", duration: 0.75, ease: "power3.inOut" })
-          .from(menu.querySelectorAll(".menu-link"), { yPercent: 60, autoAlpha: 0, duration: 0.6, stagger: 0.06, ease: "power3.out" }, "-=.38")
-          .from(menu.querySelector(".menu-foot"), { autoAlpha: 0, y: 16, duration: 0.5 }, "-=.4");
+          .fromTo(menu.querySelectorAll(".menu-link"), { yPercent: 60, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.6, stagger: 0.06, ease: "power3.out" }, "-=.38")
+          .fromTo(menu.querySelector(".menu-foot"), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5 }, "-=.4");
       }
       menu.querySelector<HTMLElement>(".menu-link")?.focus({ preventScroll: true });
     } else if (!menuOpen && wasOpen.current) {

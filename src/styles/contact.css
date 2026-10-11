@@ -48,3 +48,9 @@ a.ct-v:hover { color: var(--accent-text); }
   .ct-item { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding-block: 14px; }
   .ct-k { grid-column: 1 / -1; }
 }
+
+/* build: honeypot field (never shown), invalid state, action row */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.fl input[aria-invalid="true"], .fl textarea[aria-invalid="true"] { border-color: var(--warn); box-shadow: 0 0 0 4px var(--warn-soft); }
+.fl input[aria-invalid="true"] + label, .fl textarea[aria-invalid="true"] + label { color: var(--warn-text); }
+.form { position: relative; }
