@@ -61,6 +61,11 @@
   --graph-line: rgba(30, 102, 245, .16);
   --terrain-line: rgba(30, 102, 245, .12);
   --rg-a: rgba(255, 255, 255, .74); --rg-b: rgba(255, 255, 255, .36); --rg-edge: rgba(255, 255, 255, .8); --rg-hi: rgba(255, 255, 255, .95); --rg-inset: rgba(255, 255, 255, .55); --orb-o: .5;
+  /* request-journey band (home 02): pearl white with soft indigo light */
+  --jb-base: linear-gradient(180deg, #FFFFFF 0%, #F4F6FD 100%); --jb-border: rgba(30, 50, 120, .09);
+  --jb-glow-1: rgba(91, 108, 255, .12); --jb-glow-2: rgba(56, 189, 248, .10); --jb-dot: rgba(40, 60, 140, .13);
+  --jb-aura-1: #8A9BFF; --jb-aura-2: #7DD3FC; --jb-aura-3: #A5B4FC; --jb-aura-o: .16;
+  --jb-panel: rgba(246, 248, 255, .82); --jb-edge: rgba(60, 90, 200, .12); --jb-card: #FFFFFF; --jb-card-edge: rgba(30, 50, 120, .10);
   --terrain-major: rgba(30, 102, 245, .24);
   --terrain-hot: rgba(19, 150, 224, .78);
   --graph-line-hot: rgba(30, 102, 245, .48);
@@ -104,6 +109,10 @@
     --sh-ring: rgba(170, 200, 255, .14); --art-bg: #0D1A38; --art-bg-2: #12224A; --art-card: #152752; --art-stroke: #2B4580; --art-bar: #233A6B; --art-soft: #1F3B78; --art-mid: #3560B8; --art-mid-2: #4F82E8; --art-muted: #5D6F96; --art-inkbox: #EAF1FF; --art-inkbox-text: #0A1838; --art-inkbox-sub: #3D5488;
     --graph-line: rgba(110, 160, 255, .16); --graph-line-hot: rgba(130, 175, 255, .5); --graph-node: #0F1C3A; --graph-node-stroke: rgba(110, 160, 255, .42);
   --rg-a: rgba(24, 44, 96, .72); --rg-b: rgba(12, 24, 60, .42); --rg-edge: rgba(150, 180, 255, .2); --rg-hi: rgba(255, 255, 255, .08); --rg-inset: rgba(255, 255, 255, .06); --orb-o: .4;
+  --jb-base: linear-gradient(180deg, #0A1533 0%, #081028 100%); --jb-border: rgba(150, 180, 255, .16);
+  --jb-glow-1: rgba(61, 107, 245, .26); --jb-glow-2: rgba(124, 92, 255, .14); --jb-dot: rgba(160, 185, 255, .10);
+  --jb-aura-1: #3D6BF5; --jb-aura-2: #6D5BFF; --jb-aura-3: #2F6EF0; --jb-aura-o: .32;
+  --jb-panel: rgba(255, 255, 255, .045); --jb-edge: rgba(150, 180, 255, .16); --jb-card: rgba(15, 28, 58, .9); --jb-card-edge: rgba(150, 180, 255, .14);
   --terrain-line: rgba(110, 160, 255, .11); --terrain-major: rgba(120, 170, 255, .22); --terrain-hot: rgba(54, 192, 242, .8);
     --term-bg: rgba(15, 28, 58, .86); --term-bar: #15295A;
     --ph-1: #183474; --ph-2: #0D1A38;
@@ -131,6 +140,10 @@
   --sh-ring: rgba(170, 200, 255, .14); --art-bg: #0D1A38; --art-bg-2: #12224A; --art-card: #152752; --art-stroke: #2B4580; --art-bar: #233A6B; --art-soft: #1F3B78; --art-mid: #3560B8; --art-mid-2: #4F82E8; --art-muted: #5D6F96; --art-inkbox: #EAF1FF; --art-inkbox-text: #0A1838; --art-inkbox-sub: #3D5488;
   --graph-line: rgba(110, 160, 255, .16); --graph-line-hot: rgba(130, 175, 255, .5); --graph-node: #0F1C3A; --graph-node-stroke: rgba(110, 160, 255, .42);
   --rg-a: rgba(24, 44, 96, .72); --rg-b: rgba(12, 24, 60, .42); --rg-edge: rgba(150, 180, 255, .2); --rg-hi: rgba(255, 255, 255, .08); --rg-inset: rgba(255, 255, 255, .06); --orb-o: .4;
+  --jb-base: linear-gradient(180deg, #0A1533 0%, #081028 100%); --jb-border: rgba(150, 180, 255, .16);
+  --jb-glow-1: rgba(61, 107, 245, .26); --jb-glow-2: rgba(124, 92, 255, .14); --jb-dot: rgba(160, 185, 255, .10);
+  --jb-aura-1: #3D6BF5; --jb-aura-2: #6D5BFF; --jb-aura-3: #2F6EF0; --jb-aura-o: .32;
+  --jb-panel: rgba(255, 255, 255, .045); --jb-edge: rgba(150, 180, 255, .16); --jb-card: rgba(15, 28, 58, .9); --jb-card-edge: rgba(150, 180, 255, .14);
   --terrain-line: rgba(110, 160, 255, .11); --terrain-major: rgba(120, 170, 255, .22); --terrain-hot: rgba(54, 192, 242, .8);
   --term-bg: rgba(15, 28, 58, .86); --term-bar: #15295A;
   --ph-1: #183474; --ph-2: #0D1A38;

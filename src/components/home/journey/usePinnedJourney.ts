@@ -48,6 +48,14 @@ export function setJourneyPanel(root: Element, i: number) {
     li.classList.toggle("done", k < i);
     li.classList.toggle("now", k === i);
   });
+  // technologies used at this stage light up in the strip below
+  let any = false;
+  root.querySelectorAll<HTMLElement>(".jr-stack li").forEach((li) => {
+    const on = (li.dataset.st ?? "").split(" ").includes(String(i));
+    li.classList.toggle("on", on);
+    any ||= on;
+  });
+  root.querySelector(".jr-stack")?.classList.toggle("has-on", any);
 }
 
 export function usePinnedJourney(rootRef: RefObject<HTMLElement | null>) {

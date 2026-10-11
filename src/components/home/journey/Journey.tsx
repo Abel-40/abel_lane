@@ -10,15 +10,18 @@ import { SectionMark } from "@/components/ui/SectionMark";
 import { usePinnedJourney } from "./usePinnedJourney";
 
 const STEPS = ["User", "API", "Database", "Knowledge", "AI", "Response"];
-/** Technologies along the path. `brand` is a key in icons.json › brands; pgvector has no brand mark, so it uses the vector glyph. */
-const STACK: { name: string; note: string; brand?: string; color?: string }[] = [
-  { name: "FastAPI", note: "Typed Python APIs", brand: "fastapi", color: "#009688" },
-  { name: "PostgreSQL", note: "Relational data", brand: "postgresql", color: "#4169E1" },
-  { name: "pgvector", note: "Vectors in Postgres", color: "#5B6CFF" },
-  { name: "Qdrant", note: "Vector database", brand: "qdrant", color: "#DC244C" },
-  { name: "Redis", note: "Cache and broker", brand: "redis", color: "#DC382D" },
-  { name: "Celery", note: "Background jobs", brand: "celery", color: "#37814A" },
-  { name: "LangGraph", note: "Agent workflows", brand: "langgraph", color: "#2DB89A" },
+/**
+ * Technologies along the path. `brand` is a key in icons.json › brands (pgvector has no brand mark, so it uses
+ * the vector glyph). `st` lists the journey stages (0 User … 5 Response) where the card lights up.
+ */
+const STACK: { name: string; note: string; brand?: string; color: string; st: number[] }[] = [
+  { name: "FastAPI", note: "Typed Python APIs", brand: "fastapi", color: "#009688", st: [1, 5] },
+  { name: "PostgreSQL", note: "Relational data", brand: "postgresql", color: "#4169E1", st: [2] },
+  { name: "pgvector", note: "Vectors in Postgres", color: "#6D5BFF", st: [2, 3] },
+  { name: "Qdrant", note: "Vector database", brand: "qdrant", color: "#DC244C", st: [2, 3] },
+  { name: "Redis", note: "Cache and broker", brand: "redis", color: "#DC382D", st: [1] },
+  { name: "Celery", note: "Background jobs", brand: "celery", color: "#37814A", st: [1] },
+  { name: "LangGraph", note: "Agent workflows", brand: "langgraph", color: "#1C9C82", st: [4] },
 ];
 const BG_PATHS = [
   "M80 90 H360",
@@ -151,17 +154,19 @@ export function Journey() {
             </div>
           </div>
           <div className="jr-stack" aria-hidden="true">
-            <span className="jr-stack-k">
-              Technologies I use
-            </span>
+            <div className="jr-stack-head">
+              <span className="jr-stack-k">Technologies I use</span>
+              <span className="jr-stack-hint">Lights up as the request passes through</span>
+            </div>
             <ul>
               {STACK.map((t) => (
-                <li key={t.name} style={{ "--brand": t.color } as React.CSSProperties}>
+                <li key={t.name} data-st={t.st.join(" ")} style={{ "--brand": t.color } as React.CSSProperties}>
                   <span className="jr-stack-ic">{t.brand ? <BrandLogo name={t.brand} /> : <Icon name="vec" />}</span>
-                  <span>
+                  <span className="jr-stack-t">
                     <b>{t.name}</b>
                     <small>{t.note}</small>
                   </span>
+                  <i className="jr-stack-live" />
                 </li>
               ))}
             </ul>
