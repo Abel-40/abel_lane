@@ -45,8 +45,8 @@ export function splitPlain(el: Element, aria = true) {
 }
 
 /** Reference heroIntro: kicker, split H1 chars, then .hero-fade items. */
-export function pageIntro(root: Element, opts: { delay?: number } = {}) {
-  const tl = gsap.timeline({ delay: opts.delay ?? 0 });
+export function pageIntro(root: Element, opts: { delay?: number; paused?: boolean } = {}) {
+  const tl = gsap.timeline({ delay: opts.delay ?? 0, paused: opts.paused });
   const kicker = root.querySelector(".kicker");
   const h = root.querySelector("[data-split]");
   if (kicker) tl.from(kicker, { y: 16, autoAlpha: 0, duration: 0.6, ease: "power3.out" });

@@ -73,7 +73,7 @@
 .tool.gen:hover .tool-logo svg { fill: none; stroke: var(--on-accent); }
 .tool-txt { display: grid; min-width: 0; }
 .tool-txt b { font-family: var(--f-display); font-weight: 650; font-stretch: 94%; font-size: 15px; line-height: 1.2; color: var(--ink); overflow-wrap: break-word; }
-.tool-txt small { font: 500 10.5px/1.4 var(--f-mono); color: var(--muted); }
+.tool-txt small { font: 500 11px/1.4 var(--f-mono); color: var(--muted); } /* polish D9: was 10.5px */
 .edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding-block: 60px 40px; }
 .edu-card { display: grid; gap: 10px; align-content: start; padding: 30px; border-radius: 28px; background: var(--surface); border: 1px solid var(--glass-edge); box-shadow: var(--shadow); }
 .edu-ico { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 8px; border-radius: 16px; background: var(--accent-soft); color: var(--accent-text); }
@@ -110,7 +110,7 @@
   .tool-logo svg { width: 17px; height: 17px; }
   .tool.wide .tool-logo svg { width: 22px; height: 22px; }
   .tool-txt b { font-size: 13.5px; font-stretch: 88%; }
-  .tool-txt small { font-size: 10px; }
+  .tool-txt small { font-size: 11px; } /* polish D9: was 10px */
   .tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { flex: none; }

@@ -12,7 +12,7 @@ import { fontVariables } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: site.title,
+  title: { default: site.title, template: "%s | Abel Addis" },
   description: site.description,
 };
 
