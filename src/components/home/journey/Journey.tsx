@@ -16,9 +16,9 @@ const STACK: { name: string; note: string; brand?: string; color?: string }[] = 
   { name: "PostgreSQL", note: "Relational data", brand: "postgresql", color: "#4169E1" },
   { name: "pgvector", note: "Vectors in Postgres", color: "#5B6CFF" },
   { name: "Qdrant", note: "Vector database", brand: "qdrant", color: "#DC244C" },
-  { name: "Redis", note: "Cache and queue broker", brand: "redis", color: "#DC382D" },
+  { name: "Redis", note: "Cache and broker", brand: "redis", color: "#DC382D" },
   { name: "Celery", note: "Background jobs", brand: "celery", color: "#37814A" },
-  { name: "Gemini", note: "LLM reasoning", brand: "googlegemini", color: "#4285F4" },
+  { name: "LangGraph", note: "Agent workflows", brand: "langgraph", color: "#2DB89A" },
 ];
 const BG_PATHS = [
   "M80 90 H360",
@@ -43,7 +43,7 @@ export function Journey() {
           <div className="jr-head">
             <SectionMark num="02" label="How it works" />
             <h2 className="h2" id="jr-h">
-              How a request moves through the systems I build.
+              How a request moves through the <span className="jr-sys">systems</span> I build.
             </h2>
             <p className="lead">
               Most AI features share one shape. A request comes in, the backend finds the right data, the model reasons
@@ -152,7 +152,6 @@ export function Journey() {
           </div>
           <div className="jr-stack" aria-hidden="true">
             <span className="jr-stack-k">
-              <Icon name="spark" />
               Technologies I use
             </span>
             <ul>
