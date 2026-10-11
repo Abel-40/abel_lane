@@ -4,11 +4,22 @@ import { useRef } from "react";
 import { journeyNodes, journeyStages } from "@/content/journey";
 import type { UiIconKey } from "@/content/icons";
 import { pad2 } from "@/lib/motion";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Icon } from "@/components/ui/Icon";
 import { SectionMark } from "@/components/ui/SectionMark";
 import { usePinnedJourney } from "./usePinnedJourney";
 
 const STEPS = ["User", "API", "Database", "Knowledge", "AI", "Response"];
+/** Technologies along the path. `brand` is a key in icons.json › brands; pgvector has no brand mark, so it uses the vector glyph. */
+const STACK: { name: string; note: string; brand?: string; color?: string }[] = [
+  { name: "FastAPI", note: "Typed Python APIs", brand: "fastapi", color: "#009688" },
+  { name: "PostgreSQL", note: "Relational data", brand: "postgresql", color: "#4169E1" },
+  { name: "pgvector", note: "Vectors in Postgres", color: "#5B6CFF" },
+  { name: "Qdrant", note: "Vector database", brand: "qdrant", color: "#DC244C" },
+  { name: "Redis", note: "Cache and queue broker", brand: "redis", color: "#DC382D" },
+  { name: "Celery", note: "Background jobs", brand: "celery", color: "#37814A" },
+  { name: "Gemini", note: "LLM reasoning", brand: "googlegemini", color: "#4285F4" },
+];
 const BG_PATHS = [
   "M80 90 H360",
   "M360 90 C395 90 405 36 440 36 H460 C495 36 525 90 560 90",
@@ -138,6 +149,23 @@ export function Journey() {
                 <div className="jr-chip b" />
               </div>
             </div>
+          </div>
+          <div className="jr-stack" aria-hidden="true">
+            <span className="jr-stack-k">
+              <Icon name="spark" />
+              Technologies I use
+            </span>
+            <ul>
+              {STACK.map((t) => (
+                <li key={t.name} style={{ "--brand": t.color } as React.CSSProperties}>
+                  <span className="jr-stack-ic">{t.brand ? <BrandLogo name={t.brand} /> : <Icon name="vec" />}</span>
+                  <span>
+                    <b>{t.name}</b>
+                    <small>{t.note}</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
           <ol className="jr-list">
             {journeyStages.map((s, i) => (
