@@ -3,9 +3,34 @@
 
 export type ProjectId = "insight" | "mood" | "seo" | "alert" | "work";
 export type ProjectSlug = "insight-stream" | "moodverse" | "seo-maker" | "alertchain" | "workroom";
-export type ArtKey = ProjectId;
 export type ProjectCategory = "ai" | "async" | "fullstack" | "mobile";
 export type CaseStatus = "Published" | "In writing" | "Planned";
+
+/** A project screen: 16:10 WebP in two sizes (images kit, data/project-screens.json). */
+export interface Shot {
+  file: string;
+  label: string;
+  theme: "light" | "dark";
+  caption: string;
+  alt: string;
+  src: string;
+  srcSm: string;
+  width: 1800;
+  height: 1125;
+}
+
+/** A case-study figure (images kit, data/case-figures.json). The image carries its own "Illustrative figure" footnote. */
+export interface CaseFigure {
+  file: string;
+  label: string;
+  caption: string;
+  alt: string;
+  theme: "light" | "dark";
+  src: string;
+  srcSm: string;
+  width: 1800;
+  height: 1125;
+}
 
 export interface StackGroup {
   label: string;
@@ -18,7 +43,12 @@ export interface Project {
   num: string;
   name: string;
   tagline: string;
-  art: ArtKey;
+  /** Two cover colours for the tinted panel behind the stacked screens. */
+  hue: readonly [string, string];
+  /** Indexes into `shots` for the stacked pair on cards and the hero. */
+  cover: { front: number; back: number };
+  /** Four redesigned interface screens (sample data), in gallery order. */
+  shots: readonly Shot[];
   cats: readonly ProjectCategory[];
   kindLabel: string;
   caseId: ProjectId;
@@ -54,6 +84,7 @@ export interface CaseStudy {
   covers: readonly string[];
   /** Present once the write-up exists; the body is src/content/case-studies/<slug>.mdx. */
   sections?: readonly CaseSectionMeta[];
+  figure: CaseFigure;
 }
 
 export interface ExperienceItem {

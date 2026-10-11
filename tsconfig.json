@@ -41,6 +41,7 @@
     "reference",
     "qa",
     "test-results",
-    "playwright-report"
+    "playwright-report",
+    "kits"
   ]
 }

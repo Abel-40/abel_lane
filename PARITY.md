@@ -70,7 +70,7 @@ How to read it:
 - ☑ 5.2.4i Journey mobile: a vertical numbered list of the six stages
 - ☑ 5.2.5a Work (03) header: "Selected work", subtitle, and an `01 / 04` counter with progress bar
 - ☑ 5.2.5b Work desktop: a pinned horizontal rail of the first 4 projects plus the end card ("That's the highlight reel." with an "All projects" button)
-- ☑ 5.2.5c Work: the counter follows the card nearest the centre; cards scale .9→1 and rotate 2°→0° on entry; the art parallaxes ±4%
+- ☑ 5.2.5c Work: the counter follows the card nearest the centre; cards scale .9→1 and rotate 2°→0° on entry; the art parallaxes (now the screen pair, see 7.1)
 - ☑ 5.2.5d Work tones: card 2 deep navy, card 4 tinted
 - ☑ 5.2.5e Work: "Open project" opens the detail, expanding from the card
 - ☑ 5.2.5f Work mobile: a vertical stack
@@ -109,23 +109,19 @@ How to read it:
 
 - ☑ 5.4.1 Hero: "Five products, each built around a real problem."
 - ☑ 5.4.2 Filters: All · AI and retrieval · Async and data · Full-stack · Mobile, with a sliding pill, `aria-pressed`, "Showing N of 5" and a Flip re-flow
-- ☑ 5.4.3a Project card: art, tagline, status pill, name, hook, chips, "View project →" and kind label
+- ☑ 5.4.3a Project card: art (now the screen pair, see 7.2), tagline, status pill, name, hook, chips, "View project →" and kind label
 - ☑ 5.4.3b Project card: 3D tilt and a lift on hover, and a batch rise-in on scroll
 - ☑ 5.4.4a Detail: a modal from the list or Home, a full page on direct visits; opens by expanding from the clicked card, then the sections rise in
 - ☑ 5.4.4b Detail top bar: breadcrumb "‹ projects / slug" (projects is clickable), prev, next and close; Esc closes; focus is trapped
-- ☑ 5.4.4c Detail hero: status pill, role chip and tags, giant name, tagline and art panel
+- ☑ 5.4.4c Detail hero: status pill, role chip and tags, giant name, tagline and art panel (now the screen pair, see 7.3)
 - ☑ 5.4.4d Detail sections: The problem · The product · Key capabilities · How it flows · Tech stack · actions (Read the case study / GitHub) · Next project
-- ☑ 5.4.5a Art "insight" (feed cards, bar chart, trend line) in light and dark
-- ☑ 5.4.5b Art "mood" (chat bubble, chips, arrow, sparkle, bookmarked passage card, check) in light and dark
-- ☑ 5.4.5c Art "seo" (scan line, site tree, check and warn badges, progress) in light and dark
-- ☑ 5.4.5d Art "alert" (chart, threshold, ABOVE tag, ring, dropping notification) in light and dark
-- ☑ 5.4.5e Art "work" (kanban columns, floating accent card, AI chip, lock) in light and dark
+- ⊘ 5.4.5a–e The five SVG arts (insight, mood, seo, alert, work): matched in phase 9, then replaced by the images kit (section 7)
 
 ## 5.5 Case studies
 
 - ☑ 5.5.1 Hero: "The decisions behind the code.", a five-part step strip with a connecting line drawing across [1.3s] and steps rising in staggered
 - ☑ 5.5.2a Rows: number, title, summary, project, status pill (Published / In writing / Planned) and arrow
-- ☑ 5.5.2b Rows: hovering shows a floating, slightly rotated (−3°) art preview that follows the cursor
+- ☑ 5.5.2b Rows: hovering shows a floating, slightly rotated (−3°) preview that follows the cursor (now the case figure, see 7.6)
 - ☑ 5.5.3a Reader: back link, tags/meta, split title and lede ("The engineering question")
 - ☑ 5.5.3b Reader: a "System flow" strip
 - ☑ 5.5.3c Reader: a sticky TOC with scroll-spy plus the body sections
@@ -158,6 +154,45 @@ How to read it:
 - ☑ 5.8h Every animated element has a complete static state without JS (SSR markup is final-state)
 
 ---
+
+## 7. Images kit (`kits/images/PROMPT.md` §7)
+
+Checked against `kits/images/reference/look/*.jpg` with `tests/visual/capture-images.ts` (build in the same
+states → `qa/compare-images/<id>-{ref,new}.jpg`). The looks use particular subjects (e.g. 07/09 Workroom,
+13 SEO Maker, 18 Workroom) and the capture opens the same ones.
+
+- ☑ 7.1 Home "Selected work": every card shows its stacked pair from `cover` on the hue panel; the rail parallax (scrubbed, `containerAnimation`) works; the mobile layout matches look/14 · look/01–02, 14
+- ☑ 7.2 Projects grid: the stacked pair on every card; the hover lift (front −10px, back 8px/−6px, .8s) · look/03–05, 15
+- ☑ 7.3 Project detail hero: the pair loads eagerly (`fetchpriority=high`) · look/06–07, 16
+- ☑ 7.4 "Inside the product" gallery, between "The product" and "Key capabilities" · look/08–09, 17
+  - ☑ arrows (46px glass, hover/focus reveal, always on touch, "Previous screen" / "Next screen")
+  - ☑ thumbnails (4 → 2 columns, `aria-pressed`, Light/Dark tag)
+  - ☑ keyboard ←/→ with wrap-around while focus is inside
+  - ☑ the crossfade (.7s power3.out, scale 1.03 → 1; title and caption rise .5s, stagger .05); instant under reduced motion
+  - ☑ the Full size link (1800w file, new tab)
+  - ☑ the note "Redesigned interface screens, shown with sample data."
+  - ☑ resets to screen 1 when switching projects, and the view reopens at the top
+- ☑ 7.5 Case figure on all 5 case pages (planned ones too, status unchanged), with caption "Figure 0N" and the full-size link; the footnote inside the image is never cropped · look/12–13, 18
+- ☑ 7.6 Case list hover preview shows the case figure (pointer devices only; the five figures preload on first hover) · look/10–11
+- ☑ 7.7 The old SVG art (`ProjectArt`, `art.css`) and the `art` field are removed; nothing references them
+- ☑ 7.8 No image 404s and no console errors (all pages, both themes, 390px and 1440px)
+- ☑ 7.9 No horizontal scroll at 390px (`scrollWidth` = 390 on Home, Projects, a project, Case Studies and two cases)
+- ☑ 7.10 Light and dark both checked (look/01–13 pairs)
+- ☑ 7.11 Reduced motion: no parallax, no hover drift, instant gallery swaps
+- ☑ 7.12 Lighthouse (mobile): CLS 0.000 on Home, Projects, /projects/seo-maker, Case Studies and /case-studies/moodverse; "Properly size images" passes on all five
+
+### Images kit deviations
+
+| # | Item | Kit | Build | Reason |
+|---|---|---|---|---|
+| I-D1 | Rail landscape composition | switches at 860px | switches below 900px | the work rail turns into a vertical stack of landscape cards at 900px in this build (5.2.5); the composition follows the layout, otherwise 860–900px shows the portrait values in a 220px slot |
+| I-D2 | "Full size" pill | 40px tall | 44px | hit target (Polish §5) |
+| I-D3 | `srcset` | 960w + 1800w | 360 / 480 / 720 / 960 / 1800w (the extra widths are resized from the kit's 1800w files by `pnpm gen:images`) | at 960w the smallest file was still 2× what phones and thumbnails display (Lighthouse "properly size images", ~280 KiB on /projects) |
+| I-D4 | `sizes` | rail/hero `(max-width: 860px) 70vw, 460px`; grid `(max-width: 760px) 70vw, 300px`; viewer `… 980px`; figure `… 1180px` | rail/hero `(max-width: 899.98px) 66vw, 460px`; grid `(max-width: 820px) 66vw, (max-width: 1200px) 34vw, 300px`; viewer `… 950px`; figure `… 1200px`; thumbs `(max-width: 860px) 44vw, 220px` | measured rendered widths; 70vw tipped phones into the next file, and the grid is two-up (not 300px) between 820 and 1200px |
+| I-D5 | Hover preview image | the `-sm` file, rendered from load | not requested until the first hover; 360w (720w on dense screens) | the 320px card never shows on touch devices, and 960w is 3× its size |
+| I-D6 | Active thumbnail tag | `--muted` | `--body` | `--muted` on accent-soft is under 4.5:1 (axe) |
+| I-D7 | Project section labels | `h3` | `h2` on the full page (under its `h1`), `h3` in the overlay (under its `h2`) | heading order; the new gallery added another section label |
+| I-D8 | TOC jump | scroll-spy decides | the clicked section stays marked while the 1.4s scroll runs | a short section near the end (Validation) can't reach the 45% spy line, so the next one won and the click looked ignored |
 
 ## Deliberate deviations (confirmed in phase 9)
 

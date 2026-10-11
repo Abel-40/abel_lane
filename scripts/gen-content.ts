@@ -13,6 +13,20 @@ import { caseFrontmatter } from "../src/content/case-schema";
 const root = process.cwd();
 const content = JSON.parse(readFileSync(join(root, "reference/content.json"), "utf8"));
 const icons = JSON.parse(readFileSync(join(root, "reference/icons.json"), "utf8"));
+// Images add-on kit: project screens and case figures (text used verbatim, PROMPT §3 / §6).
+const screens = JSON.parse(readFileSync(join(root, "kits/images/data/project-screens.json"), "utf8"));
+const figures = JSON.parse(readFileSync(join(root, "kits/images/data/case-figures.json"), "utf8"));
+const shotOf = (sh: Record<string, unknown>) => ({
+  file: sh.file,
+  label: sh.label,
+  theme: sh.theme,
+  caption: sh.caption,
+  alt: sh.alt,
+  src: sh.src,
+  srcSm: sh.srcSm,
+  width: sh.width,
+  height: sh.height,
+});
 const outDir = join(root, "src/content");
 
 const SLUGS: Record<string, string> = {
@@ -35,13 +49,18 @@ const json = (v: unknown) => JSON.stringify(v, null, 2);
 
 /* ---------- projects ---------- */
 type RawProject = Record<string, unknown> & { id: string; stack: [string, string[]][] };
-const projects = (content.projects as RawProject[]).map((p) => ({
+const projects = (content.projects as RawProject[]).map((p) => {
+  const img = (screens.projects as { id: string; hue: string[]; cover: object; shots: Record<string, unknown>[] }[]).find((x) => x.id === p.id);
+  if (!img) throw new Error(`no screens for project ${p.id}`);
+  return {
   id: p.id,
   slug: SLUGS[p.id],
   num: p.num,
   name: p.name,
   tagline: p.tagline,
-  art: p.art,
+  hue: img.hue,
+  cover: img.cover,
+  shots: img.shots.map(shotOf),
   cats: p.cats,
   kindLabel: p.kindLabel,
   caseId: p.caseId,
@@ -54,7 +73,8 @@ const projects = (content.projects as RawProject[]).map((p) => ({
   chips: p.chips,
   flow: p.flow,
   stack: p.stack.map(([label, items]) => ({ label, items })),
-}));
+  };
+});
 emit(
   "projects.ts",
   'import type { Project } from "./types";',
@@ -71,7 +91,12 @@ const cases = readdirSync(caseDir)
     if (!m) throw new Error(`${f}: missing frontmatter`);
     const fm = caseFrontmatter.parse(parseYaml(m[1]));
     if (`${fm.slug}.mdx` !== f) throw new Error(`${f}: slug "${fm.slug}" does not match the file name`);
-    return fm;
+    const fig = (figures.cases as { id: string; figure: Record<string, unknown> }[]).find((x) => x.id === fm.id);
+    if (!fig) throw new Error(`no figure for case ${fm.id}`);
+    const { widthSm: _w, heightSm: _h, ...figure } = fig.figure;
+    void _w;
+    void _h;
+    return { ...fm, figure };
   })
   .sort((a, b) => a.num.localeCompare(b.num));
 emit(

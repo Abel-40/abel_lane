@@ -207,7 +207,7 @@ components:
   rule-card-color:    { rounded: 30px, background: "radial --rc2 60% top-right + linear-gradient(140deg, --rc 88%, --rc 66%)", text: "#FFFFFF", border: "rgba(255,255,255,.3)" }
   work-card:          { size: "clamp(560px,62vw,880px) × min(62vh,540px)", rounded: 32px, columns: "art 1fr / body 1.08fr", tones: { 1: surface, 2: deep (on-deep text), 3: surface, 4: tint } }
   work-end-card:      { width: "clamp(300px,28vw,400px)", rounded: 32px, background: "{colors.accent}", color: "{colors.on-accent}" }
-  project-card:       { rounded: 28px, background: "{colors.surface}", art: "220px, 20px radius, inset 10px", hover: "accent-line border + deeper shadow + art scale 1.05 + 3D tilt ±4°" }
+  project-card:       { rounded: 28px, background: "{colors.surface}", art: "220px, 20px radius, inset 10px, stacked screen pair", hover: "accent-line border + deeper shadow + front screen −10px / back screen (8px,−6px) + 3D tilt ±4°" }
   experience-card:    { maxWidth: 430px, rounded: 18px, background: "{colors.surface-solid}", lit: "accent-line border + accent glow shadow" }
   terminal:           { rounded: 26px, bar: "{colors.term-bar} navy with 3 dots, mono 13px", body: "{colors.term-bg}" }
   tool-card:          { rounded: 14px, logo-tile: "36px, 11px radius, brand 13% tint", hover: "lift 4px, tile fills brand, logo rotates -8° (spring)" }
@@ -291,10 +291,9 @@ glow. Used by the case band, the loader, the mobile menu and the 2nd work card.
 
 ### Illustration palette (`--art-*`)
 
-`art-bg → art-bg-2` panel gradient (165deg), `art-card` white cards with `art-stroke`, `art-bar`
-skeleton text, `art-soft / art-mid / art-mid-2` blue chips, `art-inkbox` the single dark notification,
-plus `accent`, `accent-2`, `ok`, `warn` for semantic dots. All five illustrations use only these
-classes, so they flip correctly in dark mode.
+`art-bg → art-bg-2` is the 165deg panel gradient behind every product image (cards, project hero,
+gallery viewer, case figure, list preview). The SVG illustrations that used the rest of the `--art-*`
+set were replaced by real screens (see **Product imagery**); the panel tokens and `--sh-ring` remain.
 
 ### Journey and diagram colours
 
@@ -395,9 +394,8 @@ are no sharp corners anywhere except 1–3px progress bars and lines (which stil
 - **Tool icons:** brand marks from `icons.json → brands` (Simple Icons CC0 / Devicon MIT) in brand colours.
   `k: d` marks use `currentColor`; `k: l` (light) marks are mixed 70% with navy in light mode. Tools
   without a logo use `generic` stroke icons in accent-text.
-- **Illustrations:** the five project arts are built from simple shapes only (cards, bars, chips, chart,
-  bookmark, check, arrows) with `--art-*` classes and gentle CSS loops (blink, draw, float, scan, ring,
-  drop, fill, dash).
+- **Product imagery:** projects and case studies use redesigned interface screens and figures (WebP),
+  not illustrations. See **Product imagery**.
 
 ## Motion
 
@@ -469,7 +467,7 @@ The front matter has the measurable specs. Behavioural notes:
   tag buttons. A 110–190px outlined watermark number parallaxes. Hues by card:
   1 `#2F6EF0/#6FA5FF` light · 2 `#1F5BE0/#36C0F2` colour · 3 `#0E8FD0/#5ED0FF` light ·
   4 `#2340B8/#4F7BFF` colour · 5 `#4F5BFF/#8FA0FF` light · 6 `#1670E0/#36C0F2` colour.
-- **Work card.** The art panel sits on the left (165deg art gradient, 22px radius). The body holds an
+- **Work card.** The art panel (the stacked screen pair) sits on the left (22px radius). The body holds an
   outlined `01` numeral, status, name, tagline, hook, chips, and a footer with "Open project →" and the
   mono kind label.
 - **Project detail.** A sticky bar with breadcrumb `‹ projects / slug` (where "projects" is a link) and
@@ -483,13 +481,93 @@ The front matter has the measurable specs. Behavioural notes:
   re-flows the board on tab change.
 - **Case rows.** A large outlined number that fills on hover, a title and question, project and status,
   and a 52px arrow button that rotates −45° and fills. The row background wipes up from the bottom.
-  A floating art preview (300px, rotated −3°) follows the cursor.
+  A floating preview of the case figure (320px, 16:10, rotated −3°) follows the cursor.
 - **Reader.** A back pill, meta, a split H1, an "engineering question" block, a "System flow" strip, and
   a 220px sticky TOC with scroll-spy beside the section cards. **Placeholders** (`[ … ]`) render in the
   dashed mono `placeholder-todo` style and must stay visibly marked as TODO.
 - **Contact form.** Floating-label fields on a glass card. Errors show an inline note and an elastic
   shake (x −8 → 0, elastic.out(1, .3)). The send button shrinks to a 58px circle with a spinner, then a
   success panel draws its check (.7s).
+
+## Product imagery
+
+Real interface screens replace the SVG art. Source of truth: `kits/images/` (files in
+`public/images/{projects,cases}`, text in `kits/images/data/*.json`, merged into `src/content` by
+`scripts/gen-content.ts`). Components live in `src/components/imagery/`.
+
+**Assets.** Each project has 4 screens and each case study 1 figure. Every image is 16:10, shipped by the
+kit at 1800w and 960w (`-sm`). `pnpm gen:images` derives 360w, 480w and 720w variants from the 1800w
+file (resized only), so every `srcset` runs 360 / 480 / 720 / 960 / 1800. Images never change with the
+theme. They are a deliberate mix of light and dark interfaces, and only the panel behind them follows the
+tokens.
+
+### Stacked pair (`ProjectShots`)
+
+`shots[cover.back]` sits top-right and bleeds off the edge; `shots[cover.front]` overlaps it bottom-left.
+Both sit on a panel tinted by the project's two `hue` colours:
+
+```css
+radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--h1) 28%, transparent), transparent 64%),
+radial-gradient(80% 70% at 100% 0%, color-mix(in srgb, var(--h2) 24%, transparent), transparent 62%),
+linear-gradient(165deg, var(--art-bg), var(--art-bg-2))
+```
+
+| Placement | Back: top / right / width | Front: bottom / left / width |
+|---|---|---|
+| Rail card, desktop (portrait slot) | 7% / −18% / 112% | 7% / 6% / 90% |
+| Rail card, < 900px (landscape, 220px) | 9% / −10% / 76% | −18% / 5% / 74% |
+| Grid card (220px) | 9% / −9% / 76% | −16% / 5% / 72% |
+| Project hero (400/260) | 8% / −7% / 74% | −10% / 5% / 70% |
+
+- **Screen:** 16:10, radius 10px (12px in the hero), with the shadow
+  `0 0 0 1px var(--sh-ring), 0 2px 6px -2px rgba(10,22,60,.18), 0 30px 60px -24px rgba(10,22,60,.55)`.
+- **`--sh-ring` token:** light `rgba(12,28,70,.12)`, dark `rgba(170,200,255,.14)`.
+- **Motion:**
+  - On grid card hover, the front screen moves to `translateY(−10px)` and the back to `translate(8px,−6px)` (.8s, site ease).
+  - In the home rail, a scrubbed `containerAnimation` parallax moves the back screen `xPercent −6 → 4` and the front `xPercent 7 → −5, yPercent 4 → −2` (from `left right` to `right left`).
+  - Under reduced motion both are off.
+- **Loading:** the hero pair is eager with `fetchpriority=high`; everything else is lazy.
+  - `sizes` follow the measured layout: rail/hero `(max-width: 899.98px) 66vw, 460px`; grid `(max-width: 820px) 66vw, (max-width: 1200px) 34vw, 300px`.
+
+### "Inside the product" gallery (`ScreensGallery`)
+
+A project detail section between "The product" and "Key capabilities", on the usual 220px label column.
+
+- **Viewer:** 16:10, radius 22px (16px under 860px), shadow `0 0 0 1px var(--sh-ring), 0 44px 90px -44px var(--shadow-c)`.
+  - All four images are stacked; only the active one is visible.
+  - `sizes` `(max-width: 860px) 94vw, 950px`; the first image is eager.
+- **Arrows:** 46px glass circles, 14px from each edge.
+  - They slide 6px in and fade on viewer hover or focus, and are always visible under `hover: none`.
+  - Labels: "Previous screen" / "Next screen".
+- **Caption row:** a mono counter `01 / 04`, a display title (clamp 21–26px), and the caption (`aria-live="polite"`).
+  - A "Full size" pill (expand icon, 44px tall) opens the 1800w file in a new tab.
+- **Thumbnails:** 4 columns (2 under 860px), each a button with a 16:10 image (`alt=""`), the label and a mono Light/Dark tag.
+  - Active: accent border, accent-soft fill, tag in `--body`, `aria-pressed`. Hover lifts 3px.
+- **Note** with an info icon: "Redesigned interface screens, shown with sample data." It always stays.
+- **Switching:** the incoming image crossfades in above the outgoing one (`autoAlpha 0 → 1`, `scale 1.03 → 1`, .7s power3.out).
+  - The title and caption rise `y 10 → 0` with a fade (.5s, stagger .05).
+  - ←/→ wrap while focus is inside. Reduced motion swaps instantly.
+  - The gallery is keyed by project, so switching projects resets it to screen 1.
+
+### Case figure (`CaseFigureView`)
+
+Full content width, directly after the "System flow" card and before the TOC grid. It reveals with the
+header items (`y 30 → 0`, staggered).
+
+- **Markup:** a link to the 1800w file (new tab, "Open the figure full size") wraps the image (`sizes`
+  `(max-width: 1280px) 94vw, 1200px`, real width and height, the long alt).
+  - The figcaption is "Figure 0N" in mono accent-text, then the caption.
+- **Style:** radius 24px (16px under 860px), ring plus `0 44px 90px -46px var(--shadow-c)`.
+  - Hover scales the image to 1.012 (.9s) and fades in a 42px glass zoom badge top-right (always shown on mobile, 36px).
+- **Content:** the figure's own footnote ("Illustrative figure…") is part of the image and is never cropped.
+  - A figure never changes a case study's status.
+
+### Case list preview
+
+- A 320px, 16:10 card (`object-fit: cover`, radius 22px) follows the pointer with `quickTo` (.55s power3, offset +28 / −90).
+- **Enter / leave:** it enters with `scale .8 → 1`, `rotation 0 → −3°` and a fade (.45s power3.out); it leaves in .35s.
+- **Pointer devices only:** the image isn't requested until the first hover.
+  - That hover preloads all five figures at preview size (360w, or 720w on dense screens).
 
 ## Do's and Don'ts
 
@@ -570,7 +648,7 @@ easing, spacing, contrast and states only. Each departure from the reference is 
   `scale(.97)` on `:active` for buttons, icon buttons, tabs, filters and cards. This gives feedback within
   100ms of a press and releases with the CSS ease.
   *(Guideline: Motion › brief and precise feedback.)*
-- **Offscreen loops pause.** The hero console, orb drift, marquee, art loops, aura drift and timeline
+- **Offscreen loops pause.** The hero console, orb drift, marquee, aura drift and timeline
   shine all pause when they're offscreen or the tab is hidden.
 - **`will-change`.** It is set only while a tween runs, never in static CSS (the reference's
   `.jr-chip { will-change }` moves to runtime).
@@ -636,7 +714,7 @@ Every pair is re-checked in dark mode and on top of the orbs (axe plus a manual 
 - The hero console shows one finished scenario (MoodVerse, `200 OK · 412 ms`).
 - No cursor, magnetic or tilt effects.
 - The marquee is static.
-- Orbs and art loops are static.
+- Orbs are static; the screen parallax and card-hover drift are off.
 - Flip changes become instant.
 - The rotating word stays "systems".
 

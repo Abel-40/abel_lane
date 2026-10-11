@@ -1,13 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { caseHref, cases, projectById } from "@/content";
-import type { ArtKey } from "@/content/types";
+import { caseHref, cases } from "@/content";
+import { variantPath } from "@/content/image-variants";
+import type { CaseFigure } from "@/content/types";
 import { pageIntro, rise } from "@/lib/anim";
 import { gsap } from "@/lib/gsap";
 import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer } from "@/lib/motion";
-import { ProjectArt } from "@/components/art/ProjectArt";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { Icon } from "@/components/ui/Icon";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -20,13 +20,17 @@ const STEPS = [
   ["05", "Reflection", "What I learned"],
 ] as const;
 
+/** The preview card is 320px wide: the 360w file, or 720w on dense screens. Only called after a hover. */
+const previewSrc = (f: CaseFigure) => variantPath(f.src, window.devicePixelRatio > 1.2 ? 720 : 360);
+
 /**
  * Case-study list: hero with a five-part step strip (line draws across, steps rise), rows with number,
- * title, question, project and status; hovering a row shows a floating, slightly rotated art preview.
+ * title, question, project and status; hovering a row shows that case's figure in a floating, slightly rotated card.
  */
 export function CasesView() {
   const root = useRef<HTMLElement>(null);
-  const [art, setArt] = useState<ArtKey>("mood");
+  // null until the first hover, so touch devices never fetch a preview they can't see
+  const [preview, setPreview] = useState<CaseFigure | null>(null);
 
   useIntroGSAP(
     () => {
@@ -48,6 +52,7 @@ export function CasesView() {
 
         if (!isFinePointer()) return;
         const prev = el.querySelector<HTMLElement>(".cs-preview")!;
+        let preloaded = false;
         const rows = el.querySelector<HTMLElement>(".cs-rows")!;
         gsap.set(prev, { scale: 0.8 });
         const px = gsap.quickTo(prev, "x", { duration: 0.55, ease: "power3" });
@@ -59,7 +64,11 @@ export function CasesView() {
         const over = (e: PointerEvent) => {
           const b = (e.target as Element).closest<HTMLElement>(".cs-row-btn");
           if (!b) return;
-          setArt(b.dataset.preview as ArtKey);
+          if (!preloaded) {
+            preloaded = true; // first hover: fetch all five preview-size figures so swaps never flash
+            cases.forEach((c) => (new Image().src = previewSrc(c.figure)));
+          }
+          setPreview(cases.find((c) => c.id === b.dataset.case)!.figure);
           gsap.to(prev, { autoAlpha: 1, scale: 1, rotation: -3, duration: 0.45, ease: "power3.out", overwrite: "auto" });
         };
         const leave = () => gsap.to(prev, { autoAlpha: 0, scale: 0.8, rotation: 0, duration: 0.35, overwrite: "auto" });
@@ -108,7 +117,7 @@ export function CasesView() {
                 href={caseHref(c)}
                 className="cs-row-btn"
                 data-cursor="Read"
-                data-preview={projectById(c.projectId).art}
+                data-case={c.id}
               >
                 <span className="cs-num" aria-hidden="true">
                   {c.num}
@@ -130,7 +139,10 @@ export function CasesView() {
         </ul>
       </section>
       <div className="cs-preview" aria-hidden="true">
-        <ProjectArt art={art} />
+        {preview && (
+          // eslint-disable-next-line @next/next/no-img-element -- pre-optimised WebP figure
+          <img src={previewSrc(preview)} width={960} height={600} alt="" decoding="async" />
+        )}
       </div>
     </main>
   );

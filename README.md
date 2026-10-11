@@ -29,10 +29,12 @@ pnpm start               # http://localhost:3000
 | Script | What it does |
 |---|---|
 | `pnpm dev` / `build` / `start` | Next.js |
-| `pnpm gen:content` | Regenerates `src/content/*.ts` from `reference/content.json`, `reference/icons.json` and the case-study MDX frontmatter |
+| `pnpm gen:content` | Regenerates `src/content/*.ts` from `reference/content.json`, `reference/icons.json`, the case-study MDX frontmatter and the images kit JSON (`kits/images/data`) |
+| `pnpm gen:images [--force]` | Derives 360/480/720w WebP variants from the images kit's 1800w files in `public/images` (run after adding or replacing a screen; the output is committed) |
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit` |
 | `pnpm test:e2e` | Playwright: e2e, axe (both themes), overflow, pins, Firefox/WebKit smoke. Run `pnpm build` first, then `pnpm exec playwright install` once |
 | `pnpm qa:capture [id]` | Visual parity: serve the reference (`pnpm exec serve reference -l 4100`) and the build (`pnpm start -p 3100`); writes `qa/compare/<id>-{ref,new}.jpg` |
+| `pnpm exec tsx tests/visual/capture-images.ts [id]` | Images kit parity: captures the build (`pnpm start -p 3100`) in the 18 states of `kits/images/reference/look`; writes `qa/compare-images/<id>-{ref,new}.jpg` |
 
 ## Content
 

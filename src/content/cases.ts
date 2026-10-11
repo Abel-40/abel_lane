@@ -45,7 +45,18 @@ export const cases: readonly CaseStudy[] = [
         "key": "Reflection",
         "title": "What I learned and what comes next"
       }
-    ]
+    ],
+    "figure": {
+      "file": "cs-1-mood",
+      "label": "Figure 01",
+      "caption": "MoodVerse separates interpretation from retrieval. Gemini returns themes, and every passage shown comes from the verified corpus.",
+      "alt": "Diagram: a reflection goes to Gemini, which returns emotions and themes as JSON. The themes and the reflection query pgvector over a verified Bible and Quran corpus, and the top match, Psalm 34:18, is shown from the stored passage.",
+      "theme": "light",
+      "src": "/images/cases/cs-1-mood.webp",
+      "srcSm": "/images/cases/cs-1-mood-sm.webp",
+      "width": 1800,
+      "height": 1125
+    }
   },
   {
     "id": "seo",
@@ -64,7 +75,18 @@ export const cases: readonly CaseStudy[] = [
       "Turning raw HTML into structured page intelligence",
       "Combining deterministic SEO rules with AI explanations",
       "Crawl boundaries, robots.txt and private-network protection"
-    ]
+    ],
+    "figure": {
+      "file": "cs-2-seo",
+      "label": "Figure 02",
+      "caption": "Crawl jobs move through a BullMQ queue with polite limits and retries with backoff. Jobs that still fail are kept with their error.",
+      "alt": "Diagram: a start URL passes boundary checks, each page becomes a job in a BullMQ queue with waiting, active, retrying, done and failed states, Crawlee workers fetch pages within set limits, and page data is stored for rules and AI explanations.",
+      "theme": "dark",
+      "src": "/images/cases/cs-2-seo.webp",
+      "srcSm": "/images/cases/cs-2-seo-sm.webp",
+      "width": 1800,
+      "height": 1125
+    }
   },
   {
     "id": "insight",
@@ -82,7 +104,18 @@ export const cases: readonly CaseStudy[] = [
       "Where sentiment and semantic search fit in the pipeline",
       "Duplicates, failed jobs, caching and unreliable APIs",
       "Keyword search versus vector search trade-offs"
-    ]
+    ],
+    "figure": {
+      "file": "cs-3-insight",
+      "label": "Figure 03",
+      "caption": "The request path reads prepared data while Celery workers fetch, de-duplicate, classify and embed content in the background.",
+      "alt": "Diagram: a fast request path from the Vue client through FastAPI and a Redis cache to PostgreSQL with pgvector, and a background Celery path that fetches RSS and Reddit content, removes duplicates, labels sentiment and stores embeddings.",
+      "theme": "light",
+      "src": "/images/cases/cs-3-insight.webp",
+      "srcSm": "/images/cases/cs-3-insight-sm.webp",
+      "width": 1800,
+      "height": 1125
+    }
   },
   {
     "id": "alert",
@@ -99,7 +132,18 @@ export const cases: readonly CaseStudy[] = [
       "Threshold evaluation",
       "Duplicate alerts and stale prices",
       "Retries and delivery failures"
-    ]
+    ],
+    "figure": {
+      "file": "cs-4-alert",
+      "label": "Figure 04",
+      "caption": "Scheduled checks run against fresh snapshots, and a cooldown makes one crossing send one alert.",
+      "alt": "Chart: Bitcoin price moving around a 75,000 alert line with scheduled checks. An alert is sent at the first crossing, nothing repeats during a 30-minute cooldown, and a second alert is sent at a new crossing after it.",
+      "theme": "dark",
+      "src": "/images/cases/cs-4-alert.webp",
+      "srcSm": "/images/cases/cs-4-alert-sm.webp",
+      "width": 1800,
+      "height": 1125
+    }
   },
   {
     "id": "work",
@@ -116,6 +160,17 @@ export const cases: readonly CaseStudy[] = [
       "Permission matrix",
       "Boundary between the main app and the AI service",
       "Tests for unauthorised access"
-    ]
+    ],
+    "figure": {
+      "file": "cs-5-work",
+      "label": "Figure 05",
+      "caption": "Every request, including AI requests, passes the same permission check before project data is returned or sent to the AI service.",
+      "alt": "Diagram: four requests pass one permission check in the Django Ninja API. A project member gets their tasks, a non-member gets 403, and AI requests either get scoped context for the FastAPI AI service or are refused before reaching it.",
+      "theme": "light",
+      "src": "/images/cases/cs-5-work.webp",
+      "srcSm": "/images/cases/cs-5-work-sm.webp",
+      "width": 1800,
+      "height": 1125
+    }
   }
 ];

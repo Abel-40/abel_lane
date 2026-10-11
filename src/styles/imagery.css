@@ -1,0 +1,26 @@
+/* Product imagery (images kit): the stacked pair of project screens used on rail cards, grid cards and the
+   project hero. Values ported verbatim from kits/images/reference/integration.css (DESIGN.md › Product imagery). */
+
+.shots { position: absolute; inset: 0; overflow: hidden; isolation: isolate; --by: 7%; --br: -18%; --bw: 112%; --fb: 7%; --fl: 6%; --fw: 90%;
+  background: radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--h1) 28%, transparent), transparent 64%), radial-gradient(80% 70% at 100% 0%, color-mix(in srgb, var(--h2) 24%, transparent), transparent 62%), linear-gradient(165deg, var(--art-bg), var(--art-bg-2)); }
+.sh { position: absolute; display: block; height: auto; aspect-ratio: 16 / 10; border-radius: 10px; background: #0E1630; box-shadow: 0 0 0 1px var(--sh-ring), 0 2px 6px -2px rgba(10, 22, 60, .18), 0 30px 60px -24px rgba(10, 22, 60, .55); }
+.sh-b { z-index: 1; top: var(--by); right: var(--br); width: var(--bw); }
+.sh-f { z-index: 2; bottom: var(--fb); left: var(--fl); width: var(--fw); }
+.pc-art .shots { --by: 9%; --br: -9%; --bw: 76%; --fb: -16%; --fl: 5%; --fw: 72%; }
+.po-art .shots { --by: 8%; --br: -7%; --bw: 74%; --fb: -10%; --fl: 5%; --fw: 70%; }
+.po-art .sh { border-radius: 12px; }
+
+/* grid card hover: the front screen lifts, the back one drifts (.8s, site ease) */
+.pc-art .sh { transition: transform .8s var(--ease); }
+.pcard:hover .pc-art .sh-f { transform: translate3d(0, -10px, 0); }
+.pcard:hover .pc-art .sh-b { transform: translate3d(8px, -6px, 0); }
+
+/* rail card in its landscape (mobile) layout. The kit switches at 860px; the rail turns landscape at 900px
+   here, so the landscape composition follows the layout (PARITY I-D1). */
+@media (max-width: 899.98px) {
+  .wc-art .shots { --by: 9%; --br: -10%; --bw: 76%; --fb: -18%; --fl: 5%; --fw: 74%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard:hover .pc-art .sh-f, .pcard:hover .pc-art .sh-b { transform: none; }
+}

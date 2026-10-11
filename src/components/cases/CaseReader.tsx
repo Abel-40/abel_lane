@@ -7,6 +7,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { scrollToY } from "@/lib/scroll";
 import { TransitionLink } from "@/components/transition/TransitionLink";
+import { CaseFigureView } from "@/components/imagery/CaseFigureView";
 import { FlowPills } from "@/components/ui/FlowPills";
 import { Icon } from "@/components/ui/Icon";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -34,6 +35,9 @@ export function CaseReader({
 }) {
   const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(toc[0]?.id);
+  // after a TOC jump the clicked section stays marked while the scroll runs: a short section near the end
+  // can't reach the spy line, so the next one would otherwise win
+  const jumpUntil = useRef(0);
 
   useIntroGSAP(
     () => {
@@ -45,7 +49,7 @@ export function CaseReader({
           trigger: s,
           start: "top 45%",
           end: "bottom 45%",
-          onToggle: (self) => self.isActive && setActive(s.id),
+          onToggle: (self) => self.isActive && performance.now() > jumpUntil.current && setActive(s.id),
         });
       });
       const mm = gsap.matchMedia();
@@ -91,6 +95,7 @@ export function CaseReader({
             <span>System flow in {c.project}</span>
             <FlowPills steps={project.flow} />
           </div>
+          <CaseFigureView figure={c.figure} className="rd-in" />
         </div>
         <div className="wrap rd-grid">
           <nav className="toc" aria-label="Sections">
@@ -104,6 +109,8 @@ export function CaseReader({
                   const sec = document.getElementById(t.id);
                   if (!sec) return;
                   e.preventDefault();
+                  jumpUntil.current = performance.now() + 1600;
+                  setActive(t.id);
                   scrollToY(sec, true);
                   sec.setAttribute("tabindex", "-1");
                   sec.focus({ preventScroll: true });

@@ -6,7 +6,7 @@ import { projects } from "@/content/projects";
 import { animateSectionMarks, rise } from "@/lib/anim";
 import { gsap } from "@/lib/gsap";
 import { MQ, pad2 } from "@/lib/motion";
-import { ProjectArt } from "@/components/art/ProjectArt";
+import { ProjectShots, SHOT_SIZES } from "@/components/imagery/ProjectShots";
 import { ProjectLink } from "@/components/projects/ProjectLink";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { Icon } from "@/components/ui/Icon";
@@ -68,14 +68,12 @@ export function WorkRail() {
           },
         });
         cards.forEach((cd) => {
-          const art = cd.querySelector(".wc-art .art");
-          if (art) {
-            gsap.fromTo(art, { xPercent: -4 }, {
-              xPercent: 4,
-              ease: "none",
-              scrollTrigger: { trigger: cd, containerAnimation: railTw, start: "left right", end: "right left", scrub: true },
-            });
-          }
+          // the two screens drift at different rates inside the pinned rail (images kit §4.1)
+          const st = { trigger: cd, containerAnimation: railTw, start: "left right", end: "right left", scrub: true } as const;
+          const shB = cd.querySelector(".wc-art .sh-b");
+          const shF = cd.querySelector(".wc-art .sh-f");
+          if (shB) gsap.fromTo(shB, { xPercent: -6 }, { xPercent: 4, ease: "none", scrollTrigger: st });
+          if (shF) gsap.fromTo(shF, { xPercent: 7, yPercent: 4 }, { xPercent: -5, yPercent: -2, ease: "none", scrollTrigger: st });
           gsap.fromTo(cd, { scale: 0.9, rotation: 2 }, {
             scale: 1,
             rotation: 0,
@@ -126,7 +124,7 @@ export function WorkRail() {
               return (
                 <article className={`wcard ${TONES[i]}${deep ? " on-deep" : ""}`.trim()} data-id={p.id} key={p.id}>
                   <div className="wc-art">
-                    <ProjectArt art={p.art} />
+                    <ProjectShots p={p} sizes={SHOT_SIZES.rail} />
                   </div>
                   <div className="wc-body">
                     <div className="wc-top">

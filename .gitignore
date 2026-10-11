@@ -46,6 +46,7 @@ next-env.d.ts
 /blob-report/
 /playwright/.cache/
 /qa/compare/*.jpg
+/qa/compare-images/*.jpg
 /qa/lighthouse/
 
 # env example is committed

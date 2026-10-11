@@ -63,6 +63,7 @@ export function pageMeta({
 
 /** schema.org CreativeWork for a project (facts from content.json only). */
 export function projectJsonLd(p: Project) {
+  const cover = p.shots[p.cover.front];
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -73,6 +74,7 @@ export function projectJsonLd(p: Project) {
     url: absolute(`/projects/${p.slug}`),
     author: { "@id": `${siteUrl()}/#person` },
     keywords: p.chips.join(", "),
+    image: { "@type": "ImageObject", url: absolute(cover.src), width: cover.width, height: cover.height, caption: cover.alt },
     ...(p.status ? { creativeWorkStatus: p.status } : {}),
   };
 }

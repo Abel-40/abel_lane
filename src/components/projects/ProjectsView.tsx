@@ -8,7 +8,7 @@ import { Flip } from "@/lib/flip";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer, prefersReducedMotion } from "@/lib/motion";
-import { ProjectArt } from "@/components/art/ProjectArt";
+import { ProjectShots, SHOT_SIZES } from "@/components/imagery/ProjectShots";
 import { Icon } from "@/components/ui/Icon";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { ProjectLink } from "./ProjectLink";
@@ -160,7 +160,7 @@ export function ProjectsView() {
             <div className="pcell" data-cats={p.cats.join(" ")} key={p.id}>
               <ProjectLink slug={p.slug} className="pcard" data-cursor="Open" aria-label={`Open project: ${p.name}`}>
                 <span className="pc-art">
-                  <ProjectArt art={p.art} />
+                  <ProjectShots p={p} sizes={SHOT_SIZES.grid} />
                 </span>
                 <span className="pc-body">
                   <span className="pc-top">

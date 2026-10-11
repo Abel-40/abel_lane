@@ -10,6 +10,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "gen:content": "tsx scripts/gen-content.ts",
+    "gen:images": "tsx scripts/gen-image-variants.ts",
     "test:e2e": "playwright test",
     "qa:capture": "tsx tests/visual/capture.ts"
   },
@@ -39,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "serve": "^14.2.6",
+    "sharp": "0.35.5",
     "tailwindcss": "4.3.3",
     "tsx": "^4.23.15",
     "typescript": "~5.9.0",
