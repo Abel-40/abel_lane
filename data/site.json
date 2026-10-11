@@ -1,5 +1,5 @@
 {
-  "_note": "Who you are and where people reach you. url is the live address (canonical links, sitemap, share images). Used in the nav, footer, contact page, SEO and the About page. resume: a file in public/ (\"/resume.pdf\"), a full https:// link (Google Drive, etc.), or \"\" to hide the button.",
+  "_note": "Who you are and where people reach you. url is the live address (canonical links, sitemap, share images). Used in the nav, footer, contact page, SEO and the About page. resume: a file in public/ (\"/resume.pdf\"), a full https:// link (Google Drive, etc.), or \"\" to hide the button. verification: the codes Google Search Console and Bing Webmaster Tools give you for an HTML-tag check (leave empty if you verify through DNS).",
   "name": "Abel Addis",
   "role": "Backend Engineer, AI Systems",
   "title": "Abel Addis | Backend Engineer, AI Systems",
@@ -17,5 +17,9 @@
   "resume": "https://drive.google.com/file/d/1vkXjXRsfWBCNbZv-wDPjIFTaUj5hjfe_/view?usp=sharing",
   "timeZone": "Africa/Addis_Ababa",
   "country": "Ethiopia",
-  "footerBio": "Backend engineer building the systems behind AI products. Based in Ethiopia, open to remote work."
+  "footerBio": "Backend engineer building the systems behind AI products. Based in Ethiopia, open to remote work.",
+  "verification": {
+    "google": "",
+    "bing": ""
+  }
 }

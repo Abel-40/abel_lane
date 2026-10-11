@@ -34,10 +34,10 @@ export function Footer() {
         <p>{site.footerBio}</p>
         <div className="foot-links">
           <CopyEmailButton variant="icon" />
-          <a className="icon-btn" href={site.github.href} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <a className="icon-btn" href={site.github.href} target="_blank" rel="me noopener noreferrer" aria-label={`${site.name} on GitHub`}>
             <MarkupIcon name="github" />
           </a>
-          <a className="icon-btn" href={site.linkedin.href} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <a className="icon-btn" href={site.linkedin.href} target="_blank" rel="me noopener noreferrer" aria-label={`${site.name} on LinkedIn`}>
             <MarkupIcon name="linkedin" />
           </a>
           <ThemeToggle />

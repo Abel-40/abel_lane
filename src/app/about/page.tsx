@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, JsonLd, pageMeta, profilePageJsonLd } from "@/lib/seo";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { aboutContent } from "@/content";
@@ -15,7 +15,7 @@ import "@/styles/about.css";
 
 export const metadata: Metadata = pageMeta({
   path: "/about",
-  title: "About",
+  fullTitle: `About ${site.name} | ${site.role}`,
   description:
     "Abel Addis moved from UI/UX and full-stack work to backend engineering: APIs, async workers, data pipelines, semantic search, RAG and production LLM integrations.",
 });
@@ -34,6 +34,8 @@ function resumeHref(): string | null {
 export default function AboutPage() {
   return (
     <main className="page" data-page="about">
+      <JsonLd data={profilePageJsonLd("/about")} />
+      <JsonLd data={breadcrumbJsonLd([["About", "/about"]])} />
       <AboutHero resume={resumeHref()} />
       <Facts />
       <CareerLog />

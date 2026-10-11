@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projectBySlug, projects } from "@/content";
 import { ProjectPage } from "@/components/projects/ProjectPage";
-import { JsonLd, pageMeta, projectJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, JsonLd, pageMeta, projectJsonLd } from "@/lib/seo";
 import "@/styles/projects.css";
 
 export const dynamicParams = false;
@@ -24,6 +24,7 @@ export default async function Page({ params }: PageProps<"/projects/[slug]">) {
   return (
     <>
       <JsonLd data={projectJsonLd(p)} />
+      <JsonLd data={breadcrumbJsonLd([["Projects", "/projects"], [p.name, `/projects/${p.slug}`]])} />
       <ProjectPage slug={slug} />
     </>
   );

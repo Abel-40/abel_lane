@@ -4,7 +4,7 @@ import { caseBySlug, cases, projectById } from "@/content";
 import { CaseBody } from "@/components/cases/CaseBody";
 import { CaseReader } from "@/components/cases/CaseReader";
 import { tocFor } from "@/components/cases/toc";
-import { pageMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, JsonLd, pageMeta } from "@/lib/seo";
 import "@/styles/cases.css";
 
 export const dynamicParams = false;
@@ -31,8 +31,11 @@ export default async function CaseStudyPage({ params }: PageProps<"/case-studies
   const c = caseBySlug((await params).slug);
   if (!c) notFound();
   return (
-    <CaseReader c={c} project={projectById(c.projectId)} toc={tocFor(c)}>
-      <CaseBody c={c} />
-    </CaseReader>
+    <>
+      <JsonLd data={breadcrumbJsonLd([["Case studies", "/case-studies"], [c.title, `/case-studies/${c.slug}`]])} />
+      <CaseReader c={c} project={projectById(c.projectId)} toc={tocFor(c)}>
+        <CaseBody c={c} />
+      </CaseReader>
+    </>
   );
 }

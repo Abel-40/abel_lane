@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { heroStackChips, rotatingWords } from "@/content/hero-console";
+import { site } from "@/content/site";
 import { splitChars } from "@/lib/anim";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIntroGSAP } from "@/hooks/useIntroGSAP";
@@ -210,11 +211,12 @@ export function Hero() {
       </div>
       <div className="wrap hero-grid">
         <div className="hero-in">
-          <p className="hero-kicker">
-            <span className="pulse-dot" />
-            Backend engineer, AI systems · Ethiopia (UTC+3)
-          </p>
+          {/* the name line is part of the h1, so the page's main heading names who it is about */}
           <h1 className="hero-title" tabIndex={-1}>
+            <span className="hero-kicker">
+              <span className="pulse-dot" />
+              <span>{site.name} · Backend engineer, AI systems · Ethiopia (UTC+3)</span>
+            </span>
             <span className="sr-only">I build the systems behind AI products.</span>
             <span aria-hidden="true">
               <span className="ht-line" data-split="">

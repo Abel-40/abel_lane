@@ -8,7 +8,7 @@ import { SmoothScroll } from "@/components/chrome/SmoothScroll";
 import { Toast } from "@/components/chrome/Toast";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
 import { site } from "@/content/site";
-import { JsonLd, personJsonLd, siteUrl } from "@/lib/seo";
+import { JsonLd, siteJsonLd, siteUrl } from "@/lib/seo";
 import { fontVariables } from "./fonts";
 import "./globals.css";
 
@@ -21,7 +21,12 @@ export const metadata: Metadata = {
   creator: site.name,
   openGraph: { type: "website", siteName: "Abel Addis", locale: "en_US" },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  // Search Console / Bing Webmaster verification codes (data/site.json › verification); empty values are skipped
+  verification: {
+    ...(site.verification.google ? { google: site.verification.google } : {}),
+    ...(site.verification.bing ? { other: { "msvalidate.01": site.verification.bing } } : {}),
+  },
 };
 
 export const viewport: Viewport = {
@@ -65,7 +70,7 @@ export default function RootLayout({
           {modal}
           <Toast />
         </TransitionProvider>
-        <JsonLd data={personJsonLd()} />
+        <JsonLd data={siteJsonLd()} />
         <SmoothScroll />
         <ScrollRefresh />
       </body>

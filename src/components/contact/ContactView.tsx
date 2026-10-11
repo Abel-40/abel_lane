@@ -52,14 +52,14 @@ export function ContactView() {
             </li>
             <li className="ct-item">
               <span className="ct-k">GitHub</span>
-              <a className="ct-v" href={site.github.href} target="_blank" rel="noopener noreferrer">
+              <a className="ct-v" href={site.github.href} target="_blank" rel="me noopener noreferrer">
                 {site.github.label}
               </a>
               <Icon name="out" className="ico-out" />
             </li>
             <li className="ct-item">
               <span className="ct-k">LinkedIn</span>
-              <a className="ct-v" href={site.linkedin.href} target="_blank" rel="noopener noreferrer">
+              <a className="ct-v" href={site.linkedin.href} target="_blank" rel="me noopener noreferrer">
                 {site.linkedin.label}
               </a>
               <Icon name="out" className="ico-out" />

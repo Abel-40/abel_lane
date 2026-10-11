@@ -1,18 +1,20 @@
 import type { MetadataRoute } from "next";
 import { cases, projects } from "@/content";
-import { absolute } from "@/lib/seo";
+import { absolute, personImage } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const page = (path: string, priority: number): MetadataRoute.Sitemap[number] => ({
+  const page = (path: string, priority: number, images?: string[]): MetadataRoute.Sitemap[number] => ({
     url: absolute(path),
     lastModified: now,
     changeFrequency: "monthly",
     priority,
+    ...(images ? { images } : {}),
   });
+  const photo = [absolute(personImage.path)];
   return [
-    page("/", 1),
-    page("/about", 0.8),
+    page("/", 1, photo),
+    page("/about", 0.9, photo),
     page("/projects", 0.9),
     ...projects.map((p) => page(`/projects/${p.slug}`, 0.7)),
     page("/case-studies", 0.8),
