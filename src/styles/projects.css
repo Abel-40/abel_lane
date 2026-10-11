@@ -78,3 +78,7 @@
 @media (max-width: 599.98px) {
   .sg { grid-template-columns: minmax(0, 1fr); gap: 6px; }
 }
+
+/* full-page project detail (direct visits): same content as the overlay, in normal flow under the nav */
+.po-page { padding-top: calc(env(safe-area-inset-top, 0px) + 96px); }
+.po-page .po-bar { position: static; background: none; }

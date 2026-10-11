@@ -6,6 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { holdIntro, releaseIntro } from "@/lib/intro";
 import { prefersReducedMotion } from "@/lib/motion";
 import { scrollToY } from "@/lib/scroll";
+import { setLastPage } from "@/lib/nav-history";
 import { uiStore } from "@/lib/ui-store";
 
 interface TransitionApi {
@@ -53,6 +54,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const p = normalize(pathname);
     lastPath.current = p;
+    setLastPage(p);
     const ready = waiters.current.filter((w) => w.path === p);
     if (!ready.length) return;
     waiters.current = waiters.current.filter((w) => w.path !== p);
