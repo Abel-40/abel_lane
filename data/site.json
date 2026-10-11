@@ -1,0 +1,20 @@
+{
+  "_note": "Who you are and where people reach you. Used in the nav, footer, contact page, SEO and the About page. resume: a file in public/ (\"/resume.pdf\"), a full https:// link (Google Drive, etc.), or \"\" to hide the button.",
+  "name": "Abel Addis",
+  "role": "Backend Engineer, AI Systems",
+  "title": "Abel Addis | Backend Engineer, AI Systems",
+  "description": "Abel Addis, backend engineer building the systems behind AI products: FastAPI, Django, PostgreSQL, async workers, retrieval and LLM integrations.",
+  "email": "addis0132@gmail.com",
+  "github": {
+    "href": "https://github.com/Abel-40",
+    "label": "github.com/Abel-40"
+  },
+  "linkedin": {
+    "href": "https://www.linkedin.com/in/abel-addis",
+    "label": "linkedin.com/in/abel-addis"
+  },
+  "resume": "/resume.pdf",
+  "timeZone": "Africa/Addis_Ababa",
+  "country": "Ethiopia",
+  "footerBio": "Backend engineer building the systems behind AI products. Based in Ethiopia, open to remote work."
+}

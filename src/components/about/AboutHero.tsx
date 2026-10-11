@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { aboutContent } from "@/content";
 import abel from "@/assets/abel.png";
 import { pageIntro } from "@/lib/anim";
 import { gsap } from "@/lib/gsap";
@@ -14,7 +15,8 @@ import { MarkupIcon } from "@/components/ui/Icon";
  * About hero. The photo (the only place it appears) reveals with a clip-path wipe while the image scales
  * 1.25 → 1; the name tag slides in, the chip pops; pointer 3D tilt and a slight scroll parallax.
  */
-export function AboutHero({ hasResume }: { hasResume: boolean }) {
+export function AboutHero({ resume }: { resume: string | null }) {
+  const { hero } = aboutContent;
   const root = useRef<HTMLElement>(null);
 
   useIntroGSAP(
@@ -74,23 +76,25 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
       <div>
         <p className="kicker">About</p>
         <h1 className="h1" data-split="" tabIndex={-1}>
-          From UI/UX to the systems behind products.
+          {hero.heading}
         </h1>
-        <p className="lead hero-fade">
-          I started in UI/UX and full-stack work, then moved deeper into backend engineering because I enjoy building
-          the systems behind products.
-        </p>
-        <p className="lead hero-fade">
-          Today I focus on backend services and AI-integrated systems: APIs, asynchronous workers, data pipelines,
-          semantic search, RAG and production LLM integrations.
-        </p>
+        {hero.intro.map((p) => (
+          <p className="lead hero-fade" key={p}>
+            {p}
+          </p>
+        ))}
         <div className="btn-row hero-fade">
-          {hasResume && (
-            <a className="btn btn-accent" href="/resume.pdf" download data-magnetic="">
+          {resume && (
+            <a
+              className="btn btn-accent"
+              href={resume}
+              {...(resume.startsWith("/") ? { download: "" } : { target: "_blank", rel: "noopener noreferrer" })}
+              data-magnetic=""
+            >
               Résumé <MarkupIcon name="download" />
             </a>
           )}
-          <TransitionLink href="/contact" className={hasResume ? "btn btn-ghost" : "btn btn-accent"} data-magnetic="">
+          <TransitionLink href="/contact" className={resume ? "btn btn-ghost" : "btn btn-accent"} data-magnetic="">
             Get in touch
           </TransitionLink>
         </div>
@@ -99,7 +103,7 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
         <div className="ph-frame" id="phFrame">
           <Image
             src={abel}
-            alt="Abel Addis in a beige blazer and brown shirt, smiling, with his hands in his pockets"
+            alt={hero.photoAlt}
             sizes="(max-width: 899px) 92vw, 460px"
             loading="eager"
             fetchPriority="high"

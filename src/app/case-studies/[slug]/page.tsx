@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/case-studies/[slu
   };
 }
 
-/** Case-study reader. The write-up is the case's `sections` in src/content/case-studies.json. */
+/** Case-study reader. The write-up is the case's `sections` in data/case-studies.json. */
 export default async function CaseStudyPage({ params }: PageProps<"/case-studies/[slug]">) {
   const c = caseBySlug((await params).slug);
   if (!c) notFound();

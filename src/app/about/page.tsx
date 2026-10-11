@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { aboutContent } from "@/content";
+import { site } from "@/content/site";
 import { AboutHero } from "@/components/about/AboutHero";
 import { CareerLog } from "@/components/about/CareerLog";
 import { Facts } from "@/components/about/Facts";
@@ -18,33 +20,35 @@ export const metadata: Metadata = pageMeta({
     "Abel Addis moved from UI/UX and full-stack work to backend engineering: APIs, async workers, data pipelines, semantic search, RAG and production LLM integrations.",
 });
 
-/** Résumé is served from public/resume.pdf when it exists; otherwise the button is hidden (TODO-ABEL.md). */
-const hasResume = existsSync(join(process.cwd(), "public", "resume.pdf"));
+/**
+ * Résumé button target from data/site.json › resume: a file in public/ (shown only if it exists), a full https link,
+ * or "" to hide the button.
+ */
+function resumeHref(): string | null {
+  const r = site.resume.trim();
+  if (/^https:\/\//.test(r)) return r;
+  if (r.startsWith("/") && existsSync(join(process.cwd(), "public", r))) return r;
+  return null;
+}
 
 export default function AboutPage() {
   return (
     <main className="page" data-page="about">
-      <AboutHero hasResume={hasResume} />
+      <AboutHero resume={resumeHref()} />
       <Facts />
       <CareerLog />
       <ToolsBoard />
       <Rise as="section" className="wrap edu" items=".edu-card" aria-label="Education and certification">
-        <article className="edu-card">
-          <span className="edu-ico">
-            <MarkupIcon name="grad" />
-          </span>
-          <h3>BSc in Software Engineering</h3>
-          <p>Arba Minch University</p>
-          <small>Graduated June 2026</small>
-        </article>
-        <article className="edu-card">
-          <span className="edu-ico">
-            <MarkupIcon name="badge" />
-          </span>
-          <h3>AWS Certified Cloud Practitioner</h3>
-          <p>Amazon Web Services</p>
-          <small>Certification</small>
-        </article>
+        {aboutContent.education.map((e) => (
+          <article className="edu-card" key={e.title}>
+            <span className="edu-ico">
+              <MarkupIcon name={e.icon} />
+            </span>
+            <h3>{e.title}</h3>
+            <p>{e.org}</p>
+            <small>{e.note}</small>
+          </article>
+        ))}
       </Rise>
       <Rise as="section" className="wrap next-band" items=".next-link">
         <TransitionLink href="/projects" className="next-link">

@@ -1,4 +1,4 @@
-/* Contact — ported verbatim from reference/index.html; Polish edits are marked "polish:" (see DESIGN.md › Polish, PARITY.md › deviations). */
+/* Contact. */
 /* CONTACT */
 .ct { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .92fr); align-items: start; gap: clamp(40px, 6vw, 80px); padding-block: 150px 110px; }
 .ct-title { margin: 18px 0 24px; font-size: clamp(48px, 7.2vw, 110px); max-width: 11ch; }

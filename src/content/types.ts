@@ -1,5 +1,5 @@
-/* Content model. Data files in this folder are generated from reference/content.json and
-   reference/icons.json by `pnpm gen:content` — edit the JSON (or this file), never the output. */
+/* Content model. The data lives in data/*.json at the project root; `pnpm gen:content` (also run before every
+   build) turns it into the typed modules in this folder. Edit the JSON (or this file), never the output. */
 
 export type ProjectId = "insight" | "mood" | "seo" | "alert" | "work";
 export type ProjectSlug = "insight-stream" | "moodverse" | "seo-maker" | "alertchain" | "workroom";
@@ -44,7 +44,7 @@ export interface Project {
   name: string;
   tagline: string;
   /**
-   * Per-project URLs, null until Abel supplies them (TODO-ABEL.md). `live`: the deployed product, shown as
+   * Per-project URLs, null until supplied in data/projects.json. `live`: the deployed product, shown as
    * "Visit live site" on the project page. `repo`: its repository; the GitHub button falls back to the profile.
    */
   links: { live: string | null; repo: string | null };
@@ -98,9 +98,17 @@ export interface CaseStudy {
   title: string;
   q: string;
   covers: readonly string[];
-  /** The write-up (src/content/case-studies.json). Without it the reader shows the `covers` outline. */
+  /** The write-up (data/case-studies.json). Without it the reader shows the `covers` outline. */
   sections?: readonly CaseSection[];
   figure: CaseFigure;
+}
+
+/** About page copy that isn't a list elsewhere (data/about.json). */
+export interface AboutContent {
+  hero: { heading: string; intro: readonly string[]; photoAlt: string };
+  /** `countTo` makes the number count up from 0 when the row scrolls in; `value` is shown otherwise. */
+  facts: readonly { value: string; countTo?: number; label: string }[];
+  education: readonly { icon: "grad" | "badge"; title: string; org: string; note: string }[];
 }
 
 export interface ExperienceItem {

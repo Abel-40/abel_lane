@@ -1,4 +1,4 @@
-/* Home — ported verbatim from reference/index.html; Polish edits are marked "polish:" (see DESIGN.md › Polish, PARITY.md › deviations). */
+/* Home. */
 /* HOME: hero — headline left, a live glass "API console" composition right */
 .hero { position: relative; display: flex; flex-direction: column; justify-content: center; gap: clamp(28px, 4vh, 48px); min-height: clamp(700px, 100svh, 980px); padding-block: 118px 44px; box-sizing: border-box; overflow: hidden; }
 .hero-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }

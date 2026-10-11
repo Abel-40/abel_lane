@@ -1,4 +1,4 @@
-/* Loader, shutter, progress, cursor, nav, menu, footer, toast — ported verbatim from reference/index.html; Polish edits are marked "polish:" (see DESIGN.md › Polish, PARITY.md › deviations). */
+/* Loader, shutter, progress, cursor, nav, menu, footer, toast. */
 /* loader */
 .loader { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; color: var(--on-deep); animation: loaderFailsafe .5s ease 3.6s forwards; }
 .loader.js-run { animation: none; }

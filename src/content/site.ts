@@ -1,19 +1,7 @@
-/* Site-wide facts. Source: reference/index.html markup and PROMPT.md §6 (never invent new ones). */
+/* Site-wide facts live in data/site.json (name, role, email, links, résumé). Navigation is defined below. */
+import siteData from "../../data/site.json";
 
-export const site = {
-  name: "Abel Addis",
-  role: "Backend Engineer, AI Systems",
-  title: "Abel Addis | Backend Engineer, AI Systems",
-  description:
-    "Abel Addis, backend engineer building the systems behind AI products: FastAPI, Django, PostgreSQL, async workers, retrieval and LLM integrations.",
-  email: "addis0132@gmail.com",
-  github: { href: "https://github.com/Abel-40", label: "github.com/Abel-40" },
-  linkedin: { href: "https://www.linkedin.com/in/abel-addis", label: "linkedin.com/in/abel-addis" },
-  timeZone: "Africa/Addis_Ababa",
-  country: "Ethiopia",
-  footerBio:
-    "Backend engineer building the systems behind AI products. Based in Ethiopia, open to remote work.",
-} as const;
+export const site = siteData;
 
 export type RouteKey = "home" | "about" | "projects" | "cases" | "contact";
 

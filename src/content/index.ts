@@ -2,6 +2,7 @@ import { cases } from "./cases";
 import { projects } from "./projects";
 import type { CaseStudy, Project, ProjectId } from "./types";
 
+export { aboutContent } from "./about";
 export { cases } from "./cases";
 export { experience } from "./experience";
 export { history } from "./history";

@@ -123,7 +123,7 @@ function Outline({ c }: { c: CaseStudy }) {
   );
 }
 
-/** Case-study body, rendered from the case's `sections` (src/content/case-studies.json). */
+/** Case-study body, rendered from the case's `sections` (data/case-studies.json). */
 export function CaseBody({ c }: { c: CaseStudy }) {
   if (!c.sections) return <Outline c={c} />;
   return (

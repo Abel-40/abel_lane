@@ -11,8 +11,7 @@
     "typecheck": "tsc --noEmit",
     "gen:content": "tsx scripts/gen-content.ts",
     "gen:images": "tsx scripts/gen-image-variants.ts",
-    "test:e2e": "playwright test",
-    "qa:capture": "tsx tests/visual/capture.ts"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@gsap/react": "2.1.2",

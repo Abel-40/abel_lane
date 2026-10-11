@@ -2,10 +2,11 @@
 
 import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
+import { aboutContent } from "@/content";
 import { rise } from "@/lib/anim";
 import { gsap } from "@/lib/gsap";
 
-/** Facts row: "2+" counts up from 0, then Andela, AWS and UTC+3. */
+/** Facts row from data/about.json; a fact with `countTo` counts up from 0 when it scrolls in. */
 export function Facts() {
   const root = useRef<HTMLElement>(null);
   useIdleGSAP(
@@ -15,7 +16,8 @@ export function Facts() {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const facts = el.querySelector(".facts")!;
         rise(el.querySelectorAll(".fact"), facts);
-        const cnt = el.querySelector<HTMLElement>(".count-to")!;
+        const cnt = el.querySelector<HTMLElement>(".count-to");
+        if (!cnt) return;
         const o = { v: 0 };
         cnt.textContent = "0";
         gsap.to(o, {
@@ -33,27 +35,23 @@ export function Facts() {
   return (
     <section className="wrap" ref={root}>
       <ul className="facts">
-        <li className="fact">
-          <b>
-            <span className="count-to" data-to="2">
-              2
-            </span>
-            +
-          </b>
-          <span>years of software and product experience</span>
-        </li>
-        <li className="fact">
-          <b>Andela</b>
-          <span>Backend Engineer, Oct 2025 to Jun 2026</span>
-        </li>
-        <li className="fact">
-          <b>AWS</b>
-          <span>Certified Cloud Practitioner</span>
-        </li>
-        <li className="fact">
-          <b>UTC+3</b>
-          <span>Based in Ethiopia, open to remote work</span>
-        </li>
+        {aboutContent.facts.map((f) => (
+          <li className="fact" key={f.label}>
+            <b>
+              {f.countTo != null ? (
+                <>
+                  <span className="count-to" data-to={f.countTo}>
+                    {f.countTo}
+                  </span>
+                  {f.value.replace(String(f.countTo), "")}
+                </>
+              ) : (
+                f.value
+              )}
+            </b>
+            <span>{f.label}</span>
+          </li>
+        ))}
       </ul>
     </section>
   );

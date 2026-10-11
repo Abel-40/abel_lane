@@ -13,7 +13,7 @@ const section = z.object({
   parts: z.array(z.object({ title: z.string(), body: z.string(), code: code.optional() })).optional(),
 });
 
-/** One case in src/content/case-studies.json (validated by `pnpm gen:content`). Edit that file to change the write-ups. */
+/** One case in data/case-studies.json (validated by `pnpm gen:content`). Edit that file to change the write-ups. */
 export const caseEntry = z.object({
   id: z.enum(["insight", "mood", "seo", "alert", "work"]),
   projectId: z.enum(["insight", "mood", "seo", "alert", "work"]),

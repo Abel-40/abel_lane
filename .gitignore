@@ -45,9 +45,10 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-/qa/compare/*.jpg
-/qa/compare-images/*.jpg
-/qa/lighthouse/
 
 # env example is committed
 !.env.example
+
+# agent instruction files that `next dev` writes; not part of the site
+/AGENTS.md
+/CLAUDE.md

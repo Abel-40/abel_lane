@@ -1,4 +1,4 @@
-/* Base, type, buttons, chips, status, section markers, flow pills — ported verbatim from reference/index.html; Polish edits are marked "polish:" (see DESIGN.md › Polish, PARITY.md › deviations). */
+/* Base, type, buttons, chips, status, section markers, flow pills. */
 /* base */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: clip; }

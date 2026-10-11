@@ -1,12 +1,39 @@
 # Abel Addis — portfolio
 
-Next.js 16 (App Router) rebuild of the reference portfolio in `reference/`. It uses GSAP (ScrollTrigger,
-SplitText, Flip), Lenis, Tailwind 4 and TypeScript, and generates static pages.
+Next.js 16 (App Router) with GSAP (ScrollTrigger, SplitText, Flip), Lenis, Tailwind 4 and TypeScript. Every page is
+static; only `/api/contact` runs as a function.
 
-- `DESIGN.md`: the design contract.
-- `PARITY.md`: the reference-to-build checklist.
-- `IMPROVEMENTS.md`: what changed beyond 1:1.
-- `TODO-ABEL.md`: what only you can provide.
+## Where the content lives
+
+All text and data you edit is in **`data/`**. Images are in `public/images/` and `src/assets/`.
+
+| What | File |
+|---|---|
+| Your name, role, email, GitHub, LinkedIn, **résumé link**, footer bio, SEO description | `data/site.json` |
+| About page: hero heading and intro, facts row, education and certification, experience timeline (also on the home page), career log, tools board | `data/about.json` |
+| Projects: text, features, flow, stack, live and repo links, screenshots | `data/projects.json` |
+| Case studies: title, question, sections, decisions, code, figure | `data/case-studies.json` |
+| Home page: hero console, principles, request journey, marquee | `data/home.json` |
+| Icon library (UI, generic and brand marks) | `data/icons.json` |
+| About photo | `src/assets/abel.png` |
+| Project screenshots | `public/images/projects/` |
+| Case-study figures | `public/images/cases/` |
+| Résumé file (if you host it here) | `public/resume.pdf` |
+
+After editing a JSON file, run `pnpm gen:content` (or just `pnpm build`, which runs it first). It turns `data/` into
+typed modules in `src/content/` and fails with a clear message if something is malformed. Don't edit the generated
+`src/content/*.ts` files; edit the JSON.
+
+**Résumé.** In `data/site.json`, `resume` can be:
+
+- `"/resume.pdf"`: a file in `public/`. The button shows only when the file exists, and downloads it.
+- a full `https://` link (Google Drive, Dropbox…): opens in a new tab.
+- `""`: hides the button.
+
+**Project links.** In `data/projects.json`, set `links.live` and `links.repo` to an `https://` URL, or `null` to hide.
+
+**New screenshot.** Put the 1800px WebP and its `-sm` (960px) file in `public/images/projects/`, reference them in
+`data/projects.json`, then run `pnpm gen:images` to make the smaller sizes.
 
 ## Run locally
 
@@ -15,13 +42,7 @@ Requirements: Node 20+ and pnpm 10.
 ```bash
 pnpm install
 pnpm dev                 # http://localhost:3000
-```
-
-Production build:
-
-```bash
-pnpm build               # runs `gen:content` first (prebuild)
-pnpm start               # http://localhost:3000
+pnpm build && pnpm start # production build
 ```
 
 ## Scripts
@@ -29,25 +50,14 @@ pnpm start               # http://localhost:3000
 | Script | What it does |
 |---|---|
 | `pnpm dev` / `build` / `start` | Next.js |
-| `pnpm gen:content` | Regenerates `src/content/*.ts` from `reference/content.json`, `reference/icons.json`, `src/content/case-studies.json` and the images kit JSON (`kits/images/data`) |
-| `pnpm gen:images [--force]` | Derives 360/480/720w WebP variants from the images kit's 1800w files in `public/images` (run after adding or replacing a screen; the output is committed) |
+| `pnpm gen:content` | `data/*.json` → `src/content/*.ts` (runs automatically before `build`) |
+| `pnpm gen:images [--force]` | Makes 360/480/720w WebP variants of the images in `public/images` |
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit` |
-| `pnpm test:e2e` | Playwright: e2e, axe (both themes), overflow, pins, Firefox/WebKit smoke. Run `pnpm build` first, then `pnpm exec playwright install` once |
-| `pnpm qa:capture [id]` | Visual parity: serve the reference (`pnpm exec serve reference -l 4100`) and the build (`pnpm start -p 3100`); writes `qa/compare/<id>-{ref,new}.jpg` |
-| `pnpm exec tsx tests/visual/capture-images.ts [id]` | Images kit parity: captures the build (`pnpm start -p 3100`) in the 18 states of `kits/images/reference/look`; writes `qa/compare-images/<id>-{ref,new}.jpg` |
-
-## Content
-
-- **Projects, experience, tools, principles, journey, hero console:** `reference/content.json`. Edit it,
-  then run `pnpm gen:content`.
-- **Case studies:** `src/content/case-studies.json` (Zod-validated by `pnpm gen:content`, schema in `src/content/case-schema.ts`). Edit the text there, then run `pnpm gen:content`.
-  Text in `[ brackets ]` renders as a visible TODO tag.
-- **Facts used across pages** (email, links): `src/content/site.ts`.
-- **Photo:** `src/assets/abel.webp`. **Résumé:** `public/resume.pdf` (the button appears when the file exists).
+| `pnpm test:e2e` | Playwright e2e, accessibility and layout checks. Run `pnpm build` first, and `pnpm exec playwright install` once |
 
 ## Environment
 
-Copy `.env.example` to `.env.local` (or set the variables in Vercel):
+Copy `.env.example` to `.env.local`, or set these in Vercel:
 
 | Variable | Purpose |
 |---|---|
@@ -58,30 +68,24 @@ Copy `.env.example` to `.env.local` (or set the variables in Vercel):
 
 ## Deploy to Vercel
 
-1. Push this folder to a Git repository and import it in Vercel. The framework preset is Next.js and the
-   package manager pnpm is detected from the lockfile.
+1. Push this folder to a Git repository and import it in Vercel. Next.js and pnpm are detected automatically.
 2. Set the environment variables above for Production.
-3. Deploy. Every page and image is static; only `/api/contact` runs as a function (Node.js runtime).
+3. Deploy.
 
-Or from the CLI: `pnpm dlx vercel` then `pnpm dlx vercel --prod`.
+Or from the CLI: `pnpm dlx vercel`, then `pnpm dlx vercel --prod`.
 
-## Layout
+## Code layout
 
 ```text
-src/app/          routes, @modal (intercepted project overlay), api/contact, OG images, sitemap, robots
-src/components/   chrome (nav, loader, shutter, cursor, footer), home/, about/, projects/, cases/, contact/, art/, ui/
-src/hooks/        useIntroGSAP (entrances after first paint), useIdleGSAP (lazy section setup)
-src/lib/          gsap, flip, anim helpers, intro gate, idle/lazy scheduler, scroll, overlay, seo, og
-src/styles/       tokens + per-area CSS ported from the reference (prefixed class names)
-src/content/      generated typed content; case-studies.json is the hand-edited source for case studies
-tests/            e2e (Playwright), visual capture
-reference/        the original kit (read-only)
+data/             all editable content (see above)
+public/images/    project screenshots and case-study figures
+src/app/          routes, @modal (project overlay), api/contact, OG images, sitemap, robots
+src/components/   chrome (nav, loader, cursor, footer), home/, about/, projects/, cases/, contact/, ui/
+src/content/      generated typed modules + types and the case-study schema
+src/hooks/        GSAP setup hooks
+src/lib/          gsap, animation helpers, scroll, overlay, seo, og
+src/styles/       design tokens and per-area CSS
+assets/og/        fonts used to draw the Open Graph images
+scripts/          content and image generators
+tests/e2e/        Playwright tests
 ```
-
----
-
-## Original build kit
-
-`PROMPT.md` is the build prompt this project was produced from. `reference/` holds the working single-file
-reference (`reference/index.html`), its data, tokens, icons, the photo and 33 screenshots
-(`d*` desktop light, `k*` desktop dark, `m*` mobile).

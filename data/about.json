@@ -1,0 +1,325 @@
+{
+  "_note": "About page (and the home Experience timeline). The photo is src/assets/abel.png.",
+  "hero": {
+    "heading": "From UI/UX to the systems behind products.",
+    "intro": [
+      "I started in UI/UX and full-stack work, then moved deeper into backend engineering because I enjoy building the systems behind products.",
+      "Today I focus on backend services and AI-integrated systems: APIs, asynchronous workers, data pipelines, semantic search, RAG and production LLM integrations."
+    ],
+    "photoAlt": "Abel Addis in a beige blazer and brown shirt, smiling, with his hands in his pockets"
+  },
+  "facts": [
+    {
+      "value": "2+",
+      "countTo": 2,
+      "label": "years of software and product experience"
+    },
+    {
+      "value": "Andela",
+      "label": "Backend Engineer, Oct 2025 to Jun 2026"
+    },
+    {
+      "value": "AWS",
+      "label": "Certified Cloud Practitioner"
+    },
+    {
+      "value": "UTC+3",
+      "label": "Based in Ethiopia, open to remote work"
+    }
+  ],
+  "experience": [
+    {
+      "period": "2026, current",
+      "role": "Freelance engineer",
+      "org": "Backend and AI systems",
+      "note": "Building and shipping backend and AI-focused projects for clients and portfolio work.",
+      "year": "Now",
+      "chips": [
+        "Backend",
+        "AI integration",
+        "Client projects"
+      ],
+      "current": true
+    },
+    {
+      "period": "Oct 2025 – Jun 2026",
+      "role": "Backend Engineer",
+      "org": "Andela",
+      "note": "Shipped production FastAPI services with AI-integrated features, using Celery and Redis for heavy jobs.",
+      "year": "2025–26",
+      "chips": [
+        "FastAPI",
+        "LLM APIs",
+        "Celery",
+        "Redis"
+      ],
+      "current": false
+    },
+    {
+      "period": "Feb 2025 – Aug 2025",
+      "role": "Full-Stack Developer Intern",
+      "org": "Santim Pay",
+      "note": "Built merchant-dashboard features with Vue.js, Nuxt, Pinia, FastAPI and PostgreSQL.",
+      "year": "2025",
+      "chips": [
+        "Vue.js",
+        "Nuxt",
+        "FastAPI",
+        "PostgreSQL"
+      ],
+      "current": false
+    },
+    {
+      "period": "Oct 2023 – Feb 2024",
+      "role": "UI/UX Designer Intern",
+      "org": "Rabit Delta",
+      "note": "Wireframes and usability testing that shaped product and feature decisions.",
+      "year": "2023",
+      "chips": [
+        "Wireframes",
+        "Usability testing"
+      ],
+      "current": false
+    }
+  ],
+  "careerLog": [
+    {
+      "period": "2026, current",
+      "label": "Freelance",
+      "org": "Backend and AI engineering",
+      "head": true,
+      "items": [
+        "Building and shipping backend and AI-focused projects for clients and portfolio work."
+      ]
+    },
+    {
+      "period": "Jun 2026",
+      "label": "Graduation",
+      "org": "Arba Minch University",
+      "items": [
+        "Graduated with a BSc in Software Engineering from Arba Minch University."
+      ]
+    },
+    {
+      "period": "Oct 2025 – Jun 2026",
+      "label": "Backend Engineer",
+      "org": "Andela",
+      "items": [
+        "Shipped production FastAPI services with AI-integrated features.",
+        "Connected LLM APIs to real product endpoints.",
+        "Used Celery and Redis for background and data-heavy jobs.",
+        "Worked with frontend engineers through code review and Agile delivery."
+      ]
+    },
+    {
+      "period": "Feb 2025 – Aug 2025",
+      "label": "Full-Stack Developer Intern",
+      "org": "Santim Pay",
+      "items": [
+        "Built merchant-dashboard features with Vue.js, Nuxt, Pinia, FastAPI and PostgreSQL.",
+        "Worked inside an Agile team and shipped real product features."
+      ]
+    },
+    {
+      "period": "Oct 2023 – Feb 2024",
+      "label": "UI/UX Designer Intern",
+      "org": "Rabit Delta",
+      "items": [
+        "Created wireframes and supported usability testing.",
+        "Used user feedback to influence product and feature decisions."
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "backend",
+      "label": "Backend",
+      "tools": [
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "FastAPI",
+          "icon": "fastapi"
+        },
+        {
+          "name": "Django",
+          "icon": "django"
+        },
+        {
+          "name": "SQLAlchemy",
+          "icon": "sqlalchemy"
+        },
+        {
+          "name": "Pydantic",
+          "icon": "pydantic"
+        },
+        {
+          "name": "REST APIs",
+          "icon": "g:api"
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data and async",
+      "tools": [
+        {
+          "name": "PostgreSQL",
+          "icon": "postgresql"
+        },
+        {
+          "name": "pgvector",
+          "icon": "g:vector"
+        },
+        {
+          "name": "Redis",
+          "icon": "redis"
+        },
+        {
+          "name": "Celery",
+          "icon": "celery"
+        },
+        {
+          "name": "Qdrant",
+          "icon": "qdrant"
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "label": "AI and LLMs",
+      "tools": [
+        {
+          "name": "OpenAI",
+          "icon": "g:llm"
+        },
+        {
+          "name": "Gemini",
+          "icon": "googlegemini"
+        },
+        {
+          "name": "DeepSeek",
+          "icon": "deepseek"
+        },
+        {
+          "name": "Groq",
+          "icon": "g:chip"
+        },
+        {
+          "name": "RAG",
+          "icon": "g:rag"
+        },
+        {
+          "name": "Semantic search",
+          "icon": "g:semantic"
+        },
+        {
+          "name": "LangGraph",
+          "icon": "langgraph"
+        },
+        {
+          "name": "MCP",
+          "icon": "modelcontextprotocol"
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "label": "Frontend",
+      "tools": [
+        {
+          "name": "Vue",
+          "icon": "vuedotjs"
+        },
+        {
+          "name": "Nuxt",
+          "icon": "nuxt"
+        },
+        {
+          "name": "React",
+          "icon": "react"
+        },
+        {
+          "name": "Next.js",
+          "icon": "nextdotjs"
+        },
+        {
+          "name": "TypeScript",
+          "icon": "typescript"
+        },
+        {
+          "name": "Tailwind CSS",
+          "icon": "tailwindcss"
+        },
+        {
+          "name": "shadcn/ui",
+          "icon": "shadcnui"
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud and DevOps",
+      "tools": [
+        {
+          "name": "AWS",
+          "icon": "aws"
+        },
+        {
+          "name": "Docker",
+          "icon": "docker"
+        },
+        {
+          "name": "Nginx",
+          "icon": "nginx"
+        },
+        {
+          "name": "Linux",
+          "icon": "linux"
+        },
+        {
+          "name": "CI/CD",
+          "icon": "g:cicd"
+        }
+      ]
+    },
+    {
+      "id": "workflow",
+      "label": "Workflow",
+      "tools": [
+        {
+          "name": "Git",
+          "icon": "git"
+        },
+        {
+          "name": "GitHub",
+          "icon": "github"
+        },
+        {
+          "name": "Postman",
+          "icon": "postman"
+        },
+        {
+          "name": "Agile and Scrum",
+          "icon": "g:agile"
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "icon": "grad",
+      "title": "BSc in Software Engineering",
+      "org": "Arba Minch University",
+      "note": "Graduated June 2026"
+    },
+    {
+      "icon": "badge",
+      "title": "AWS Certified Cloud Practitioner",
+      "org": "Amazon Web Services",
+      "note": "Certification"
+    }
+  ]
+}
