@@ -50,15 +50,35 @@ export function CareerLog() {
         gsap
           .timeline({ scrollTrigger: { trigger: term, start: "top 80%", once: true } })
           .from(term, { y: 50, opacity: 0, duration: 0.9, ease: "power3.out" })
-          .from(splitChars(el.querySelector(".cmd-text")!, false).chars, { opacity: 0, duration: 0.01, stagger: 0.045 }, "-=.3")
-          .from(el.querySelectorAll(".commit"), { x: -24, opacity: 0, duration: 0.6, ease: "power3.out", stagger: 0.1 }, "+=.1");
+          .from(splitChars(el.querySelector(".cmd-text")!, false).chars, { opacity: 0, duration: 0.01, stagger: 0.045 }, "-=.3");
         const logT = el.querySelector(".tl")!;
         gsap
           .timeline({ scrollTrigger: { trigger: logT, start: "top 70%", end: "bottom 70%", scrub: 0.5 } })
           .fromTo(logT.querySelector(".tl-fill"), { scaleY: 0 }, { scaleY: 1, ease: "none" }, 0)
           .fromTo(logT.querySelector(".tl-head"), { top: "0%", opacity: 1 }, { top: "100%", opacity: 1, ease: "none" }, 0);
-        el.querySelectorAll(".commit").forEach((c) => {
-          ScrollTrigger.create({ trigger: c, start: "top+=28 70%", end: "max", toggleClass: { targets: c, className: "lit" } });
+        // each entry stays hidden until the rail head reaches its dot (the 70% line), then lights up and slides in;
+        // scrolling back above it hides it again
+        el.querySelectorAll<HTMLElement>(".commit").forEach((c) => {
+          const reveal = gsap
+            .timeline({ paused: true })
+            .fromTo(c.querySelector(".c-dot"), { scale: 0 }, { scale: 1, duration: 0.5, ease: "back.out(2.4)" }, 0)
+            .fromTo(
+              c.querySelector(".commit-head > span:nth-child(2)"),
+              { x: -28, opacity: 0, filter: "blur(6px)" },
+              { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" },
+              0.08,
+            )
+            .fromTo(c.querySelector(".chev"), { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.25)
+            .fromTo(c.querySelector(".c-body"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+          reveal.progress(0); // hidden from the first paint, not only once the trigger is created
+          ScrollTrigger.create({
+            trigger: c,
+            start: "top+=28 70%",
+            end: "max",
+            toggleClass: { targets: c, className: "lit" },
+            onEnter: () => reveal.play(),
+            onLeaveBack: () => reveal.reverse(),
+          });
         });
       });
 
