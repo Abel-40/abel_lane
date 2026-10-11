@@ -616,7 +616,7 @@ There is at least 8px between adjacent targets. Chips are not interactive, so th
 | on-deep-muted on deep | 9.13 | pass |
 | muted on bg (dark) | 7.10 | pass |
 | **ok-text on ok-soft** (Published / Current pill) | **4.27** | fail → `--ok-text` light goes `#0B7A43 → #08703C` (4.88) |
-| **wend paragraph** (white .86 on accent) | **4.06** | fail → opacity .86 → .95 (4.58) |
+| **wend paragraph** (white .86 on accent) | **4.06** | fail → full white (4.91 light, 4.56 dark) |
 | **white text on coloured glass** (cards 2, 4, 6 at the 66% end) | **2.46–3.87** | fail → see below |
 
 **Coloured-glass fix.** The stained-glass look stays, but its translucency range shifts from 88% → 66%

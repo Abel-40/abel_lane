@@ -1,9 +1,10 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { site } from "@/content/site";
 import { animateSectionMarks, rise, splitWords } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { Clock } from "@/components/ui/Clock";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
@@ -13,7 +14,7 @@ import { SectionMark } from "@/components/ui/SectionMark";
 export function Cta() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();

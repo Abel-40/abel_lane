@@ -165,3 +165,9 @@ a.link { display: inline-flex; align-items: center; }
   .g-color .rule-main::before { display: none; }
   .nav-in, .hv-card, .rule-in, .fcard, .jr-band { border-color: var(--line-strong); }
 }
+
+/* View Transitions (progressive enhancement): only the project art morphs from the card into the overlay;
+   the page itself switches instantly while GSAP runs the clip-path expand underneath. */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-group(project-art) { animation-duration: .85s; animation-timing-function: cubic-bezier(.76, 0, .24, 1); }
+::view-transition-old(project-art), ::view-transition-new(project-art) { animation-duration: .5s; }

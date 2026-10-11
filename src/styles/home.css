@@ -75,7 +75,7 @@
 .hv-stack { --d: 30; position: absolute; left: 3%; bottom: 7%; display: flex; gap: 8px; translate: calc(var(--px) * var(--d) * 1px) calc(var(--py) * var(--d) * 1px); }
 .hvs-i { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(140deg, var(--rg-a), var(--rg-b)); border: 1px solid var(--rg-edge); box-shadow: inset 0 1px 0 var(--rg-hi), 0 14px 26px -16px var(--shadow-c); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .hvs-i svg { width: 20px; height: 20px; }
-.scroll-cue { position: absolute; right: var(--gut); bottom: 44px; z-index: 1; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+.scroll-cue { position: absolute; right: var(--gut); bottom: 44px; z-index: 1; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--body); /* polish: muted fell under 4.5:1 over the hero orbs */ }
 .scroll-cue i { position: relative; width: 2px; height: 46px; border-radius: 2px; background: var(--line-strong); overflow: hidden; }
 .scroll-cue i::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: var(--accent); animation: cue 1.8s var(--ease) infinite; }
 @keyframes cue { to { top: 100%; } }
@@ -288,9 +288,10 @@
 .tone-deep .wc-foot { border-color: var(--deep-line); }
 .tone-deep .wc-kind { color: var(--on-deep-muted); }
 .wcard.tone-tint { background: var(--tint); }
+.tone-tint .wc-kind { color: var(--body); } /* polish: muted on --tint was under 4.5:1 */
 .wend { display: flex; flex-direction: column; justify-content: center; gap: 18px; width: clamp(300px, 28vw, 400px); padding: 36px; border-radius: 32px; background: var(--accent); color: var(--on-accent); box-sizing: border-box; }
 .wend h3 { margin: 0; font-family: var(--f-display); font-weight: 750; font-stretch: 84%; font-size: clamp(30px, 2.6vw, 40px); line-height: 1.02; letter-spacing: -.03em; color: var(--on-accent); }
-.wend p { margin: 0; color: var(--on-accent); opacity: .95; } /* polish: was .86 (4.06:1) → 4.58:1 (D7) */
+.wend p { margin: 0; color: var(--on-accent); } /* polish: was opacity .86 (4.06:1); full white = 4.91:1 light, 4.56:1 dark (D7) */
 .wend .btn { align-self: flex-start; }
 
 /* HOME: experience */
@@ -465,4 +466,11 @@
   .work-track { flex-direction: column; align-items: stretch; width: auto; max-width: 1280px; margin-inline: auto; box-sizing: border-box; padding-inline: var(--gut); }
   .wcard { width: 100%; }
   .wend { width: 100%; }
+}
+
+/* performance: skip rendering of long below-the-fold sections until they near the viewport. Never on pinned
+   sections (.journey, .work): containment would make their position:fixed pins relative to the section. */
+.statement, .xp-sec, .rules-sec, .case-band, .cta { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+@media (max-width: 899.98px) {
+  .journey, .work { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
 }

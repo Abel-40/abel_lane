@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { siblingProjects } from "@/content";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { MarkupIcon } from "@/components/ui/Icon";
 import { ProjectBody } from "./ProjectBody";
@@ -16,16 +16,18 @@ export function ProjectPage({ slug }: { slug: string }) {
   const { project, switchTo } = useProjectSwitch(slug, "page", content);
   const sib = siblingProjects(project.id);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap
           .timeline({ paused: true })
-          .from(root.current!.querySelector(".po-bar"), { autoAlpha: 0, y: -10, duration: 0.4 })
-          .from(root.current!.querySelectorAll(".po-in"), { y: 46, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.06 }, "-=.2");
-        return whenIntro((covered) => (covered ? tl.play() : tl.progress(1)));
+          .from(root.current!.querySelector(".po-bar"), { opacity: 0, y: -10, duration: 0.4 })
+          .from(root.current!.querySelectorAll(".po-in"), { y: 46, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.06 }, "-=.2");
+        startIntro = (covered) => void (covered ? tl.play() : tl.progress(1));
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );

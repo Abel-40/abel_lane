@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { AboutHero } from "@/components/about/AboutHero";
@@ -10,11 +11,12 @@ import { Icon, MarkupIcon } from "@/components/ui/Icon";
 import { Rise } from "@/components/ui/Rise";
 import "@/styles/about.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
+  path: "/about",
   title: "About",
   description:
     "Abel Addis moved from UI/UX and full-stack work to backend engineering: APIs, async workers, data pipelines, semantic search, RAG and production LLM integrations.",
-};
+});
 
 /** Résumé is served from public/resume.pdf when it exists; otherwise the button is hidden (TODO-ABEL.md). */
 const hasResume = existsSync(join(process.cwd(), "public", "resume.pdf"));

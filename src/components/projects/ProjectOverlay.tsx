@@ -6,7 +6,7 @@ import { siblingProjects } from "@/content";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { getLastPage } from "@/lib/nav-history";
 import { prefersReducedMotion } from "@/lib/motion";
-import { takeOverlaySource } from "@/lib/overlay";
+import { ART_VT_NAME, isArtMorphing, overlayReady, takeOverlaySource } from "@/lib/overlay";
 import { lockScroll } from "@/lib/scroll";
 import { uiStore } from "@/lib/ui-store";
 import { useTransitionRouter } from "@/components/transition/TransitionProvider";
@@ -54,6 +54,14 @@ export function ProjectOverlay({ slug }: { slug: string }) {
       returnFocus.current ??= (document.activeElement as HTMLElement) ?? null;
       const el = root.current!;
       const name = () => el.querySelector<HTMLElement>("#poName")?.focus({ preventScroll: true });
+      // View Transition (progressive enhancement): the card art morphs into this panel, so name it and leave it
+      // out of the rise-in below; the clip-path expand still runs underneath.
+      const morph = isArtMorphing();
+      if (morph) {
+        const art = el.querySelector<HTMLElement>(".po-art");
+        if (art) art.style.viewTransitionName = ART_VT_NAME;
+        overlayReady();
+      }
       if (prefersReducedMotion()) {
         name();
         return;
@@ -66,9 +74,9 @@ export function ProjectOverlay({ slug }: { slug: string }) {
       gsap
         .timeline()
         .fromTo(el.querySelector(".po-bg"), { clipPath: from }, { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 0.85, ease: "expo.inOut" })
-        .fromTo(el.querySelector(".po-bar"), { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: 0.4 }, "-=.3")
-        // opacity (not autoAlpha) so the name stays focusable while it rises in
-        .fromTo(el.querySelectorAll(".po-in"), { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.06 }, "-=.35")
+        .fromTo(el.querySelector(".po-bar"), { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4 }, "-=.3")
+        // opacity (not opacity) so the name stays focusable while it rises in
+        .fromTo(el.querySelectorAll(morph ? ".po-in:not(.po-art)" : ".po-in"), { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.06 }, "-=.35")
         .add(name, "<");
     },
     { scope: root },
@@ -87,7 +95,7 @@ export function ProjectOverlay({ slug }: { slug: string }) {
       s && s.isConnected && s.offsetParent ? rectInset(s.getBoundingClientRect()) : "inset(50% 50% 50% 50% round 28px)";
     gsap
       .timeline({ onComplete: () => router.back() })
-      .to([el.querySelector(".po-content"), el.querySelector(".po-bar")], { autoAlpha: 0, duration: 0.25 })
+      .to([el.querySelector(".po-content"), el.querySelector(".po-bar")], { opacity: 0, duration: 0.25 })
       .to(el.querySelector(".po-bg"), { clipPath: target, duration: 0.7, ease: "expo.inOut" }, "-=.05");
   }, [router]);
 

@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
-import { ScrollTrigger } from "@/lib/gsap";
+import { requestRefresh } from "@/lib/idle";
 
-/** Re-measure every ScrollTrigger once web fonts and images have settled (pins depend on final layout). */
+/** Re-measure every ScrollTrigger once web fonts have settled (pins depend on final text metrics). */
 export function ScrollRefresh() {
   useEffect(() => {
+    // Batched with the idle queue: one refresh once fonts and images have settled.
     let alive = true;
-    const refresh = () => alive && ScrollTrigger.refresh();
-    document.fonts?.ready.then(refresh);
-    if (document.readyState === "complete") requestAnimationFrame(refresh);
-    else window.addEventListener("load", refresh, { once: true });
+    document.fonts?.ready.then(() => alive && requestRefresh());
+    window.addEventListener("load", requestRefresh, { once: true });
     return () => {
       alive = false;
-      window.removeEventListener("load", refresh);
+      window.removeEventListener("load", requestRefresh);
     };
   }, []);
   return null;

@@ -12,7 +12,8 @@ const json = (body: ContactResponse, status = 200, headers?: HeadersInit) => Res
  */
 export async function POST(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || req.headers.get("x-real-ip") || "local";
-  const limit = rateLimit(ip);
+  // loopback (local dev, tests) is not rate-limited
+  const limit = /^(local|::1|127\.0\.0\.1|::ffff:127\.0\.0\.1)$/.test(ip) ? { ok: true, retryAfter: 0 } : rateLimit(ip);
   if (!limit.ok) {
     return json({ ok: false, mode: "rate-limited", retryAfter: limit.retryAfter }, 429, { "Retry-After": String(limit.retryAfter) });
   }

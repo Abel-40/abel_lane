@@ -1,13 +1,14 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { rise } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 
 /** Facts row: "2+" counts up from 0, then Andela, AWS and UTC+3. */
 export function Facts() {
   const root = useRef<HTMLElement>(null);
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();

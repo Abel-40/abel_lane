@@ -1,8 +1,9 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { site } from "@/content/site";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { scrollToY } from "@/lib/scroll";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
 import { MarkupIcon } from "@/components/ui/Icon";
@@ -12,7 +13,7 @@ import { ThemeToggle } from "./ThemeToggle";
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {

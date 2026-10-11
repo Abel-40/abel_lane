@@ -1,9 +1,10 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { caseHref, cases } from "@/content";
 import { animateSectionMarks, rise, scramble } from "@/lib/anim";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { Icon } from "@/components/ui/Icon";
 import { SectionMark } from "@/components/ui/SectionMark";
@@ -15,7 +16,7 @@ export function CaseBand() {
   const root = useRef<HTMLElement>(null);
   const lead = cases[0];
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();

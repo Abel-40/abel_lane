@@ -1,6 +1,7 @@
 "use client";
 
 import type Lenis from "lenis";
+import { flushLazy } from "./idle";
 
 let lenis: Lenis | null = null;
 let locks = 0;
@@ -28,6 +29,8 @@ const reduce = () => window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 /** Reference scrollToY: numbers scroll to an offset, elements to their top minus the 90px nav. */
 export function scrollToY(target: number | HTMLElement, smooth: boolean) {
+  // lazy sections above the target must exist (with their pin spacers) before it is measured
+  if (typeof target !== "number" || target > 0) flushLazy();
   if (lenis && smooth) {
     lenis.scrollTo(target, { offset: typeof target === "number" ? 0 : -90, duration: 1.4 });
     return;

@@ -105,3 +105,17 @@ html[data-js] .loader:not(.js-run) .ll { visibility: hidden; }
 
 /* improvement: theme toggle (system / light / dark) lives in the footer icon row and the mobile menu, so the nav pill keeps its reference layout */
 .theme-menu { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--deep-line); background: var(--chip-deep); color: var(--on-deep); font: 600 13px var(--f-body); cursor: pointer; }
+
+/* 404: the shutter's label on a navy band (bars as a static stripe) */
+.nf { position: relative; display: grid; align-items: center; min-height: 100svh; box-sizing: border-box; padding-block: 120px 80px; background: var(--deep); color: var(--on-deep); overflow: hidden; }
+.nf::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--accent) 25%, var(--accent-deep) 25% 50%, var(--deep-2) 50% 75%, var(--deep) 75%); }
+.nf::after { content: ""; position: absolute; width: 700px; height: 700px; right: -200px; top: -300px; border-radius: 50%; background: radial-gradient(circle, rgba(47, 110, 240, .45), transparent 65%); pointer-events: none; }
+.nf-in { position: relative; z-index: 1; display: grid; gap: 22px; justify-items: start; }
+.nf-line { flex-wrap: wrap; }
+.nf-path { overflow-wrap: anywhere; }
+.nf-code { padding: 5px 9px; border-radius: 8px; background: rgba(243, 168, 106, .16); color: #F3A86A; font-weight: 600; }
+.nf-title { max-width: 14ch; color: var(--on-deep); }
+.nf-lead { color: var(--on-deep-muted); }
+
+/* performance: the footer renders only when it nears the viewport */
+.foot { content-visibility: auto; contain-intrinsic-size: auto 560px; }

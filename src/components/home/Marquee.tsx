@@ -1,8 +1,9 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { marqueeRows } from "@/content/marquee";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const Star = () => (
   <svg className="mq-star" viewBox="0 0 24 24" aria-hidden="true">
@@ -18,7 +19,7 @@ const Star = () => (
 export function Marquee() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {

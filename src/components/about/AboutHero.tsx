@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import abel from "@/assets/abel.webp";
 import { pageIntro } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer } from "@/lib/motion";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { MarkupIcon } from "@/components/ui/Icon";
@@ -17,8 +17,9 @@ import { MarkupIcon } from "@/components/ui/Icon";
 export function AboutHero({ hasResume }: { hasResume: boolean }) {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const el = root.current!;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -30,18 +31,18 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
             .timeline()
             .fromTo(frame, { clipPath: "inset(100% 0% 0% 0% round 32px)" }, { clipPath: "inset(0% 0% 0% 0% round 32px)", duration: 1.3, ease: "expo.inOut" })
             .from(img, { scale: 1.25, yPercent: 12, duration: 1.5, ease: "expo.out" }, "<.35")
-            .from(el.querySelector(".ph-tag"), { x: -40, autoAlpha: 0, duration: 0.8, ease: "power3.out" }, "-=.9")
-            .from(el.querySelector(".ph-chip"), { scale: 0.5, autoAlpha: 0, duration: 0.8, ease: "back.out(2.2)" }, "-=.6"),
+            .from(el.querySelector(".ph-tag"), { x: -40, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=.9")
+            .from(el.querySelector(".ph-chip"), { scale: 0.5, opacity: 0, duration: 0.8, ease: "back.out(2.2)" }, "-=.6"),
           0.15,
         );
-        const cancel = whenIntro((covered) => (covered ? master.play() : master.progress(1)));
+        startIntro = (covered) => void (covered ? master.play() : master.progress(1));
         gsap.to(img, {
           yPercent: -5,
           ease: "none",
           scrollTrigger: { trigger: el.querySelector(".ab-photo"), start: "top 60%", end: "bottom top", scrub: true },
         });
 
-        if (!isFinePointer()) return cancel;
+        if (!isFinePointer()) return;
         const fig = el.querySelector<HTMLElement>(".ab-photo")!;
         gsap.set(frame, { transformPerspective: 900 });
         const rx = gsap.quickTo(frame, "rotationX", { duration: 0.7, ease: "power3" });
@@ -58,11 +59,11 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
         fig.addEventListener("pointermove", onMove);
         fig.addEventListener("pointerleave", onLeave);
         return () => {
-          cancel();
           fig.removeEventListener("pointermove", onMove);
           fig.removeEventListener("pointerleave", onLeave);
         };
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );

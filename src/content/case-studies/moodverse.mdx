@@ -1,0 +1,82 @@
+---
+id: mood
+slug: moodverse
+projectId: mood
+num: "01"
+project: MoodVerse
+status: Published
+read: 3 min read
+title: Trustworthy AI retrieval from curated knowledge
+q: How can an AI system understand a natural-language reflection and retrieve real source material without inventing the material itself?
+covers:
+  - Separating emotion analysis from retrieval
+  - Curating and validating the corpus
+  - Embeddings and pgvector
+  - Handling weak matches
+  - Structured outputs and failures
+sections:
+  - n: "01"
+    key: Context
+    title: The problem
+  - n: "02"
+    key: Design
+    title: The architecture and decisions
+  - n: "03"
+    key: Implementation
+    title: The difficult parts
+  - n: "04"
+    key: Validation
+    title: The results
+  - n: "05"
+    key: Reflection
+    title: What I learned and what comes next
+---
+
+{/* Case study 01. Sections still in [ brackets ] are placeholders for Abel to write; they render as visible TODOs. */}
+
+<Section n="01" k="Context" title="The problem">
+
+People often know exactly how they feel but not which words to search for. A general-purpose LLM can meet them in natural language, but on its own it can also produce text that sounds like scripture and isn’t. In a spiritual product, an invented verse isn’t a minor bug. It breaks trust completely.
+
+</Section>
+
+<Section n="02" k="Design" title="The architecture and decisions">
+
+I split the problem in two. Interpretation belongs to the model: Gemini reads the reflection and returns structured emotional themes. The text belongs to retrieval: semantic search with pgvector over a curated, verified corpus. Anything shown as scripture comes from a stored passage, never from generated output.
+
+- FastAPI with Pydantic v2 for typed request and response contracts
+- Supabase PostgreSQL with SQLAlchemy 2.x and Alembic migrations
+- pgvector keeps embeddings next to the source passages, with no separate vector store to sync
+- React Native client for a mobile-first reflection flow
+
+</Section>
+
+<Section n="03" k="Implementation" title="The difficult parts">
+
+<Todos>
+  <Todo label="Curating and validating the corpus">[ Your validation rules and why ]</Todo>
+  <Todo label="Handling reflections with weak matches">[ What happens when nothing is relevant enough ]</Todo>
+  <Todo label="Structured outputs and failure handling">[ Schema, retries and fallbacks, with a snippet ]</Todo>
+</Todos>
+
+</Section>
+
+<Section n="04" k="Validation" title="The results">
+
+<Metrics>
+  <Metric value="[ __ % ]">Retrieval relevance on the eval set</Metric>
+  <Metric value="[ __ queries ]">Size of the labelled eval set</Metric>
+  <Metric value="[ __ ms ]">p95 end-to-end latency</Metric>
+</Metrics>
+
+</Section>
+
+<Section n="05" k="Reflection" title="What I learned and what comes next">
+
+<Todos>
+  <Todo label="What I would do differently">[ One honest lesson ]</Todo>
+  <Todo label="What comes next">[ The next milestone for MoodVerse ]</Todo>
+</Todos>
+
+</Section>
+

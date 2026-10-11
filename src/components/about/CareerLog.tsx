@@ -1,9 +1,10 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { history } from "@/content/history";
 import { rise, splitChars } from "@/lib/anim";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/motion";
 import { Icon } from "@/components/ui/Icon";
 
@@ -32,7 +33,7 @@ function fitLogRail(wrap: HTMLElement) {
 export function CareerLog() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const wrap = el.querySelector<HTMLElement>(".commits-wrap")!;
@@ -48,14 +49,14 @@ export function CareerLog() {
         const term = el.querySelector(".term")!;
         gsap
           .timeline({ scrollTrigger: { trigger: term, start: "top 80%", once: true } })
-          .from(term, { y: 50, autoAlpha: 0, duration: 0.9, ease: "power3.out" })
-          .from(splitChars(el.querySelector(".cmd-text")!).chars, { autoAlpha: 0, duration: 0.01, stagger: 0.045 }, "-=.3")
-          .from(el.querySelectorAll(".commit"), { x: -24, autoAlpha: 0, duration: 0.6, ease: "power3.out", stagger: 0.1 }, "+=.1");
+          .from(term, { y: 50, opacity: 0, duration: 0.9, ease: "power3.out" })
+          .from(splitChars(el.querySelector(".cmd-text")!, false).chars, { opacity: 0, duration: 0.01, stagger: 0.045 }, "-=.3")
+          .from(el.querySelectorAll(".commit"), { x: -24, opacity: 0, duration: 0.6, ease: "power3.out", stagger: 0.1 }, "+=.1");
         const logT = el.querySelector(".tl")!;
         gsap
           .timeline({ scrollTrigger: { trigger: logT, start: "top 70%", end: "bottom 70%", scrub: 0.5 } })
           .fromTo(logT.querySelector(".tl-fill"), { scaleY: 0 }, { scaleY: 1, ease: "none" }, 0)
-          .fromTo(logT.querySelector(".tl-head"), { top: "0%", autoAlpha: 1 }, { top: "100%", autoAlpha: 1, ease: "none" }, 0);
+          .fromTo(logT.querySelector(".tl-head"), { top: "0%", opacity: 1 }, { top: "100%", opacity: 1, ease: "none" }, 0);
         el.querySelectorAll(".commit").forEach((c) => {
           ScrollTrigger.create({ trigger: c, start: "top+=28 70%", end: "max", toggleClass: { targets: c, className: "lit" } });
         });
@@ -86,7 +87,7 @@ export function CareerLog() {
     }
     if (open) {
       gsap.fromTo(body, { height: 0 }, { height: "auto", duration: 0.5, ease: "power3.out", onComplete: after });
-      gsap.from(body.querySelectorAll("li"), { x: -14, autoAlpha: 0, duration: 0.45, stagger: 0.06, delay: 0.1 });
+      gsap.from(body.querySelectorAll("li"), { x: -14, opacity: 0, duration: 0.45, stagger: 0.06, delay: 0.1 });
     } else {
       gsap.fromTo(body, { height: body.offsetHeight }, {
         height: 0,
@@ -118,7 +119,10 @@ export function CareerLog() {
           ~/abel
         </div>
         <p className="term-cmd">
-          <span className="pr">$</span> <span className="cmd-text">git log --career</span>
+          <span className="pr" aria-hidden="true">$</span> <span className="sr-only">git log --career</span>
+          <span className="cmd-text" aria-hidden="true">
+            git log --career
+          </span>
           <span className="caret" />
         </p>
         <div className="commits-wrap">

@@ -1,9 +1,10 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { projects } from "@/content/projects";
 import { animateSectionMarks, rise } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { MQ, pad2 } from "@/lib/motion";
 import { ProjectArt } from "@/components/art/ProjectArt";
 import { ProjectLink } from "@/components/projects/ProjectLink";
@@ -22,7 +23,7 @@ const TONES = ["", "tone-deep", "", "tone-tint"];
 export function WorkRail() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();

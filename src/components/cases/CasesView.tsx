@@ -4,8 +4,8 @@ import { useRef, useState } from "react";
 import { caseHref, cases, projectById } from "@/content";
 import type { ArtKey } from "@/content/types";
 import { pageIntro, rise } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer } from "@/lib/motion";
 import { ProjectArt } from "@/components/art/ProjectArt";
 import { TransitionLink } from "@/components/transition/TransitionLink";
@@ -28,8 +28,9 @@ export function CasesView() {
   const root = useRef<HTMLElement>(null);
   const [art, setArt] = useState<ArtKey>("mood");
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const el = root.current!;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -39,13 +40,13 @@ export function CasesView() {
           gsap
             .timeline()
             .from(el.querySelector(".cs-steps-line i"), { scaleX: 0, duration: 1.3, ease: "power3.inOut" })
-            .from(el.querySelectorAll(".cs-step"), { y: 24, autoAlpha: 0, duration: 0.6, ease: "power3.out", stagger: 0.12 }, "<.1"),
+            .from(el.querySelectorAll(".cs-step"), { y: 24, opacity: 0, duration: 0.6, ease: "power3.out", stagger: 0.12 }, "<.1"),
           0.5,
         );
-        const cancel = whenIntro((covered) => (covered ? tl.play() : tl.progress(1)));
+        startIntro = (covered) => void (covered ? tl.play() : tl.progress(1));
         rise(el.querySelectorAll(".cs-row-btn"), el.querySelector(".cs-rows"), { stagger: 0.07 });
 
-        if (!isFinePointer()) return cancel;
+        if (!isFinePointer()) return;
         const prev = el.querySelector<HTMLElement>(".cs-preview")!;
         const rows = el.querySelector<HTMLElement>(".cs-rows")!;
         gsap.set(prev, { scale: 0.8 });
@@ -66,12 +67,12 @@ export function CasesView() {
         rows.addEventListener("pointerover", over);
         rows.addEventListener("pointerleave", leave);
         return () => {
-          cancel();
           rows.removeEventListener("pointermove", move);
           rows.removeEventListener("pointerover", over);
           rows.removeEventListener("pointerleave", leave);
         };
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );

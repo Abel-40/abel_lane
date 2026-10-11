@@ -8,12 +8,20 @@ import { SmoothScroll } from "@/components/chrome/SmoothScroll";
 import { Toast } from "@/components/chrome/Toast";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
 import { site } from "@/content/site";
+import { JsonLd, personJsonLd, siteUrl } from "@/lib/seo";
 import { fontVariables } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: { default: site.title, template: "%s | Abel Addis" },
   description: site.description,
+  applicationName: "Abel Addis",
+  authors: [{ name: site.name, url: siteUrl() }],
+  creator: site.name,
+  openGraph: { type: "website", siteName: "Abel Addis", locale: "en_US" },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -57,6 +65,7 @@ export default function RootLayout({
           {modal}
           <Toast />
         </TransitionProvider>
+        <JsonLd data={personJsonLd()} />
         <SmoothScroll />
         <ScrollRefresh />
       </body>

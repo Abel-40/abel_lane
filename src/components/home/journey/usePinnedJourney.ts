@@ -1,10 +1,11 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import type { RefObject } from "react";
 import { journeyNodes, journeyStages } from "@/content/journey";
 import { uiIcons, type UiIconKey } from "@/content/icons";
 import { animateSectionMarks, fracOf, rise } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { MQ, pad2 } from "@/lib/motion";
 import { uiStore } from "@/lib/ui-store";
 
@@ -50,7 +51,7 @@ export function setJourneyPanel(root: Element, i: number) {
 }
 
 export function usePinnedJourney(rootRef: RefObject<HTMLElement | null>) {
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = rootRef.current!;
       const mm = gsap.matchMedia();
@@ -194,14 +195,14 @@ export function usePinnedJourney(rootRef: RefObject<HTMLElement | null>) {
           const stg = journeyStages[i];
           ptl = gsap
             .timeline()
-            .to(txt, { y: -12, autoAlpha: 0, duration: 0.15, stagger: 0.03, ease: "power2.in" })
+            .to(txt, { y: -12, opacity: 0, duration: 0.15, stagger: 0.03, ease: "power2.in" })
             .add(() => {
               setJourneyPanel(el, i);
               pre.textContent = "";
               typeOut(stg.code);
             })
-            .fromTo(txt, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.32, stagger: 0.04, ease: "power3.out" })
-            .fromTo(el.querySelector(".jr-cur"), { yPercent: 40, autoAlpha: 0.2 }, { yPercent: 0, autoAlpha: 1, duration: 0.35, ease: "power3.out" }, "<")
+            .fromTo(txt, { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32, stagger: 0.04, ease: "power3.out" })
+            .fromTo(el.querySelector(".jr-cur"), { yPercent: 40, opacity: 0.2 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, "<")
             .fromTo(el.querySelector(".jr-state"), { scale: 0.9 }, { scale: 1, duration: 0.45, ease: "back.out(2.5)" }, "<");
           jnodes.forEach((n) => {
             if (Number(n.dataset.s) === i) {

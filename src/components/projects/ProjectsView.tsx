@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { projects } from "@/content/projects";
 import type { ProjectCategory } from "@/content/types";
-import { pageIntro } from "@/lib/anim";
-import { Flip, gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { pageIntro, revealable } from "@/lib/anim";
+import { Flip } from "@/lib/flip";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer, prefersReducedMotion } from "@/lib/motion";
 import { ProjectArt } from "@/components/art/ProjectArt";
 import { Icon } from "@/components/ui/Icon";
@@ -44,21 +45,22 @@ export function ProjectsView() {
     return () => window.removeEventListener("resize", placePill);
   }, [placePill]);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const el = root.current!;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const intro = pageIntro(el.querySelector(".pg-hero")!, { paused: true });
-        const cancel = whenIntro((covered) => (covered ? intro.play() : intro.progress(1)));
-        const cells = Array.from(el.querySelectorAll<HTMLElement>(".pcell"));
-        gsap.set(cells, { y: 70, autoAlpha: 0 });
+        startIntro = (covered) => void (covered ? intro.play() : intro.progress(1));
+        const cells = revealable(Array.from(el.querySelectorAll<HTMLElement>(".pcell")));
+        gsap.set(cells, { y: 70, opacity: 0 });
         ScrollTrigger.batch(cells, {
           start: "top 92%",
           once: true,
-          onEnter: (b) => gsap.to(b, { y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", stagger: 0.1 }),
+          onEnter: (b) => gsap.to(b, { y: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.1 }),
         });
-        if (!isFinePointer()) return cancel;
+        if (!isFinePointer()) return;
         const offs = Array.from(el.querySelectorAll<HTMLElement>(".pcard")).map((card) => {
           gsap.set(card, { transformPerspective: 1000 });
           const tx = gsap.quickTo(card, "rotationX", { duration: 0.6, ease: "power3" });
@@ -83,10 +85,10 @@ export function ProjectsView() {
           };
         });
         return () => {
-          cancel();
           offs.forEach((f) => f());
         };
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );
@@ -107,8 +109,8 @@ export function ProjectsView() {
       ease: "power3.inOut",
       scale: true,
       absolute: true,
-      onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "power3.out" }),
-      onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: 0.85, duration: 0.45 }),
+      onEnter: (els) => gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }),
+      onLeave: (els) => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.45 }),
       onComplete: () => ScrollTrigger.refresh(),
     });
   }, [filter, placePill]);

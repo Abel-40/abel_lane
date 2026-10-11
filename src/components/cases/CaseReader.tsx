@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 import type { CaseStudy, Project } from "@/content/types";
 import { splitChars } from "@/lib/anim";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { scrollToY } from "@/lib/scroll";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { FlowPills } from "@/components/ui/FlowPills";
@@ -35,8 +35,9 @@ export function CaseReader({
   const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(toc[0]?.id);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const el = root.current!;
       // scroll-spy runs with or without motion
       el.querySelectorAll<HTMLElement>(".rd-sec").forEach((s) => {
@@ -51,15 +52,15 @@ export function CaseReader({
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap
           .timeline({ paused: true, delay: 0.1 })
-          .from(el.querySelector(".rd-back"), { x: -20, autoAlpha: 0, duration: 0.5 })
+          .from(el.querySelector(".rd-back"), { x: -20, opacity: 0, duration: 0.5 })
           .from(splitChars(el.querySelector(".rd-title")!).chars, { yPercent: 115, duration: 0.9, ease: "power4.out", stagger: 0.012 }, "<.05")
-          .from(el.querySelectorAll(".rd-in"), { y: 30, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "-=.6");
-        const cancel = whenIntro((covered) => (covered ? tl.play() : tl.progress(1)));
+          .from(el.querySelectorAll(".rd-in"), { y: 30, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "-=.6");
+        startIntro = (covered) => void (covered ? tl.play() : tl.progress(1));
         el.querySelectorAll(".rd-sec").forEach((s) => {
-          gsap.from(s, { y: 50, autoAlpha: 0, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: s, start: "top 88%", once: true } });
+          gsap.from(s, { y: 50, opacity: 0, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: s, start: "top 88%", once: true } });
         });
-        return cancel;
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );

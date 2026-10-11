@@ -1,11 +1,12 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { projectById } from "@/content";
 import type { UiIconKey } from "@/content/icons";
 import { rules } from "@/content/rules";
 import { animateSectionMarks, rise } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { pad2 } from "@/lib/motion";
 import { ProjectLink } from "@/components/projects/ProjectLink";
 import { TransitionLink } from "@/components/transition/TransitionLink";
@@ -29,7 +30,7 @@ const RV: [string, string, "g-light" | "g-color"][] = [
 export function Principles() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();

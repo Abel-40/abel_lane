@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projectBySlug, projects } from "@/content";
 import { ProjectPage } from "@/components/projects/ProjectPage";
+import { JsonLd, pageMeta, projectJsonLd } from "@/lib/seo";
 import "@/styles/projects.css";
 
 export const dynamicParams = false;
@@ -13,11 +14,17 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const p = projectBySlug((await params).slug);
   if (!p) return {};
-  return { title: p.name, description: `${p.name}: ${p.tagline}. ${p.meet}` };
+  return pageMeta({ path: `/projects/${p.slug}`, title: p.name, description: `${p.name}: ${p.tagline}. ${p.meet}`, type: "article" });
 }
 
 export default async function Page({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
-  if (!projectBySlug(slug)) notFound();
-  return <ProjectPage slug={slug} />;
+  const p = projectBySlug(slug);
+  if (!p) notFound();
+  return (
+    <>
+      <JsonLd data={projectJsonLd(p)} />
+      <ProjectPage slug={slug} />
+    </>
+  );
 }

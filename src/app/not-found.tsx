@@ -1,3 +1,8 @@
+import type { Metadata } from "next";
+import { NotFoundView } from "@/components/chrome/NotFoundView";
+
+export const metadata: Metadata = { title: "Not found", robots: { index: false } };
+
 export default function NotFound() {
-  return <main className="page"><h1 className="h1 wrap">404</h1></main>;
+  return <NotFoundView />;
 }

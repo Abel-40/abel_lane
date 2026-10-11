@@ -169,12 +169,12 @@ How to read it:
 | D4 | Back/forward | full shutter (hashchange) | single fast sweep (~.45s) | PROMPT §3 "shorter version" |
 | D5 | Overlay close on browser back | n/a (no URL) | instant close | intercepted route unmounts before an exit tween can run |
 | D6 | `--ok-text` (light) | #0B7A43 (4.27:1 on pill) | #08703C (4.88:1) | WCAG AA |
-| D7 | Work end-card paragraph | white @ .86 (4.06:1) | white @ .95 (4.58:1) | WCAG AA |
+| D7 | Work end-card paragraph | white @ .86 (4.06:1) | white @ 1 (4.91:1 light, 4.56:1 dark) | WCAG AA in both themes |
 | D8 | Coloured glass cards 2/4/6 | 88%→66% hue, 86–90% white copy (2.46–3.87:1) | 94%→82% hue, 100% white copy, soft 16% navy scrim under text (~4.7:1 worst) | WCAG AA; look kept |
 | D9 | 10–10.5px labels | tool group, mobile tool, data tag | 11px | legibility minimum |
 | D10 | TOC button height | 42px | 44px | hit target |
 | D11 | Project tag buttons | ~28px tall hit area | 44px hit area (visual unchanged) | hit target |
-| D12 | Orbs | `filter: blur()` on animated divs | radial-gradient discs, transform-only | scroll performance; visually equivalent |
+| D12 | Orbs | `filter: blur()` on animated divs | unchanged (reference blur kept); drift pauses while the hero is offscreen | the planned radial-gradient swap was not needed once rendering work moved off the critical path (content-visibility, lazy setup) |
 | D13 | Press feedback | none | `:active` scale .97 (100ms) | feedback within 100ms |
 | D14 | Résumé button | toast "not connected" | links `/resume.pdf` if present, otherwise hidden | PROMPT §7.4 |
 | D15 | Glass | always | solid under `prefers-reduced-transparency` | PROMPT §7.7 |
@@ -191,3 +191,4 @@ How to read it:
 | D26 | Case reader TOC | buttons | anchor links (`#rd-…`), focus moves to the section | links work without JS and in new tabs |
 | D27 | Project detail on direct visit | n/a (always an overlay) | full page under the nav with the same content and controls | PROMPT §3 |
 | D28 | Contact sending | compose + copy only | Resend when configured; the reference fallback plus a mailto link otherwise | PROMPT §7.3 |
+| D29 | Hero lead entrance | rises and fades in | rises only (no fade) | it is the LCP text: painting it from the first frame (behind the loader) keeps LCP near first paint; the rise is unchanged |

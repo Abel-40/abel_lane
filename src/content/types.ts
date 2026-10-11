@@ -34,25 +34,11 @@ export interface Project {
   stack: readonly StackGroup[];
 }
 
-export interface CaseTodo {
-  label: string;
-  /** Bracketed placeholder Abel still has to write, e.g. "[ One honest lesson ]". */
-  placeholder: string;
-}
-
-export interface CaseMetric {
-  placeholder: string;
-  label: string;
-}
-
-export interface CaseSection {
+/** Table-of-contents entry for a written case study (its body lives in the MDX file). */
+export interface CaseSectionMeta {
   n: string;
   key: string;
   title: string;
-  body?: string;
-  points?: readonly string[];
-  todo?: readonly CaseTodo[];
-  metrics?: readonly CaseMetric[];
 }
 
 export interface CaseStudy {
@@ -66,7 +52,8 @@ export interface CaseStudy {
   title: string;
   q: string;
   covers: readonly string[];
-  sections?: readonly CaseSection[];
+  /** Present once the write-up exists; the body is src/content/case-studies/<slug>.mdx. */
+  sections?: readonly CaseSectionMeta[];
 }
 
 export interface ExperienceItem {

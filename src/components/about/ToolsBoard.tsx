@@ -1,11 +1,13 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { genericIcons, brandIcons, type GenericIconKey } from "@/content/icons";
 import { toolGroups } from "@/content/stack";
 import type { Tool, ToolGroupId } from "@/content/types";
 import { rise } from "@/lib/anim";
-import { Flip, gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { Flip } from "@/lib/flip";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { isFinePointer, prefersReducedMotion } from "@/lib/motion";
 
 type TabId = "all" | ToolGroupId;
@@ -72,7 +74,7 @@ export function ToolsBoard() {
   }, [placePill]);
 
   /* entrance + spotlight */
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const board = el.querySelector<HTMLElement>(".board")!;
@@ -82,7 +84,7 @@ export function ToolsBoard() {
         gsap.from(el.querySelectorAll(".tool"), {
           y: 34,
           scale: 0.88,
-          autoAlpha: 0,
+          opacity: 0,
           duration: 0.7,
           ease: "back.out(1.6)",
           stagger: { each: 0.028, from: "start" },
@@ -119,8 +121,8 @@ export function ToolsBoard() {
       absolute: true,
       stagger: 0.01,
       onEnter: (els) =>
-        gsap.fromTo(els, { autoAlpha: 0, scale: 0.6, y: 18 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.7)", stagger: 0.03, delay: 0.15 }),
-      onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: 0.6, duration: 0.32, ease: "power2.in" }),
+        gsap.fromTo(els, { opacity: 0, scale: 0.6, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.7)", stagger: 0.03, delay: 0.15 }),
+      onLeave: (els) => gsap.to(els, { opacity: 0, scale: 0.6, duration: 0.32, ease: "power2.in" }),
       onComplete: () => ScrollTrigger.refresh(),
     });
   }, [tab, placePill]);

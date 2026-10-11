@@ -21,8 +21,7 @@ export function Loader() {
     if (!el) return;
     const html = document.documentElement;
     if (html.dataset.loader === "off" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      releaseIntro();
-      setGone(true);
+      releaseIntro(); // CSS already hides the loader (html[data-loader=off], reduced motion)
       return;
     }
     el.classList.add("js-run");

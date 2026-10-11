@@ -1,22 +1,23 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import { useRef } from "react";
 import { animateSectionMarks, rise, splitPlain } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { SectionMark } from "@/components/ui/SectionMark";
 
 /** 01 — each word goes from opacity .13 to 1 as you scroll (scrub .4), then the signature rises. */
 export function Statement() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = root.current!;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         animateSectionMarks(el);
         const text = el.querySelector(".st-text")!;
-        const words = splitPlain(text).words;
+        const words = splitPlain(text, false).words; // aria-label is not allowed on <p>; word spans read naturally
         gsap.fromTo(
           words,
           { opacity: 0.13 },

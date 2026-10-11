@@ -181,9 +181,10 @@ export function Nav() {
       <div className="progress" ref={progressRef} aria-hidden="true" />
       <header className="nav" id="nav" ref={navRef}>
         <div className="nav-in">
-          <TransitionLink href="/" className="brand" aria-label="Abel Addis, home">
+          <TransitionLink href="/" className="brand">
             <BrandMark />
-            <span className="brand-name">
+            <span className="sr-only">Abel Addis, home</span>
+            <span className="brand-name" aria-hidden="true">
               Abel <i>Addis</i>
             </span>
           </TransitionLink>

@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { heroStackChips, rotatingWords } from "@/content/hero-console";
 import { splitChars } from "@/lib/anim";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { isFinePointer, MQ } from "@/lib/motion";
 import { scrollToY } from "@/lib/scroll";
 import { TransitionLink } from "@/components/transition/TransitionLink";
@@ -23,12 +23,13 @@ const CREDS = [
 export function Hero() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
       const el = root.current!;
       const q = gsap.utils.selector(el);
       const hcon = createHeroConsole(el);
       const mm = gsap.matchMedia();
+      let startIntro: ((covered: boolean) => void) | null = null;
 
       mm.add(MQ.reduce, () => {
         hcon.still(); // one finished scenario, no loops (PROMPT 5.8)
@@ -43,18 +44,20 @@ export function Hero() {
         /* intro (reference INIT.home), played when the loader/shutter lifts */
         const intro = gsap
           .timeline({ paused: true })
-          .from(q(".hero-orbs i"), { autoAlpha: 0, scale: 0.55, duration: 1.8, ease: "power2.out", stagger: 0.12 }, 0)
-          .from(q(".hero-kicker"), { y: 18, autoAlpha: 0, duration: 0.7, ease: "power3.out" }, 0.05)
+          .from(q(".hero-orbs i"), { opacity: 0, scale: 0.55, duration: 1.8, ease: "power2.out", stagger: 0.12 }, 0)
+          .from(q(".hero-kicker"), { y: 18, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.05)
           .from(chars, { yPercent: 120, duration: 1.1, ease: "power4.out", stagger: 0.02 }, 0.12)
-          .from(q(".ht-rot"), { yPercent: 50, autoAlpha: 0, duration: 0.9, ease: "power3.out" }, 0.4)
-          .from(q(".hero-lead, .hero-ctas > *"), { y: 26, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, 0.7)
-          .from(q(".creds li"), { y: 20, autoAlpha: 0, duration: 0.7, ease: "power3.out", stagger: 0.07 }, 0.9)
-          .from(q(".hv-console"), { y: 80, scale: 0.93, autoAlpha: 0, duration: 1.15, ease: "power3.out" }, 0.3)
-          .from(q(".hv-metric"), { x: -60, y: -24, rotation: -7, autoAlpha: 0, duration: 1, ease: "back.out(1.5)" }, 0.72)
-          .from(q(".hv-queue"), { x: 60, y: 34, rotation: 7, autoAlpha: 0, duration: 1, ease: "back.out(1.5)" }, 0.84)
-          .from(q(".hv-now"), { y: -26, autoAlpha: 0, duration: 0.8, ease: "power3.out" }, 0.95)
-          .from(q(".hvs-i"), { scale: 0, autoAlpha: 0, duration: 0.55, ease: "back.out(2.6)", stagger: 0.06 }, 1.05)
-          .from(q(".scroll-cue"), { autoAlpha: 0, duration: 0.6 }, 1.2);
+          .from(q(".ht-rot"), { yPercent: 50, opacity: 0, duration: 0.9, ease: "power3.out" }, 0.4)
+          // the lead (the LCP text) rises without fading so it is painted from the first frame (PARITY D29)
+          .from(q(".hero-lead"), { y: 26, duration: 0.8, ease: "power3.out" }, 0.7)
+          .from(q(".hero-ctas > *"), { y: 26, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, 0.78)
+          .from(q(".creds li"), { y: 20, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.07 }, 0.9)
+          .from(q(".hv-console"), { y: 80, scale: 0.93, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.3)
+          .from(q(".hv-metric"), { x: -60, y: -24, rotation: -7, opacity: 0, duration: 1, ease: "back.out(1.5)" }, 0.72)
+          .from(q(".hv-queue"), { x: 60, y: 34, rotation: 7, opacity: 0, duration: 1, ease: "back.out(1.5)" }, 0.84)
+          .from(q(".hv-now"), { y: -26, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.95)
+          .from(q(".hvs-i"), { scale: 0, opacity: 0, duration: 0.55, ease: "back.out(2.6)", stagger: 0.06 }, 1.05)
+          .from(q(".scroll-cue"), { opacity: 0, duration: 0.6 }, 1.2);
 
         /* rotating word: old slides up and out, new slides up and in, width animates */
         let wi = 0;
@@ -88,7 +91,7 @@ export function Hero() {
               },
             })
             .set(rot, { width: w0 })
-            .to(old, { yPercent: -115, autoAlpha: 0, duration: 0.5, ease: "power3.in" })
+            .to(old, { yPercent: -115, opacity: 0, duration: 0.5, ease: "power3.in" })
             .fromTo(nw, { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: "power3.out" }, 0.28)
             .to(rot, { width: w1, duration: 0.7, ease: "power3.inOut" }, 0.18);
         };
@@ -110,11 +113,11 @@ export function Hero() {
           timers.push(gsap.delayedCall(covered ? 2.8 : 2.2, nextWord));
         };
 
-        const cancel = whenIntro((covered) => {
+        startIntro = (covered) => {
           if (covered) intro.play();
           else intro.progress(1); // already painted: no flicker, keep the static final state
           startLoops(covered);
-        });
+        };
 
         /* pause offscreen loops (improvement): console, bobbing cards, queue bars, orb drift */
         const vis = ScrollTrigger.create({
@@ -130,7 +133,6 @@ export function Hero() {
 
         return () => {
           alive = false;
-          cancel();
           rtl?.kill();
           timers.forEach((t) => t.kill());
           vis.kill();
@@ -144,7 +146,7 @@ export function Hero() {
       /* scroll-out drift (desktop: cards drift apart) */
       mm.add(MQ.desktop, () => {
         const st = { trigger: el, start: "top top", end: "bottom top", scrub: true } as const;
-        gsap.to(q(".hero-in"), { yPercent: -14, autoAlpha: 0.15, ease: "none", scrollTrigger: st });
+        gsap.to(q(".hero-in"), { yPercent: -14, opacity: 0.15, ease: "none", scrollTrigger: st });
         gsap.to(q(".hero-vis"), { yPercent: -12, ease: "none", scrollTrigger: st });
         gsap.to(q(".hv-metric"), { yPercent: -60, xPercent: -10, ease: "none", scrollTrigger: st });
         gsap.to(q(".hv-queue"), { yPercent: 40, xPercent: 8, ease: "none", scrollTrigger: st });
@@ -189,11 +191,11 @@ export function Hero() {
 
       mm.add(MQ.mobile, () => {
         const st = { trigger: el, start: "top top", end: "bottom top", scrub: true } as const;
-        gsap.to(q(".hero-in"), { yPercent: -14, autoAlpha: 0.15, ease: "none", scrollTrigger: st });
+        gsap.to(q(".hero-in"), { yPercent: -14, opacity: 0.15, ease: "none", scrollTrigger: st });
         gsap.to(q(".hero-orbs"), { yPercent: 18, ease: "none", scrollTrigger: st });
       });
 
-      return () => hcon.kill();
+      return { start: (covered) => startIntro?.(covered), cleanup: () => hcon.kill() };
     },
     { scope: root },
   );

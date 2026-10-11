@@ -1,6 +1,7 @@
 "use client";
 
 import { gsap, ScrollTrigger, SplitText } from "./gsap";
+import { isIntroHeld } from "./intro";
 
 /* Animation helpers ported from the reference (rise, split, heroIntro, scramble, fracOf, section markers).
    Call them inside a useGSAP callback so everything they create is reverted on unmount. */
@@ -8,12 +9,22 @@ import { gsap, ScrollTrigger, SplitText } from "./gsap";
 type Targets = gsap.TweenTarget;
 
 /** Reference `rise`: y 46 → 0 with a fade, power3.out 1s, stagger .08, once at "top 86%". */
+export function onScreen(el: Element) {
+  const r = el.getBoundingClientRect();
+  return r.bottom > 0 && r.top < window.innerHeight && r.width > 0;
+}
+
+/** Elements to reveal: when no cover (loader/shutter) hides the page, skip what is already painted on screen. */
+export function revealable<T extends Element>(els: T[]) {
+  return isIntroHeld() ? els : els.filter((el) => !onScreen(el));
+}
+
 export function rise(targets: Targets, trigger?: gsap.DOMTarget | null, extra: gsap.TweenVars = {}) {
-  const els = gsap.utils.toArray<Element>(targets).filter(Boolean);
+  const els = revealable(gsap.utils.toArray<Element>(targets).filter(Boolean));
   if (!els.length) return null;
   return gsap.from(els, {
     y: 46,
-    autoAlpha: 0,
+    opacity: 0,
     duration: 1,
     ease: "power3.out",
     stagger: 0.08,
@@ -49,10 +60,10 @@ export function pageIntro(root: Element, opts: { delay?: number; paused?: boolea
   const tl = gsap.timeline({ delay: opts.delay ?? 0, paused: opts.paused });
   const kicker = root.querySelector(".kicker");
   const h = root.querySelector("[data-split]");
-  if (kicker) tl.from(kicker, { y: 16, autoAlpha: 0, duration: 0.6, ease: "power3.out" });
+  if (kicker) tl.from(kicker, { y: 16, opacity: 0, duration: 0.6, ease: "power3.out" });
   if (h) tl.from(splitChars(h).chars, { yPercent: 118, duration: 1.05, ease: "power4.out", stagger: 0.014 }, "<.05");
   const fades = root.querySelectorAll(".hero-fade");
-  if (fades.length) tl.from(fades, { y: 26, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "-=.75");
+  if (fades.length) tl.from(fades, { y: 26, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "-=.75");
   return tl;
 }
 
@@ -81,16 +92,30 @@ export function scramble(el: HTMLElement) {
   });
 }
 
-/** Fraction (0–1) along `path` nearest to (x, y), sampled at 240 steps (reference fracOf). */
+/** Fraction (0–1) along `path` nearest to (x, y) (reference fracOf: 240 samples). Coarse-to-fine: 48 samples,
+    then 12 within the best neighbourhood — same result at a quarter of the getPointAtLength calls. */
 export function fracOf(path: SVGGeometryElement, len: number, x: number, y: number) {
+  const dist = (f: number) => {
+    const p = path.getPointAtLength(len * f);
+    return (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+  };
   let best = 0;
   let bd = Infinity;
-  for (let i = 0; i <= 240; i++) {
-    const p = path.getPointAtLength((len * i) / 240);
-    const d = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+  for (let i = 0; i <= 48; i++) {
+    const d = dist(i / 48);
     if (d < bd) {
       bd = d;
-      best = i / 240;
+      best = i / 48;
+    }
+  }
+  const lo = Math.max(0, best - 1 / 48);
+  for (let i = 0; i <= 12; i++) {
+    const f = lo + (i / 12) * (2 / 48);
+    if (f > 1) break;
+    const d = dist(f);
+    if (d < bd) {
+      bd = d;
+      best = f;
     }
   }
   return best;
@@ -105,7 +130,7 @@ export function animateSectionMarks(scope: Element) {
     }
     gsap.from([m.querySelector(".sm-num"), m.querySelector(".sm-label")], {
       y: 18,
-      autoAlpha: 0,
+      opacity: 0,
       duration: 0.7,
       ease: "back.out(2)",
       stagger: 0.08,

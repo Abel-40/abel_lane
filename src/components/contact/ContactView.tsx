@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { site } from "@/content/site";
 import { pageIntro } from "@/lib/anim";
-import { gsap, useGSAP } from "@/lib/gsap";
-import { whenIntro } from "@/lib/intro";
+import { gsap } from "@/lib/gsap";
+import { useIntroGSAP } from "@/hooks/useIntroGSAP";
 import { Clock } from "@/components/ui/Clock";
 import { CopyEmailButton } from "@/components/ui/CopyEmailButton";
 import { Icon } from "@/components/ui/Icon";
@@ -14,18 +14,20 @@ import { ContactForm } from "./ContactForm";
 export function ContactView() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useIntroGSAP(
     () => {
+      let startIntro: ((covered: boolean) => void) | null = null;
       const el = root.current!;
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({ paused: true });
         tl.add(pageIntro(el), 0)
-          .from(el.querySelectorAll(".ct-item"), { x: -30, autoAlpha: 0, duration: 0.7, ease: "power3.out", stagger: 0.08 }, 0.6)
-          .from(el.querySelectorAll(".open-to > *"), { y: 14, autoAlpha: 0, duration: 0.5, stagger: 0.05 }, 1)
-          .from(el.querySelector(".fcard"), { x: 60, rotation: 2, autoAlpha: 0, duration: 1.1, ease: "power3.out" }, 0.3);
-        return whenIntro((covered) => (covered ? tl.play() : tl.progress(1)));
+          .from(el.querySelectorAll(".ct-item"), { x: -30, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.08 }, 0.6)
+          .from(el.querySelectorAll(".open-to > *"), { y: 14, opacity: 0, duration: 0.5, stagger: 0.05 }, 1)
+          .from(el.querySelector(".fcard"), { x: 60, rotation: 2, opacity: 0, duration: 1.1, ease: "power3.out" }, 0.3);
+        startIntro = (covered) => void (covered ? tl.play() : tl.progress(1));
       });
+      return { start: (covered: boolean) => startIntro?.(covered) };
     },
     { scope: root },
   );

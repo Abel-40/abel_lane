@@ -1,8 +1,9 @@
 "use client";
 
+import { useIdleGSAP } from "@/hooks/useIdleGSAP";
 import type { RefObject } from "react";
 import { animateSectionMarks, fracOf, rise } from "@/lib/anim";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { MQ } from "@/lib/motion";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -129,7 +130,7 @@ function allLit(g: XpGeometry | null) {
  * reaches its dot and hides again on scroll-up. Reduced motion: fully lit, all cards visible.
  */
 export function useWindingTimeline(rootRef: RefObject<HTMLElement | null>) {
-  useGSAP(
+  useIdleGSAP(
     () => {
       const el = rootRef.current!;
       const wrap = el.querySelector<HTMLElement>(".xpw")!;
@@ -165,26 +166,26 @@ export function useWindingTimeline(rootRef: RefObject<HTMLElement | null>) {
         });
         parts.forEach((q) => {
           gsap.set(q.card, {
-            autoAlpha: 0,
+            opacity: 0,
             x: q.dx,
             rotation: q.rot,
             scale: 0.9,
             transformOrigin: desk ? (q.dx > 0 ? "100% 30%" : "0% 30%") : "0% 30%",
           });
-          gsap.set(q.bits, { autoAlpha: 0, y: 12 });
-          if (desk && q.year) gsap.set(q.year, { autoAlpha: 0, x: -q.dx * 0.8 });
+          gsap.set(q.bits, { opacity: 0, y: 12 });
+          if (desk && q.year) gsap.set(q.year, { opacity: 0, x: -q.dx * 0.8 });
         });
         const show = (i: number, on: boolean) => {
           const q = parts[i];
           if (!q) return;
           if (on) {
-            gsap.to(q.card, { autoAlpha: 1, x: 0, rotation: 0, scale: 1, duration: 0.75, delay: 0.12, ease: "back.out(1.5)", overwrite: true });
-            gsap.to(q.bits, { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.26, stagger: 0.06, ease: "power3.out", overwrite: true });
-            if (desk && q.year) gsap.to(q.year, { autoAlpha: 1, x: 0, duration: 0.9, delay: 0.2, ease: "power3.out", overwrite: true });
+            gsap.to(q.card, { opacity: 1, x: 0, rotation: 0, scale: 1, duration: 0.75, delay: 0.12, ease: "back.out(1.5)", overwrite: true });
+            gsap.to(q.bits, { opacity: 1, y: 0, duration: 0.5, delay: 0.26, stagger: 0.06, ease: "power3.out", overwrite: true });
+            if (desk && q.year) gsap.to(q.year, { opacity: 1, x: 0, duration: 0.9, delay: 0.2, ease: "power3.out", overwrite: true });
           } else {
-            gsap.to(q.card, { autoAlpha: 0, x: q.dx * 0.6, rotation: q.rot * 0.6, scale: 0.94, duration: 0.35, ease: "power2.in", overwrite: true });
-            gsap.to(q.bits, { autoAlpha: 0, y: 12, duration: 0.25, ease: "power2.in", overwrite: true });
-            if (desk && q.year) gsap.to(q.year, { autoAlpha: 0, x: -q.dx * 0.5, duration: 0.3, ease: "power2.in", overwrite: true });
+            gsap.to(q.card, { opacity: 0, x: q.dx * 0.6, rotation: q.rot * 0.6, scale: 0.94, duration: 0.35, ease: "power2.in", overwrite: true });
+            gsap.to(q.bits, { opacity: 0, y: 12, duration: 0.25, ease: "power2.in", overwrite: true });
+            if (desk && q.year) gsap.to(q.year, { opacity: 0, x: -q.dx * 0.5, duration: 0.3, ease: "power2.in", overwrite: true });
           }
         };
         const render = (pr: number) => {
