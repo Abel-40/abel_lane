@@ -253,7 +253,7 @@ const shots: Shot[] = [
     route: { ref: "/#cases", new: "/case-studies" },
     act: async (p) => {
       await p.locator(".cs-row-btn").first().click();
-      await p.waitForTimeout(2600);
+      await p.waitForTimeout(3800);
     },
   },
   { id: "d21-contact", viewport: DESK, route: { ref: "/#contact", new: "/contact" } },

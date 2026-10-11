@@ -35,9 +35,9 @@
 .rd-flow > span { font-size: 13.5px; font-weight: 650; color: var(--muted); }
 .rd-grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: start; gap: 56px; margin-top: 56px; }
 .toc { position: sticky; top: 110px; display: grid; gap: 4px; }
-.toc button { display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 12px; border: 0; border-radius: 12px; background: none; color: var(--muted); font: 600 14.5px var(--f-body); text-align: left; cursor: pointer; transition: background-color .25s, color .25s; }
-.toc button:hover { color: var(--ink); }
-.toc button.on { background: var(--accent-soft); color: var(--ink); }
+.toc a { display: flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; /* polish D10: was 42px; anchors replace buttons */ padding: 0 12px; border: 0; border-radius: 12px; background: none; color: var(--muted); font: 600 14.5px var(--f-body); text-align: left; cursor: pointer; transition: background-color .25s, color .25s; }
+.toc a:hover { color: var(--ink); }
+.toc a.on { background: var(--accent-soft); color: var(--ink); }
 .toc .mono { font-size: 12px; color: var(--accent-text); }
 .rd-body { display: grid; gap: 20px; min-width: 0; }
 .rd-sec { scroll-margin-top: 110px; padding: clamp(22px, 3vw, 36px); border-radius: 28px; background: var(--surface); border: 1px solid var(--glass-edge); box-shadow: var(--shadow); }
