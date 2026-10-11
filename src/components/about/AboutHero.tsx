@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import abel from "@/assets/abel.webp";
+import abel from "@/assets/abel.png";
 import { pageIntro } from "@/lib/anim";
 import { gsap } from "@/lib/gsap";
 import { useIntroGSAP } from "@/hooks/useIntroGSAP";
@@ -36,8 +36,9 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
           0.15,
         );
         startIntro = (covered) => void (covered ? master.play() : master.progress(1));
+        // parallax uses `y` (the intro owns yPercent); the photo is overscanned 6% top and bottom, so -5% never shows an edge
         gsap.to(img, {
-          yPercent: -5,
+          y: () => -frame.offsetHeight * 0.05,
           ease: "none",
           scrollTrigger: { trigger: el.querySelector(".ab-photo"), start: "top 60%", end: "bottom top", scrub: true },
         });
@@ -96,11 +97,10 @@ export function AboutHero({ hasResume }: { hasResume: boolean }) {
       </div>
       <figure className="ab-photo" id="abPhoto">
         <div className="ph-frame" id="phFrame">
-          <div className="ph-grid" aria-hidden="true" />
           <Image
             src={abel}
-            alt="Abel Addis in a beige blazer, arms crossed"
-            sizes="(max-width: 899px) 320px, 386px"
+            alt="Abel Addis in a beige blazer and brown shirt, smiling, with his hands in his pockets"
+            sizes="(max-width: 899px) 92vw, 460px"
             loading="eager"
             fetchPriority="high"
             placeholder="empty"
