@@ -9,6 +9,7 @@ import { AmountField, BackHeader, DataFallback, ErrorLine, FormActions, SelectFi
 import { ThemeChoice } from "../components/Theme";
 import { computeInsights } from "../lib/insights";
 import { BackupSection, InstallHint } from "../components/BackupSection";
+import { DangerZone } from "../components/DangerZone";
 import { deleteOrArchive, deleteRow, insertRow, saveRow, updateRow } from "../lib/db";
 import { formatBp, formatMinor, hourlyRate, minorToInput, parseAmount, parsePercentToBp, percentNumberToBp } from "../lib/money";
 import { rememberLockMinutes } from "../lib/session";
@@ -58,6 +59,14 @@ export function SettingsScreen() {
   return (
     <main className="mz-page mz-page--full mz-page--tight">
       <BackHeader title="Settings" />
+
+      <Link href="/mezgeb/help" className="mz-card mz-card--sm mz-card--row">
+        <span className="mz-row__main" style={{ gap: 2 }}>
+          <span className="mz-row__title">Help and how-to guides</span>
+          <span className="mz-row__sub">What every screen does, and step by step how to add things</span>
+        </span>
+        <span className="mz-dim">›</span>
+      </Link>
 
       <span className="mz-section-label">Income and giving</span>
       <div className="mz-list mz-list--16">
@@ -122,6 +131,8 @@ export function SettingsScreen() {
       <div style={{ marginTop: 12 }}>
         <SignOutEverywhereButton />
       </div>
+
+      <DangerZone />
 
       <Sheet open={panel === "income"} title="Income and giving" onClose={() => setPanel(null)}>
         <IncomeForm

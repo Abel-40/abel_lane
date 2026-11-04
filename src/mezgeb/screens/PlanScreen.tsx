@@ -126,9 +126,14 @@ export function PlanScreen() {
     <main className="mz-page mz-page--tight">
       <header className="mz-head">
         <h1 className="mz-title">Plan</h1>
-        <Link href="/mezgeb/wishlist" className="mz-btn mz-btn--sm mz-btn--secondary">
-          Wishlist
-        </Link>
+        <div className="mz-row-center" style={{ gap: 8 }}>
+          <Link href="/mezgeb/payday" className="mz-btn mz-btn--sm mz-btn--secondary">
+            Payday
+          </Link>
+          <Link href="/mezgeb/wishlist" className="mz-btn mz-btn--sm mz-btn--secondary">
+            Wishlist
+          </Link>
+        </div>
       </header>
 
       {insights && <YearSavingsCard year={insights.year} />}

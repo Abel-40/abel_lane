@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckIcon, ClockIcon, SettingsIcon } from "../components/Icons";
+import { CheckIcon, ClockIcon, HelpIcon, SettingsIcon } from "../components/Icons";
 import { EntryRow } from "../components/EntryRow";
 import { TodayCard, YearSavingsCard } from "../components/Insights";
 import { ThemeToggleButton } from "../components/Theme";
@@ -52,6 +52,9 @@ export function HomeScreen() {
           <h1 className="mz-title">Mezgeb</h1>
         </div>
         <div className="mz-row-center" style={{ gap: 6 }}>
+          <Link href="/mezgeb/help" aria-label="Help" className="mz-icon-btn">
+            <HelpIcon />
+          </Link>
           <ThemeToggleButton />
           <Link href="/mezgeb/settings" aria-label="Settings" className="mz-icon-btn">
             <SettingsIcon />
