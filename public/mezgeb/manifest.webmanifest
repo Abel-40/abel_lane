@@ -1,0 +1,18 @@
+{
+  "name": "Mezgeb",
+  "short_name": "Mezgeb",
+  "description": "Private ledger",
+  "id": "/mezgeb",
+  "start_url": "/mezgeb",
+  "scope": "/mezgeb",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0E1311",
+  "theme_color": "#0E1311",
+  "icons": [
+    { "src": "/mezgeb/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/mezgeb/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/mezgeb/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/mezgeb/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

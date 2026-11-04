@@ -1,0 +1,647 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mezgeb Design Reference</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: a dark specimen sheet of nine phone screens in a wrapping grid, tokens up top. Single dark look by choice. */
+:root {
+  --bg: #0A0E0C; --panel: #121815; --line: #26302B; --fg: #EEF3EF; --muted: #A3B1AA;
+  --accent: #C4F06A; --on-accent: #10140F;
+  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --font-text: 'DM Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--font-text); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+.wrap { max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+header.intro { display: flex; flex-direction: column; gap: 12px; max-width: 70ch; }
+header.intro h1 { margin: 0; font-family: var(--font-display); font-size: clamp(30px, 5vw, 44px); letter-spacing: -0.02em; text-wrap: balance; }
+header.intro p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.mark { width: 52px; height: 52px; border-radius: 16px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 24px; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.jump a { color: var(--fg); text-decoration: none; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 8px 14px; font-size: 14px; }
+nav.jump a:hover, nav.jump a:focus-visible { border-color: var(--accent); color: var(--accent); }
+.tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.tok { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px; display: flex; gap: 10px; align-items: center; min-width: 0; }
+.sw { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); flex: none; }
+.tok span { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); min-width: 0; }
+.tok b { color: var(--fg); font-weight: 600; font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.screens { display: flex; flex-wrap: wrap; gap: 40px 32px; }
+.screen { display: flex; flex-direction: column; gap: 12px; width: 390px; max-width: 100%; }
+.screen-head h2 { margin: 0; font-family: var(--font-display); font-size: 20px; }
+.screen-head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; min-height: 42px; }
+.phone-scroll { overflow-x: auto; max-width: 100%; border-radius: 30px; }
+.phone { width: 390px; height: 844px; border-radius: 30px; overflow: hidden; outline: 1px solid var(--line); }
+.phone a:focus-visible, .phone button:focus-visible, .phone input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+footer.note { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<div class="wrap">
+  <header class="intro">
+    <div class="mark" aria-hidden="true">መ</div>
+    <h1>Mezgeb design reference</h1>
+    <p>The visual design for Mezgeb, the private personal finance PWA under <code>/mezgeb</code>. Build every screen to match these layouts, colors, type and spacing. All numbers shown are sample data; item names in Trading are placeholders.</p>
+    <nav class="jump" aria-label="Screens"><a href="#screen-login">Sign in, two steps</a><a href="#screen-main">Home</a><a href="#screen-add">Add entry</a><a href="#screen-payday">Payday split</a><a href="#screen-accounts">Accounts</a><a href="#screen-trading">Trading</a><a href="#screen-plan">Debts and goals</a><a href="#screen-wishlist">Wishlist</a><a href="#screen-settings">Settings</a></nav>
+  </header>
+  <section aria-label="Design tokens" class="tokens">
+    <div class="tok"><i class="sw" style="background:#0E1311"></i><span><b>#0E1311</b>background</span></div><div class="tok"><i class="sw" style="background:#161D1A"></i><span><b>#161D1A</b>surface</span></div><div class="tok"><i class="sw" style="background:#1E2723"></i><span><b>#1E2723</b>surface raised</span></div><div class="tok"><i class="sw" style="background:#2A3530"></i><span><b>#2A3530</b>border</span></div><div class="tok"><i class="sw" style="background:#11171A"></i><span><b>#11171A</b>nav background</span></div><div class="tok"><i class="sw" style="background:#EEF3EF"></i><span><b>#EEF3EF</b>text</span></div><div class="tok"><i class="sw" style="background:#A3B1AA"></i><span><b>#A3B1AA</b>text muted</span></div><div class="tok"><i class="sw" style="background:#7F8D86"></i><span><b>#7F8D86</b>text dim</span></div><div class="tok"><i class="sw" style="background:#C4F06A"></i><span><b>#C4F06A</b>accent</span></div><div class="tok"><i class="sw" style="background:#10140F"></i><span><b>#10140F</b>on accent</span></div><div class="tok"><i class="sw" style="background:#23301A"></i><span><b>#23301A</b>accent tint</span></div><div class="tok"><i class="sw" style="background:#F3B544"></i><span><b>#F3B544</b>amber</span></div><div class="tok"><i class="sw" style="background:#1A1406"></i><span><b>#1A1406</b>on amber</span></div><div class="tok"><i class="sw" style="background:#1E1A10"></i><span><b>#1E1A10</b>amber tint</span></div><div class="tok"><i class="sw" style="background:#4A3D1A"></i><span><b>#4A3D1A</b>amber border</span></div>
+  </section>
+  <div class="screens">
+<section class="screen" id="screen-login" aria-labelledby="t-login">
+  <div class="screen-head">
+    <h2 id="t-login">Sign in, two steps</h2>
+    <p>Email and password, then the 6-digit authenticator code. No sign-up.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; padding: 72px 24px 32px; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; flex-direction: column; gap: 14px">
+    <div aria-hidden="true" style="width: 56px; height: 56px; border-radius: 18px; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px">መ</div>
+    <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 30px; letter-spacing: -0.02em">Mezgeb</h1>
+    <p style="margin: 0; color: #A3B1AA; font-size: 15px; line-height: 1.5">Private. Only the owner can sign in.</p>
+  </div>
+
+  <form style="display: flex; flex-direction: column; gap: 14px">
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A3B1AA">Email
+      <input id="mz-field-1" type="email" value="you@example.com" style="height: 50px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 16px; padding: 0 14px">
+    </label>
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #A3B1AA">Password
+      <input id="mz-field-2" type="password" value="password" style="height: 50px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 16px; padding: 0 14px">
+    </label>
+    <button id="mz-field-3" type="button" style="height: 52px; border: 0; border-radius: 16px; background: #C4F06A; color: #10140F; font: inherit; font-size: 16px; font-weight: 600">Continue</button>
+  </form>
+
+  <section aria-label="Step 2" style="background: #161D1A; border: 1px solid #2A3530; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span style="font-weight: 600; font-size: 15px">Authenticator code</span>
+      <span style="font-size: 12px; color: #7F8D86">Step 2 of 2</span>
+    </div>
+    <div role="group" aria-label="Six-digit code" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px">
+      <input id="mz-field-4" aria-label="Digit 1" value="4" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #C4F06A; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+      <input id="mz-field-5" aria-label="Digit 2" value="8" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #C4F06A; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+      <input id="mz-field-6" aria-label="Digit 3" value="1" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #C4F06A; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+      <input id="mz-field-7" aria-label="Digit 4" value="" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #2A3530; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+      <input id="mz-field-8" aria-label="Digit 5" value="" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #2A3530; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+      <input id="mz-field-9" aria-label="Digit 6" value="" style="height: 52px; text-align: center; border-radius: 12px; border: 1px solid #2A3530; background: #0E1311; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 22px; min-width: 0">
+    </div>
+    <p style="margin: 0; font-size: 13px; color: #A3B1AA; line-height: 1.5">Open your authenticator app and enter the code for Mezgeb.</p>
+  </section>
+
+  <p style="margin: auto 0 0; font-size: 12px; color: #7F8D86; line-height: 1.5; text-align: center">No sign-up here. Accounts are created in the database dashboard only.</p>
+</div></div></div>
+</section>
+<section class="screen" id="screen-main" aria-labelledby="t-main">
+  <div class="screen-head">
+    <h2 id="t-main">Home</h2>
+    <p>Net position card (accent), month tiles, friend-loan progress, monthly checks, recent entries, bottom nav.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <main style="flex: 1 1 auto; overflow: hidden; padding: 20px 18px 0; display: flex; flex-direction: column; gap: 14px">
+    <header style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 13px; color: #A3B1AA">Tuesday, 3 November</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em">Mezgeb</span>
+      </div>
+      <a href="#screen-settings" aria-label="Settings" style="width: 44px; height: 44px; border-radius: 14px; background: #161D1A; border: 1px solid #2A3530; display: flex; align-items: center; justify-content: center; color: #EEF3EF">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+      </a>
+    </header>
+
+    <section aria-label="Net position" style="background: #C4F06A; color: #10140F; border-radius: 22px; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 13px; font-weight: 600">Net position</span>
+        <span style="font-size: 12px; font-weight: 500">assets − debts</span>
+      </div>
+      <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1">78,240 <span style="font-size: 20px">Br</span></div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1px solid rgba(16,20,15,0.18); padding-top: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600">Assets</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums">130,240</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600">Debts</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums">52,000</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600">Payday in</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px">27 days</span></div>
+      </div>
+    </section>
+
+    <section aria-label="This month" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 12px; color: #A3B1AA">Spent this month</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums">2,860 Br</span>
+        <span style="font-size: 12px; color: #F3B544; font-weight: 600">= 25 hours of work</span>
+      </div>
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 12px; color: #A3B1AA">Trading net, Nov</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums">+6,800 Br</span>
+        <span style="font-size: 12px; color: #A3B1AA">2 trips · 7.4% avg margin</span>
+      </div>
+    </section>
+
+    <a href="#screen-plan" style="text-decoration: none; color: #EEF3EF; background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-weight: 600; font-size: 15px">Friend loan</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #A3B1AA; font-variant-numeric: tabular-nums">8,000 / 60,000 Br</span>
+      </div>
+      <div style="height: 8px; border-radius: 4px; background: #2A3530; overflow: hidden"><div style="width: 13%; height: 8px; background: #F3B544; border-radius: 4px"></div></div>
+      <span style="font-size: 12px; color: #A3B1AA">Target: paid off by January · next payment 8,000 Br on payday</span>
+    </a>
+
+    <section aria-label="This month's checks" style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 6px 14px">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2A3530">
+        <span style="width: 26px; height: 26px; border-radius: 50%; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></span>
+        <span style="flex: 1; font-size: 14px">Tithe set aside</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #A3B1AA">2,000 Br</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2A3530">
+        <span style="width: 26px; height: 26px; border-radius: 50%; border: 2px solid #4A5852; box-sizing: border-box"></span>
+        <span style="flex: 1; font-size: 14px">Emergency fund</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #A3B1AA">4,000 / 30,000</span>
+      </div>
+      <a href="#screen-wishlist" style="display: flex; align-items: center; gap: 12px; padding: 10px 0; text-decoration: none; color: #EEF3EF">
+        <span style="width: 26px; height: 26px; border-radius: 50%; background: #2A3530; color: #F3B544; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg></span>
+        <span style="flex: 1; font-size: 14px">2 wishes waiting out 48 hours</span>
+        <span style="font-size: 13px; color: #C4F06A; font-weight: 600">View</span>
+      </a>
+    </section>
+
+    <section aria-label="Recent entries" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600; font-size: 15px">Recent</span><span style="font-size: 13px; color: #A3B1AA">See all</span></div>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 36px; height: 36px; border-radius: 12px; background: #1E2723; display: flex; align-items: center; justify-content: center; color: #A3B1AA; font-size: 12px; font-weight: 600">TX</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px">Taxi</span><span style="font-size: 12px; color: #7F8D86">Telebirr · Spending</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">−120</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 36px; height: 36px; border-radius: 12px; background: #1E2723; display: flex; align-items: center; justify-content: center; color: #C4F06A; font-size: 12px; font-weight: 600">TR</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px">Trip 3 sold</span><span style="font-size: 12px; color: #7F8D86">CBE · Trading capital</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: #C4F06A; font-variant-numeric: tabular-nums">+3,950</span>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 10px 18px; background: #11171A; border-top: 1px solid #2A3530">
+    <a href="#screen-main" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #C4F06A; font-size: 11px; font-weight: 600; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4Z"/></svg>Home</a>
+    <a href="#screen-accounts" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>Accounts</a>
+    <a href="#screen-add" aria-label="Add entry" style="justify-self: center; width: 54px; height: 54px; border-radius: 18px; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+    <a href="#screen-trading" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>Trading</a>
+    <a href="#screen-plan" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>Plan</a>
+  </nav>
+</div></div></div>
+</section>
+<section class="screen" id="screen-add" aria-labelledby="t-add">
+  <div class="screen-head">
+    <h2 id="t-add">Add entry</h2>
+    <p>Expense / income / transfer tabs, big amount with hours-of-work, category chips, account, want-or-need, keypad.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+  <header style="display: flex; align-items: center; justify-content: space-between">
+    <a href="#screen-main" aria-label="Close" style="width: 44px; height: 44px; border-radius: 14px; background: #161D1A; border: 1px solid #2A3530; display: flex; align-items: center; justify-content: center; color: #EEF3EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></a>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px">Add entry</span>
+    <span style="width: 44px"></span>
+  </header>
+
+  <div role="tablist" aria-label="Entry type" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; background: #161D1A; border: 1px solid #2A3530; border-radius: 14px; padding: 4px">
+    <button id="mz-field-10" type="button" role="tab" aria-selected="true" style="height: 40px; border: 0; border-radius: 10px; background: #EEF3EF; color: #10140F; font: inherit; font-weight: 600; font-size: 14px">Expense</button>
+    <button id="mz-field-11" type="button" role="tab" aria-selected="false" style="height: 40px; border: 0; border-radius: 10px; background: transparent; color: #A3B1AA; font: inherit; font-size: 14px">Income</button>
+    <button id="mz-field-12" type="button" role="tab" aria-selected="false" style="height: 40px; border: 0; border-radius: 10px; background: transparent; color: #A3B1AA; font: inherit; font-size: 14px">Transfer</button>
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px 0">
+    <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 52px; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1">650 <span style="font-size: 22px; color: #A3B1AA">Br</span></div>
+    <span style="background: #2B2513; color: #F3B544; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600">= 5.7 hours of your work</span>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 8px" aria-label="Category">
+    <button id="mz-field-13" type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 13px">Taxi</button>
+    <button id="mz-field-14" type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 13px">Airtime</button>
+    <button id="mz-field-15" type="button" aria-pressed="true" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #C4F06A; background: #23301A; color: #C4F06A; font: inherit; font-size: 13px; font-weight: 600">Eating out</button>
+    <button id="mz-field-16" type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 13px">Clothes</button>
+    <button id="mz-field-17" type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 13px">Gifts</button>
+    <button id="mz-field-18" type="button" aria-pressed="false" style="height: 36px; padding: 0 14px; border-radius: 999px; border: 1px dashed #4A5852; background: transparent; color: #A3B1AA; font: inherit; font-size: 13px">+ New</button>
+  </div>
+
+  <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; display: flex; flex-direction: column">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid #2A3530"><span style="font-size: 13px; color: #A3B1AA">From</span><span style="font-size: 14px; font-weight: 500">Telebirr · Spending <span style="color: #7F8D86">(1,240 left)</span></span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px"><span style="font-size: 13px; color: #A3B1AA">Kind</span><span style="font-size: 14px; font-weight: 500">Want, not need</span></div>
+  </div>
+
+  <a href="#screen-wishlist" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #F3B544; background: #1E1A10; border: 1px solid #4A3D1A; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 500">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>
+    It is a want. Wait 48 hours instead?
+  </a>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: auto" aria-label="Keypad">
+    <button id="mz-field-19" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">1</button>
+    <button id="mz-field-20" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">2</button>
+    <button id="mz-field-21" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">3</button>
+    <button id="mz-field-22" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">4</button>
+    <button id="mz-field-23" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">5</button>
+    <button id="mz-field-24" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">6</button>
+    <button id="mz-field-25" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">7</button>
+    <button id="mz-field-26" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">8</button>
+    <button id="mz-field-27" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">9</button>
+    <button id="mz-field-28" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">.</button>
+    <button id="mz-field-29" type="button" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; font-family: 'Space Grotesk', sans-serif; font-size: 20px">0</button>
+    <button id="mz-field-30" type="button" aria-label="Delete digit" style="height: 48px; border: 0; border-radius: 12px; background: #161D1A; color: #EEF3EF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11v12H9l-6-6Z"/><path d="m13 10 4 4M17 10l-4 4"/></svg></button>
+  </div>
+  <button id="mz-field-31" type="button" style="height: 54px; border: 0; border-radius: 16px; background: #C4F06A; color: #10140F; font: inherit; font-size: 16px; font-weight: 600">Save expense</button>
+</div></div></div>
+</section>
+<section class="screen" id="screen-payday" aria-labelledby="t-payday">
+  <div class="screen-head">
+    <h2 id="t-payday">Payday split</h2>
+    <p>Salary split by rules into accounts; tick each transfer as it is made.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+  <header style="display: flex; align-items: center; gap: 12px">
+    <a href="#screen-main" aria-label="Back" style="width: 44px; height: 44px; border-radius: 14px; background: #161D1A; border: 1px solid #2A3530; display: flex; align-items: center; justify-content: center; color: #EEF3EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a>
+    <div style="display: flex; flex-direction: column"><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px">Payday split</span><span style="font-size: 12px; color: #A3B1AA">Salary arrived in CBE · Salary inbox</span></div>
+  </header>
+
+  <section style="background: #161D1A; border: 1px solid #2A3530; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span style="font-size: 13px; color: #A3B1AA">Net salary</span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums">20,000 Br</span>
+    </div>
+    <div aria-label="Split bar" style="display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 2px">
+      <div style="width: 10%; background: #9CC4FF"></div>
+      <div style="width: 12.5%; background: #EEF3EF"></div>
+      <div style="width: 7.5%; background: #A3B1AA"></div>
+      <div style="width: 40%; background: #F3B544"></div>
+      <div style="width: 20%; background: #C4F06A"></div>
+      <div style="width: 10%; background: #7FE0C2"></div>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 13px"><span style="color: #A3B1AA">2 of 6 moved</span><span style="font-weight: 600; color: #C4F06A">0 Br left to assign</span></div>
+  </section>
+
+  <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #9CC4FF"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Tithe · 10%</span><span style="font-size: 12px; color: #A3B1AA">→ Telebirr · Tithe</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">2,000</span>
+      <span aria-label="Moved" style="width: 28px; height: 28px; border-radius: 50%; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #EEF3EF"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Taxi and airtime</span><span style="font-size: 12px; color: #A3B1AA">→ Telebirr · Spending</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">2,500</span>
+      <span aria-label="Moved" style="width: 28px; height: 28px; border-radius: 50%; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #A3B1AA"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Personal and fun</span><span style="font-size: 12px; color: #A3B1AA">→ Telebirr · Spending</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">1,500</span>
+      <span aria-label="Not moved yet" style="width: 28px; height: 28px; border-radius: 50%; border: 2px solid #4A5852; box-sizing: border-box"></span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #F3B544"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Friend loan</span><span style="font-size: 12px; color: #A3B1AA">→ Dashen · Debt fund</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">8,000</span>
+      <span aria-label="Not moved yet" style="width: 28px; height: 28px; border-radius: 50%; border: 2px solid #4A5852; box-sizing: border-box"></span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #C4F06A"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Emergency fund</span><span style="font-size: 12px; color: #A3B1AA">→ Awash · Emergency</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">4,000</span>
+      <span aria-label="Not moved yet" style="width: 28px; height: 28px; border-radius: 50%; border: 2px solid #4A5852; box-sizing: border-box"></span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px">
+      <span style="width: 10px; height: 36px; border-radius: 5px; background: #7FE0C2"></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Long-term savings</span><span style="font-size: 12px; color: #A3B1AA">→ Awash · Savings pocket</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">2,000</span>
+      <span aria-label="Not moved yet" style="width: 28px; height: 28px; border-radius: 50%; border: 2px solid #4A5852; box-sizing: border-box"></span>
+    </li>
+  </ul>
+
+  <p style="margin: 0; font-size: 12px; color: #7F8D86; line-height: 1.5">Each row records a real transfer between your accounts when you tick it. Edit rules in Settings · Payday rules.</p>
+  <button id="mz-field-32" type="button" style="margin-top: auto; height: 54px; border: 0; border-radius: 16px; background: #C4F06A; color: #10140F; font: inherit; font-size: 16px; font-weight: 600">Mark remaining 4 as moved</button>
+</div></div></div>
+</section>
+<section class="screen" id="screen-accounts" aria-labelledby="t-accounts">
+  <div class="screen-head">
+    <h2 id="t-accounts">Accounts</h2>
+    <p>Grouped by role; protected balances hidden until tapped; add institutions and accounts.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <main style="flex: 1 1 auto; overflow: hidden; padding: 20px 18px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px">Accounts</span>
+        <span style="font-size: 13px; color: #A3B1AA">8 accounts · <span style="font-family: 'Space Grotesk', sans-serif; color: #EEF3EF">113,740 Br</span> held</span>
+      </div>
+      <button id="mz-field-33" type="button" style="height: 44px; padding: 0 14px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 14px; font-weight: 600">+ Add</button>
+    </header>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Everyday</span>
+    <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 2px 14px">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2A3530">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #3A2A4A; color: #E6CCFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">CBE</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Salary inbox</span><span style="font-size: 12px; color: #A3B1AA">Empties every payday</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">0</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2A3530">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #12324A; color: #A9DBFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">tele</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Spending</span><span style="font-size: 12px; color: #A3B1AA">Taxi, airtime, fun · topped up weekly</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">1,240</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #12324A; color: #A9DBFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">tele</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Tithe</span><span style="font-size: 12px; color: #A3B1AA">Set aside first, given from here</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">2,000</span>
+      </div>
+    </div>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Business</span>
+    <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 10px 14px; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #3A2A4A; color: #E6CCFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">CBE</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Trading capital</span><span style="font-size: 12px; color: #A3B1AA">Never for personal spending</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">98,500</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #A3B1AA; background: #0E1311; border-radius: 10px; padding: 8px 10px"><span>+ 16,500 in unsold stock</span><span>Loss limit 100,000</span></div>
+    </div>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Protected · no app on phone</span>
+    <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 2px 14px">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2A3530">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #12343A; color: #9FE7F0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">DSH</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Debt fund</span><span style="font-size: 12px; color: #A3B1AA">For the friend loan</span></span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-variant-numeric: tabular-nums">8,000</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0">
+        <span style="width: 36px; height: 36px; border-radius: 11px; background: #3A2D12; color: #FFD991; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">AWS</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Emergency and savings</span><span style="font-size: 12px; color: #A3B1AA">2 pockets</span></span>
+        <button id="mz-field-34" type="button" aria-label="Reveal balance" style="height: 36px; padding: 0 10px; border-radius: 10px; border: 1px solid #2A3530; background: #0E1311; color: #A3B1AA; font-family: 'Space Grotesk', sans-serif; font-size: 15px; letter-spacing: 0.15em">•••••</button>
+      </div>
+    </div>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Inactive and planned</span>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap">
+      <span style="height: 34px; padding: 0 12px; border-radius: 999px; border: 1px dashed #4A5852; color: #A3B1AA; font-size: 13px; display: flex; align-items: center">ebirr ×2 · archived</span>
+      <span style="height: 34px; padding: 0 12px; border-radius: 999px; border: 1px dashed #4A5852; color: #A3B1AA; font-size: 13px; display: flex; align-items: center">USD account · when freelance income starts</span>
+    </div>
+  </main>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 10px 18px; background: #11171A; border-top: 1px solid #2A3530">
+    <a href="#screen-main" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4Z"/></svg>Home</a>
+    <a href="#screen-accounts" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #C4F06A; font-size: 11px; font-weight: 600; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>Accounts</a>
+    <a href="#screen-add" aria-label="Add entry" style="justify-self: center; width: 54px; height: 54px; border-radius: 18px; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+    <a href="#screen-trading" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>Trading</a>
+    <a href="#screen-plan" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>Plan</a>
+  </nav>
+</div></div></div>
+</section>
+<section class="screen" id="screen-trading" aria-labelledby="t-trading">
+  <div class="screen-head">
+    <h2 id="t-trading">Trading</h2>
+    <p>Capital, monthly net and margin, trip cards with full costs, price gaps between cities.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <main style="flex: 1 1 auto; overflow: hidden; padding: 20px 18px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; justify-content: space-between">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px">Trading</span>
+      <button id="mz-field-35" type="button" style="height: 44px; padding: 0 14px; border-radius: 14px; border: 0; background: #C4F06A; color: #10140F; font: inherit; font-size: 14px; font-weight: 600">+ New trip</button>
+    </header>
+
+    <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; color: #A3B1AA">Capital</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; font-variant-numeric: tabular-nums">115,000</span><span style="font-size: 11px; color: #7F8D86">16,500 in stock</span></div>
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; color: #A3B1AA">Net, Nov</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: #C4F06A; font-variant-numeric: tabular-nums">+6,800</span><span style="font-size: 11px; color: #7F8D86">after all costs</span></div>
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; color: #A3B1AA">Margin</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; font-variant-numeric: tabular-nums">7.4%</span><span style="font-size: 11px; color: #7F8D86">target 10%</span></div>
+    </section>
+
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-weight: 600; font-size: 15px">Trip 3 · Arba Minch → Addis</span>
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #C4F06A; font-variant-numeric: tabular-nums">+3,950</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; font-size: 13px">
+        <span style="color: #A3B1AA">Goods bought</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif; font-variant-numeric: tabular-nums">36,000</span>
+        <span style="color: #A3B1AA">Transport · food · lodging</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif; font-variant-numeric: tabular-nums">2,400 · 900 · 1,000</span>
+        <span style="color: #A3B1AA">Sold for</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif; font-variant-numeric: tabular-nums">44,250</span>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #23301A; color: #C4F06A; font-weight: 600">9.8% net</span>
+        <span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #1E2723; color: #A3B1AA">sold in 4 days</span>
+      </div>
+    </article>
+
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 14px">Trip 2 · Addis → Adama</span><span style="font-size: 12px; color: #A3B1AA">5.5% net · sold in 9 days</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #C4F06A; font-variant-numeric: tabular-nums">+2,850</span>
+    </article>
+
+    <article style="background: #1E1A10; border: 1px solid #4A3D1A; border-radius: 18px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 14px">Trip 4 · in progress</span><span style="font-size: 12px; color: #F3B544">16,500 of stock still unsold</span></span>
+      <span style="font-size: 13px; color: #F3B544; font-weight: 600">Record sale</span>
+    </article>
+
+    <section aria-label="Price log" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600; font-size: 15px">Price gaps this week</span><span style="font-size: 13px; color: #A3B1AA">Log a price</span></div>
+      <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 4px 14px">
+        <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)) auto; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2A3530; font-size: 11px; color: #7F8D86"><span>Item</span><span style="text-align: right">Buy · AM</span><span style="text-align: right">Sell · Addis</span><span style="width: 74px; text-align: right">Gap</span></div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)) auto; gap: 8px; align-items: center; padding: 9px 0; border-bottom: 1px solid #2A3530; font-size: 13px"><span>[Item A]</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">350</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">420</span><span style="width: 74px; text-align: right; color: #C4F06A; font-weight: 600">20% go</span></div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)) auto; gap: 8px; align-items: center; padding: 9px 0; border-bottom: 1px solid #2A3530; font-size: 13px"><span>[Item B]</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">1,020</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">1,150</span><span style="width: 74px; text-align: right; color: #EEF3EF; font-weight: 600">13% ok</span></div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)) auto; gap: 8px; align-items: center; padding: 9px 0; font-size: 13px"><span>[Item C]</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">80</span><span style="text-align: right; font-family: 'Space Grotesk', sans-serif">85</span><span style="width: 74px; text-align: right; color: #F3B544; font-weight: 600">6% skip</span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 10px 18px; background: #11171A; border-top: 1px solid #2A3530">
+    <a href="#screen-main" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4Z"/></svg>Home</a>
+    <a href="#screen-accounts" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>Accounts</a>
+    <a href="#screen-add" aria-label="Add entry" style="justify-self: center; width: 54px; height: 54px; border-radius: 18px; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+    <a href="#screen-trading" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #C4F06A; font-size: 11px; font-weight: 600; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>Trading</a>
+    <a href="#screen-plan" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>Plan</a>
+  </nav>
+</div></div></div>
+</section>
+<section class="screen" id="screen-plan" aria-labelledby="t-plan">
+  <div class="screen-head">
+    <h2 id="t-plan">Debts and goals</h2>
+    <p>Friend loan progress, uncle's money as a gift, goals with progress.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <main style="flex: 1 1 auto; overflow: hidden; padding: 20px 18px 0; display: flex; flex-direction: column; gap: 12px">
+    <header style="display: flex; align-items: center; justify-content: space-between">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px">Plan</span>
+      <a href="#screen-wishlist" style="height: 44px; padding: 0 14px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font-size: 14px; font-weight: 600; display: flex; align-items: center; text-decoration: none">Wishlist</a>
+    </header>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Debts</span>
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start">
+        <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Friend loan</span><span style="font-size: 12px; color: #A3B1AA">60,000 Br · priority 1 · pay first</span></span>
+        <span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #23301A; color: #C4F06A; font-weight: 600">On track</span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 6px"><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 30px; font-variant-numeric: tabular-nums">52,000</span><span style="font-size: 14px; color: #A3B1AA">Br left</span></div>
+      <div style="height: 10px; border-radius: 5px; background: #2A3530; overflow: hidden"><div style="width: 13%; height: 10px; background: #F3B544"></div></div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; font-size: 12px">
+        <span style="background: #0E1311; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="color: #7F8D86">From salary</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 14px">8,000 / month</span></span>
+        <span style="background: #0E1311; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="color: #7F8D86">Target date</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 14px">End of January</span></span>
+      </div>
+      <button id="mz-field-36" type="button" style="height: 44px; border: 1px solid #F3B544; border-radius: 14px; background: transparent; color: #F3B544; font: inherit; font-size: 14px; font-weight: 600">Record a payment</button>
+    </article>
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 14px">Uncle · start-up money</span><span style="font-size: 12px; color: #A3B1AA">55,000 Br · a gift, not a debt</span></span>
+      <span style="font-size: 12px; color: #7F8D86">no repayment</span>
+    </article>
+
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Goals</span>
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600; font-size: 14px">Emergency fund</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #A3B1AA">4,000 / 30,000</span></div>
+      <div style="height: 8px; border-radius: 4px; background: #2A3530; overflow: hidden"><div style="width: 13%; height: 8px; background: #C4F06A"></div></div>
+      <span style="font-size: 12px; color: #A3B1AA">About 7 more paydays at 4,000 Br</span>
+    </article>
+    <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 600; font-size: 14px">Long-term savings</span><span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #A3B1AA">0 / [your target]</span></div>
+      <div style="height: 8px; border-radius: 4px; background: #2A3530"></div>
+      <span style="font-size: 12px; color: #A3B1AA">Gets the 8,000 Br debt payment once the loan is paid</span>
+    </article>
+    <article style="border: 1px dashed #4A5852; border-radius: 16px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 14px">USD savings</span><span style="font-size: 12px; color: #A3B1AA">Starts with your first freelance income</span></span>
+      <span style="font-size: 13px; color: #A3B1AA">Planned</span>
+    </article>
+  </main>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 10px 18px; background: #11171A; border-top: 1px solid #2A3530">
+    <a href="#screen-main" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4Z"/></svg>Home</a>
+    <a href="#screen-accounts" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>Accounts</a>
+    <a href="#screen-add" aria-label="Add entry" style="justify-self: center; width: 54px; height: 54px; border-radius: 18px; background: #C4F06A; color: #10140F; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+    <a href="#screen-trading" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #A3B1AA; font-size: 11px; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg>Trading</a>
+    <a href="#screen-plan" style="display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: #C4F06A; font-size: 11px; font-weight: 600; min-height: 44px; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>Plan</a>
+  </nav>
+</div></div></div>
+</section>
+<section class="screen" id="screen-wishlist" aria-labelledby="t-wishlist">
+  <div class="screen-head">
+    <h2 id="t-wishlist">Wishlist</h2>
+    <p>48-hour rule: countdowns, hours of work, let it go or buy.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+  <header style="display: flex; align-items: center; gap: 12px">
+    <a href="#screen-plan" aria-label="Back" style="width: 44px; height: 44px; border-radius: 14px; background: #161D1A; border: 1px solid #2A3530; display: flex; align-items: center; justify-content: center; color: #EEF3EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a>
+    <div style="display: flex; flex-direction: column"><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px">Wishlist</span><span style="font-size: 12px; color: #A3B1AA">Every want waits 48 hours</span></div>
+  </header>
+
+  <section style="background: #F3B544; color: #1A1406; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 6px">
+    <span style="font-size: 13px; font-weight: 600">Kept by letting go, this month</span>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 36px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.05">4,200 Br</span>
+    <span style="font-size: 14px; font-weight: 500">37 hours of work you did not spend</span>
+  </section>
+
+  <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 15px">Wristwatch</span><span style="font-size: 12px; color: #A3B1AA">1,800 Br · 16 hours of work</span></span>
+      <span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #23301A; color: #C4F06A; font-weight: 600">Ready to decide</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <button id="mz-field-37" type="button" style="height: 44px; border-radius: 12px; border: 1px solid #2A3530; background: #0E1311; color: #EEF3EF; font: inherit; font-size: 14px">Still want it</button>
+      <button id="mz-field-38" type="button" style="height: 44px; border-radius: 12px; border: 0; background: #C4F06A; color: #10140F; font: inherit; font-size: 14px; font-weight: 600">Let it go</button>
+    </div>
+  </article>
+
+  <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 15px">Headphones</span><span style="font-size: 12px; color: #A3B1AA">3,500 Br · 31 hours of work</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #F3B544; font-weight: 600">22 h left</span>
+    </div>
+    <div style="height: 6px; border-radius: 3px; background: #2A3530; overflow: hidden"><div style="width: 54%; height: 6px; background: #F3B544"></div></div>
+  </article>
+
+  <article style="background: #161D1A; border: 1px solid #2A3530; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 15px">Sneakers</span><span style="font-size: 12px; color: #A3B1AA">2,800 Br · 25 hours of work</span></span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #F3B544; font-weight: 600">41 h left</span>
+    </div>
+    <div style="height: 6px; border-radius: 3px; background: #2A3530; overflow: hidden"><div style="width: 15%; height: 6px; background: #F3B544"></div></div>
+  </article>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 2px; font-size: 13px; color: #A3B1AA">
+    <span>Let go: Jacket · 4,200 Br</span>
+    <span>Bought: none</span>
+  </div>
+
+  <form style="margin-top: auto; display: flex; gap: 8px">
+    <label style="flex: 1; display: flex"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">New wish</span>
+      <input id="mz-field-39" type="text" placeholder="Something you want…" style="flex: 1; height: 50px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 15px; padding: 0 14px; min-width: 0">
+    </label>
+    <button id="mz-field-40" type="button" style="height: 50px; padding: 0 18px; border-radius: 14px; border: 0; background: #F3B544; color: #1A1406; font: inherit; font-size: 15px; font-weight: 600">Wait</button>
+  </form>
+</div></div></div>
+</section>
+<section class="screen" id="screen-settings" aria-labelledby="t-settings">
+  <div class="screen-head">
+    <h2 id="t-settings">Settings</h2>
+    <p>Income and tithe, manage lists, security, backup and free-tier reminder.</p>
+  </div>
+  <div class="phone-scroll"><div class="phone"><div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E1311; color: #EEF3EF; font-family: 'DM Sans', system-ui, sans-serif; padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+  <header style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px">
+    <a href="#screen-main" aria-label="Back" style="width: 44px; height: 44px; border-radius: 14px; background: #161D1A; border: 1px solid #2A3530; display: flex; align-items: center; justify-content: center; color: #EEF3EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px">Settings</span>
+  </header>
+
+  <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Income and giving</span>
+  <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 0 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Net salary</span><span style="font-family: 'Space Grotesk', sans-serif; color: #A3B1AA">20,000 Br</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Work hours per month</span><span style="font-family: 'Space Grotesk', sans-serif; color: #A3B1AA">176 h → 114 Br/h</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Payday</span><span style="color: #A3B1AA">[day of month]</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; font-size: 14px"><span>Tithe</span><span style="color: #A3B1AA">10% of net salary</span></div>
+  </div>
+
+  <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Manage</span>
+  <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 0 14px">
+    <a href="#screen-accounts" style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px; color: #EEF3EF; text-decoration: none"><span>Institutions and accounts</span><span style="color: #7F8D86">5 · 8 ›</span></a>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Categories</span><span style="color: #7F8D86">14 ›</span></div>
+    <a href="#screen-payday" style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px; color: #EEF3EF; text-decoration: none"><span>Payday rules</span><span style="color: #7F8D86">6 ›</span></a>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; font-size: 14px"><span>Cities and trade items</span><span style="color: #7F8D86">4 · 3 ›</span></div>
+  </div>
+
+  <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Security</span>
+  <div style="background: #161D1A; border: 1px solid #2A3530; border-radius: 16px; padding: 0 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Two-step sign-in</span><span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #23301A; color: #C4F06A; font-weight: 600">On</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; border-bottom: 1px solid #2A3530; font-size: 14px"><span>Lock after inactivity</span><span style="color: #A3B1AA">5 minutes</span></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; min-height: 46px; font-size: 14px"><span>Hide balances on open</span><span style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #23301A; color: #C4F06A; font-weight: 600">On</span></div>
+  </div>
+
+  <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #7F8D86">Your data</span>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+    <button id="mz-field-41" type="button" style="height: 46px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 14px">Export backup</button>
+    <button id="mz-field-42" type="button" style="height: 46px; border-radius: 14px; border: 1px solid #2A3530; background: #161D1A; color: #EEF3EF; font: inherit; font-size: 14px">Import backup</button>
+  </div>
+  <p style="margin: 0; font-size: 12px; color: #7F8D86; line-height: 1.5">Last backup: 6 days ago. The free database pauses after a week without use, so open the app at least weekly and export a backup monthly.</p>
+
+  <button id="mz-field-43" type="button" style="margin-top: auto; height: 48px; border-radius: 14px; border: 1px solid #4A3D1A; background: transparent; color: #F3B544; font: inherit; font-size: 14px; font-weight: 600">Sign out everywhere</button>
+</div></div></div>
+</section></div>
+  <footer class="note">Fonts: Space Grotesk for headings and every number (tabular figures), DM Sans for text. Radii 16 to 22 px on cards, 12 to 16 px on controls. Minimum touch target 44 px. Machine-readable tokens are in the <code>mezgeb-design-tokens</code> JSON block in this page's source.</footer>
+</div>
+<script type="application/json" id="mezgeb-design-tokens">{
+  "background": "#0E1311",
+  "surface": "#161D1A",
+  "surface_raised": "#1E2723",
+  "border": "#2A3530",
+  "nav_background": "#11171A",
+  "text": "#EEF3EF",
+  "text_muted": "#A3B1AA",
+  "text_dim": "#7F8D86",
+  "accent": "#C4F06A",
+  "on_accent": "#10140F",
+  "accent_tint": "#23301A",
+  "amber": "#F3B544",
+  "on_amber": "#1A1406",
+  "amber_tint": "#1E1A10",
+  "amber_border": "#4A3D1A",
+  "series_extra": [
+    "#9CC4FF",
+    "#7FE0C2"
+  ],
+  "font_display_and_numbers": "Space Grotesk 500/600/700, tabular-nums",
+  "font_text": "DM Sans 400/500/600",
+  "radius": {
+    "card": "16-22px",
+    "control": "12-16px",
+    "chip": "999px"
+  },
+  "spacing": {
+    "page_padding": "18px",
+    "gaps": "8-14px"
+  },
+  "touch_target_min": "44px",
+  "phone_frame": "390x844"
+}</script>
+
+</body></html>

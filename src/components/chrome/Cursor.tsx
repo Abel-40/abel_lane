@@ -63,7 +63,9 @@ export function Cursor() {
       const t = e.target as Element | null;
       if (!t?.closest) return;
       const lab = t.closest<HTMLElement>("[data-cursor]");
-      const link = t.closest("a, button, input, select, textarea, label");
+      const hit = t.closest("a, button, input, select, textarea, label");
+      // [data-cursor-quiet] links (the footer's private-area dot) must not make the ring react
+      const link = hit && !hit.hasAttribute("data-cursor-quiet") ? hit : null;
       if (lab && !uiStore.get().overlayOpen) {
         label.textContent = lab.getAttribute("data-cursor");
         cursor.classList.add("has-label");

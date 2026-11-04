@@ -57,6 +57,7 @@ pnpm build && pnpm preview # the real Cloudflare Worker, locally on http://local
 | `pnpm gen:content` | `data/*.json` → `src/content/*.ts` (runs automatically before `build`) |
 | `pnpm gen:images [--force]` | Makes 360/480/720w WebP variants of the images in `public/images` |
 | `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit` |
+| `pnpm test` | Vitest unit tests for Mezgeb (`src/mezgeb/lib/*.test.ts`) |
 | `pnpm test:e2e` | Playwright e2e, accessibility and layout checks. Run `pnpm build` first, and `pnpm exec playwright install` once |
 
 ## Environment
@@ -70,6 +71,7 @@ All optional. Locally, copy `.env.example` to `.env.local`. On Cloudflare, add t
 | `RESEND_API_KEY` | Enables real email from the contact form (without it: compose, copy and mailto fallback) |
 | `RESEND_FROM` | Sender on a domain verified in Resend |
 | `CONTACT_TO` | Recipient (default `addis0132@gmail.com`) |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Mezgeb's Supabase project. Build variables on Cloudflare (see Mezgeb below) |
 
 ## Deploy to Cloudflare (Workers, free plan)
 
@@ -98,12 +100,41 @@ Notes:
 - The About photo is resized by Cloudflare Images through the `IMAGES` binding (free allowance: 5,000 unique
   transformations a month, far more than this site needs).
 
+## Mezgeb (private finance app under `/mezgeb`)
+
+Mezgeb is a private, installable finance app that lives inside this portfolio. It has its own root layout
+(`src/app/(mezgeb)`), so the portfolio pages in `src/app/(site)` are unaffected (none of the nav, footer, loader,
+cursor, smooth scroll, fonts or CSS load there). Its code is in `src/mezgeb`. It is not in the sitemap or
+`robots.txt`, every page is `noindex`, and the only way in from the portfolio is the faint dot after
+"© 2026 Abel Addis" in the footer. Real security is Supabase Auth + a required authenticator code + Row-Level Security.
+
+**Database.** Open your Supabase project › SQL editor, paste the whole of
+[`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) and run it once, then do the same with
+[`supabase/migrations/0002_people_goods_savings.sql`](supabase/migrations/0002_people_goods_savings.sql) (an existing
+database only needs 0002). To check security afterwards,
+run [`supabase/tests/rls.sql`](supabase/tests/rls.sql) the same way: the Results tab must show one row, `ALL CHECKS PASSED` (a failure shows an error starting with `FAIL`), and it leaves
+no data behind.
+
+**Environment.** Locally, put `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`. On
+Cloudflare they must be **build** variables (Worker › Settings › Build › Variables and secrets), because they are baked
+into the pages by `next build`. Never add the `service_role` / secret key.
+
+**Checks.** `pnpm lint`, `pnpm typecheck`, `pnpm test` (Vitest, Mezgeb's money and plan logic), `pnpm build`.
+
+The full spec is [`docs/mezgeb-spec.md`](docs/mezgeb-spec.md), the design is
+[`docs/mezgeb-design.html`](docs/mezgeb-design.html), and the phone setup steps are in
+[`docs/mezgeb-setup.md`](docs/mezgeb-setup.md).
+
 ## Code layout
 
 ```text
 data/             all editable content (see above)
 public/images/    project screenshots and case-study figures
-src/app/          routes, @modal (project overlay), api/contact, OG images, sitemap, robots
+src/app/(site)/   portfolio routes, @modal (project overlay), OG images, icons (own root layout)
+src/app/(mezgeb)/ Mezgeb routes (own root layout)
+src/app/          api/contact, sitemap, robots, manifest, global 404
+src/mezgeb/       Mezgeb screens, components, logic and styles
+supabase/         Mezgeb database migration and RLS test
 src/components/   chrome (nav, loader, cursor, footer), home/, about/, projects/, cases/, contact/, ui/
 src/content/      generated typed modules + types and the case-study schema
 src/hooks/        GSAP setup hooks

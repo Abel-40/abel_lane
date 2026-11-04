@@ -5,6 +5,12 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    // Mezgeb is a client-only app that loads from Supabase when a screen mounts and reads browser-only values
+    // (sessionStorage, matchMedia) in effects. Those effects are correct; this React Compiler rule flags them all.
+    files: ["src/mezgeb/**"],
+    rules: { "react-hooks/set-state-in-effect": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

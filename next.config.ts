@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   // re-initialises its GSAP timelines on each visit (as the reference does), so classic unmounting
   // keeps ScrollTrigger cleanup, SVG ids and focus handling predictable.
   cacheComponents: false,
+  // Two root layouts (src/app/(site) and the private src/app/(mezgeb)), so unmatched URLs need app/global-not-found.tsx
+  experimental: {
+    globalNotFound: true,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
   },

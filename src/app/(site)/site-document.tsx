@@ -1,3 +1,5 @@
+/* Moved here from src/app/layout.tsx (it must stay under app/ because it renders <head>) so the (site) root layout and app/global-not-found.tsx share it.
+   Mezgeb (src/app/(mezgeb)) has its own root layout and never renders this. */
 import type { Metadata, Viewport } from "next";
 import { Cursor } from "@/components/chrome/Cursor";
 import { Footer } from "@/components/chrome/Footer";
@@ -9,10 +11,10 @@ import { Toast } from "@/components/chrome/Toast";
 import { TransitionProvider } from "@/components/transition/TransitionProvider";
 import { site } from "@/content/site";
 import { JsonLd, siteJsonLd, siteUrl } from "@/lib/seo";
-import { fontVariables } from "./fonts";
-import "./globals.css";
+import { fontVariables } from "@/app/fonts";
+import "@/app/globals.css";
 
-export const metadata: Metadata = {
+export const siteMetadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: site.title, template: "%s | Abel Addis" },
   description: site.description,
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
+export const siteViewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -43,13 +45,8 @@ export const viewport: Viewport = {
 /* Runs before first paint: applies the saved theme and decides whether the loader runs this session. */
 const prePaint = `(function(){var d=document.documentElement;d.setAttribute("data-js","");try{var t=localStorage.getItem("abel-theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}try{if(sessionStorage.getItem("abel-loader-seen")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.setAttribute("data-loader","off")}catch(e){d.setAttribute("data-loader","off")}})();`;
 
-export default function RootLayout({
-  children,
-  modal,
-}: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}) {
+/** The portfolio's whole HTML document. Used by the (site) root layout and by the global 404. */
+export function SiteDocument({ children, modal }: { children: React.ReactNode; modal?: React.ReactNode }) {
   return (
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>

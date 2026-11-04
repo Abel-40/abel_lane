@@ -52,7 +52,14 @@ export function Footer() {
         )}
       </div>
       <div className="wrap foot-bottom">
-        <span>© 2026 Abel Addis</span>
+        <span className="foot-copy">
+          © 2026 Abel Addis
+          {/* Plain <a> on purpose: /mezgeb has its own root layout, so it needs a full page load */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/mezgeb/login" className="foot-quiet" aria-label="Private area" data-cursor-quiet="">
+            <span />
+          </a>
+        </span>
         <span>Backend Engineer, AI Systems</span>
       </div>
     </footer>
