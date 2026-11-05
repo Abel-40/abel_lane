@@ -117,6 +117,14 @@ export function HomeScreen() {
               </span>
             </>
           )}
+          {position.selfOwed > 0 && (
+            <>
+              <span>To put back in trading</span>
+              <span className="mz-muted">
+                <Money minor={position.selfOwed} currency={ccy} symbol={false} />
+              </span>
+            </>
+          )}
           {position.heldForOthers > 0 && (
             <>
               <span>Kept for others</span>

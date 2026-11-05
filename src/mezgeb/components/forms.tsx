@@ -7,7 +7,7 @@
 import { useState, type FormEvent } from "react";
 import { accountLabel } from "../lib/derive";
 import { formatBp, formatMinor, minorToInput, parseAmount, parsePercentToBp, percentNumberToBp, type Minor } from "../lib/money";
-import { openingForRealBalance } from "../lib/position";
+import { SELF_NAME, isSelfLoan, openingForRealBalance } from "../lib/position";
 import { friendlyError } from "../lib/supabase";
 import {
   DIRECTION_LABEL,
@@ -408,8 +408,9 @@ export function DebtForm({
   institutions?: Institution[];
   onSubmit: (values: Partial<Debt>, move: DebtMove | null) => Promise<void> | void;
 }) {
-  const [who, setWho] = useState(initial?.counterparty ?? "");
   const [direction, setDirection] = useState<DebtDirection>(initial?.direction ?? "i_owe");
+  const [self, setSelf] = useState(initial ? isSelfLoan({ direction: initial.direction ?? "i_owe", counterparty: initial.counterparty ?? "" }) : false);
+  const [who, setWho] = useState(initial && !self ? (initial.counterparty ?? "") : "");
   const [amount, setAmount] = useState(initial?.principal_minor ? minorToInput(initial.principal_minor) : "");
   const [currency, setCurrency] = useState(initial?.currency ?? "ETB");
   const [accountId, setAccountId] = useState(initial?.account_id ?? "");
@@ -424,18 +425,22 @@ export function DebtForm({
   const [error, setError] = useState<string | null>(null);
 
   const flows = direction === "owed_to_me" || direction === "held_for_other";
+  const forMe = self && direction === "owed_to_me";
   const isNew = !initial?.id;
   const usable = (accounts ?? []).filter((a) => (!a.is_archived || a.id === accountId) && a.currency === currency);
   const words = {
     i_owe: { amount: "Amount I borrowed", by: "Pay off by" },
-    owed_to_me: { amount: "Already lent before Mezgeb", by: "Pay back by" },
+    owed_to_me: self
+      ? { amount: "Already taken (not recorded yet)", by: "Put back by" }
+      : { amount: "Already lent before Mezgeb", by: "Pay back by" },
     held_for_other: { amount: "Already kept before Mezgeb", by: "Give back by" },
     gift_received: { amount: "Amount", by: "" },
   }[direction];
 
   async function submit(e: FormEvent) {
     e.preventDefault();
-    if (!who.trim()) return setError("Who is it with?");
+    if (!forMe && !who.trim()) return setError("Who is it with?");
+    if (!forMe && isSelfLoan({ direction, counterparty: who })) return setError("For money you took yourself, turn on “I took it for myself”.");
     const principal = amount.trim() ? parseAmount(amount) : 0;
     if (principal === null) return setError("The amount is not valid.");
     let move: DebtMove | null = null;
@@ -455,7 +460,7 @@ export function DebtForm({
     try {
       await onSubmit(
         {
-          counterparty: who.trim(),
+          counterparty: forMe ? SELF_NAME : who.trim(),
           direction,
           principal_minor: principal,
           currency,
@@ -477,7 +482,7 @@ export function DebtForm({
 
   return (
     <form className="mz-form" onSubmit={submit}>
-      <TextField label="Person" value={who} onChange={setWho} placeholder="Friend" maxLength={80} />
+      {!forMe && <TextField label="Person" value={who} onChange={setWho} placeholder="Friend" maxLength={80} />}
       <SelectField
         label="Kind"
         value={direction}
@@ -493,11 +498,19 @@ export function DebtForm({
                 : undefined
         }
       />
+      {direction === "owed_to_me" && (
+        <SwitchRow
+          label="I took it for myself"
+          checked={self}
+          onChange={setSelf}
+          hint="Money you took from your own (trading) money and will put back. It stays in Trading › Capital, but is not counted as something you own twice."
+        />
+      )}
       <SelectField label="Currency" value={currency} onChange={setCurrency} options={CURRENCY_OPTIONS.map((c) => ({ value: c, label: c }))} />
       {flows && isNew && accounts && (
         <div className="mz-grid-2">
           <AmountField
-            label={direction === "owed_to_me" ? "Lending now" : "Given to me now"}
+            label={direction === "owed_to_me" ? (forMe ? "Taking now" : "Lending now") : "Given to me now"}
             value={moveAmount}
             currency={currency}
             onChange={(t) => setMoveAmount(t)}

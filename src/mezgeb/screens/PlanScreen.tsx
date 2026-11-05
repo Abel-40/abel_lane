@@ -10,6 +10,7 @@ import { deleteRow, insertRow, saveRow } from "../lib/db";
 import { targetLabel, todayISO } from "../lib/dates";
 import { accountLabel, monthlyFromSalary } from "../lib/derive";
 import { computeInsights, savingVerdict } from "../lib/insights";
+import { isSelfLoan } from "../lib/position";
 import { formatMinor, minorToInput, parseAmount, sharePercent } from "../lib/money";
 import { debtOutlook, goalOutlook } from "../lib/plan";
 import { useMz } from "../lib/store";
@@ -187,20 +188,23 @@ export function PlanScreen() {
       {lent.map((d) => {
         const remaining = remainingOf(d);
         const late = d.target_on && d.target_on < today && remaining > 0;
+        const mine = isSelfLoan(d);
         return (
           <article key={d.id} className="mz-card">
             <div className="mz-row-between" style={{ alignItems: "flex-start" }}>
-              {editButton(d, `lent ${formatMinor(totalOf(d), d.currency)}${d.target_on ? ` · back by ${targetLabel(d.target_on, today).replace(/^End of /, "")}` : ""}`)}
-              <span className={late ? "mz-pill mz-pill--amber" : remaining === 0 ? "mz-pill" : "mz-pill mz-pill--muted"}>{late ? "Late" : remaining === 0 ? "Paid back" : "Owes you"}</span>
+              {editButton(d, `${mine ? "taken for my own use" : "lent"} ${formatMinor(totalOf(d), d.currency)}${d.target_on ? ` · back by ${targetLabel(d.target_on, today).replace(/^End of /, "")}` : ""}`)}
+              <span className={late ? "mz-pill mz-pill--amber" : remaining === 0 ? "mz-pill" : "mz-pill mz-pill--muted"}>
+                {late ? "Late" : remaining === 0 ? "Paid back" : mine ? "To put back" : "Owes you"}
+              </span>
             </div>
-            {bigAmount(d, remaining, "owed to you")}
+            {bigAmount(d, remaining, mine ? "to put back" : "owed to you")}
             <ProgressBar percent={sharePercent(paidOf(d), totalOf(d))} label={`${d.counterparty} paid back`} />
             <div className="mz-grid-2">
               <button type="button" className="mz-btn mz-btn--sm mz-btn--secondary" onClick={() => setEditing({ kind: "move", move: MOVES.received(d) })}>
-                Money received
+                {mine ? "Put money back" : "Money received"}
               </button>
               <button type="button" className="mz-btn mz-btn--sm mz-btn--ghost" onClick={() => setEditing({ kind: "move", move: MOVES.lend(d) })}>
-                Lend more
+                {mine ? "Take more" : "Lend more"}
               </button>
             </div>
           </article>

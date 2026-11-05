@@ -182,6 +182,24 @@ const RECIPES: Recipe[] = [
     tip: "Lending is not spending: it never touches your daily limit. Lend from the trading account (Usually from) and the loan still counts in Trading › Capital.",
   },
   {
+    id: "self",
+    title: "Money you take from trading for yourself",
+    path: ["Plan", "+ Add person…", "Kind: Credit I gave", "I took it for myself: Yes"],
+    steps: [
+      "Turn on I took it for myself (no person name is needed).",
+      "Already taken and your bank already shows it gone: type the amount in Already taken. Taking it now: fill in Taking now instead.",
+      "Usually from: the trading account. Put back by (optional). Save.",
+      "When you put money back: Plan › Myself › Put money back, into the trading account.",
+    ],
+    example: (
+      <>
+        You took <b>7,000</b> Br from <b>Trading</b> for your own use: Trading › Capital still counts it (34,755 cash + 44,000 goods + 28,500
+        lent = 107,255), and Home shows “To put back in trading 7,000” without counting it as something you own.
+      </>
+    ),
+    tip: "It never touches your daily limit. Putting it back from your salary account moves money from you to trading, so your total stays the same.",
+  },
+  {
     id: "keep",
     title: "Money someone gives you to keep",
     path: ["Plan", "+ Add person…", "Kind: Money I keep for someone"],

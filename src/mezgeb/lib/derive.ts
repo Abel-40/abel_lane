@@ -2,6 +2,7 @@
 
 import { computeSplit } from "./payday";
 import { convertMinor, convertMinorInverse, sumMinor, type Minor } from "./money";
+import { isSelfLoan } from "./position";
 import {
   PROTECTED_ROLES,
   SAVING_ROLES,
@@ -115,8 +116,10 @@ export type NetPosition = {
   heldForOthers: Minor;
   /** money in all accounts (converted to the base currency) */
   cash: Minor;
-  /** credit given that is still owed to me */
+  /** credit given that is still owed to me (other people only) */
   owedToMe: Minor;
+  /** money I took from my own trading money and still have to put back: not an asset, not a debt to anyone */
+  selfOwed: Minor;
   net: Minor;
   unsoldStock: Minor;
   /** accounts in another currency without a rate, left out of the totals */
@@ -142,9 +145,10 @@ export function netPosition(
     else parts.push(converted);
   }
   const unsoldStock = sumMinor(tripSummaries.filter((t) => t.status === "open").map((t) => t.unsold_stock_minor));
-  const owedToMe = sumMinor(
-    debts.filter((d) => d.direction === "owed_to_me" && d.status === "active" && d.currency === baseCurrency).map((d) => debtProgress[d.id]?.remaining_minor ?? d.principal_minor),
-  );
+  const credit = debts.filter((d) => d.direction === "owed_to_me" && d.status === "active" && d.currency === baseCurrency);
+  const left = (d: Debt) => debtProgress[d.id]?.remaining_minor ?? d.principal_minor;
+  const owedToMe = sumMinor(credit.filter((d) => !isSelfLoan(d)).map(left));
+  const selfOwed = sumMinor(credit.filter(isSelfLoan).map(left));
   const iOwe = sumMinor(
     debts.filter((d) => d.direction === "i_owe" && d.status === "active" && d.currency === baseCurrency).map((d) => debtProgress[d.id]?.remaining_minor ?? d.principal_minor),
   );
@@ -154,7 +158,7 @@ export function netPosition(
   );
   const assets = sumMinor([...parts, unsoldStock, owedToMe]);
   const owed = iOwe + heldForOthers;
-  return { assets, debts: owed, heldForOthers, cash: sumMinor(parts), owedToMe, net: assets - owed, unsoldStock, skippedCurrencies: Array.from(skipped) };
+  return { assets, debts: owed, heldForOthers, cash: sumMinor(parts), owedToMe, selfOwed, net: assets - owed, unsoldStock, skippedCurrencies: Array.from(skipped) };
 }
 
 /** How much of each salary goes to a debt / goal under the current payday rules. */

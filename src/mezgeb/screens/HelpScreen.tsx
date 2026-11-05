@@ -413,6 +413,11 @@ export function HelpScreen() {
           Record goods with Trading › + Store goods (or a trip), paid from the trading account, and loans with Plan › + Add person › Credit I
           gave, Usually from: the trading account. Do not record them as plain expenses. Trading › Capital then counts them.
         </p>
+        <h3 className="mz-help__h3">I took money from my trading money for myself and will put it back.</h3>
+        <p>
+          Plan › + Add person › Credit I gave › <b>I took it for myself</b>, Usually from: the trading account. Trading › Capital keeps
+          counting it until you put it back; Home lists it as “To put back in trading”, not as money owed to you.
+        </p>
         <h3 className="mz-help__h3">I moved money between my accounts and it shows as spending.</h3>
         <p>Record it as a Transfer, not an Expense. Delete the expense and add a transfer instead.</p>
         <h3 className="mz-help__h3">The daily limit says “no budget yet”.</h3>

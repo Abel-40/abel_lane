@@ -7,6 +7,16 @@
 import { sumMinor, type Minor } from "./money";
 import type { Account, Debt, DebtProgress, Trip, TripSummary } from "./types";
 
+/** Name stored for money I took from my own (trading) money and will put back. */
+export const SELF_NAME = "Myself";
+
+/** A loan to myself: owed back to my trading money, but not an asset of mine (it is my own money). */
+export function isSelfLoan(d: Pick<Debt, "direction" | "counterparty">): boolean {
+  if (d.direction !== "owed_to_me") return false;
+  const n = d.counterparty.trim().toLowerCase();
+  return n === "myself" || n === "me";
+}
+
 export type TradingPart = { cash: Minor; goods: Minor; lent: Minor; worth: Minor };
 export type TradingCapital = TradingPart & { byAccount: Record<string, TradingPart> };
 

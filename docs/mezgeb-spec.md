@@ -256,3 +256,5 @@ If anything here is impossible or risky with this project's setup, stop and tell
   - Home shows what assets are made of: cash in accounts, goods, owed to you = total assets, then debts and money kept for others.
   - Stored goods count as savings only when paid from a non-trading account; goods paid with trading money are trading capital.
   - "Real balance now" on an existing account sets the opening balance so the account shows what the bank shows, keeping every entry (fixes a negative balance caused by typing today's balance as the opening balance and also recording older entries). Accounts warns about any balance below zero.
+- 2026-11-05 · **Money taken from trading for myself** (no database change).
+  - Credit I gave › "I took it for myself" stores the person as `Myself` (`SELF_NAME`; `isSelfLoan` also accepts "Me"). It still counts in trading capital, but not in total assets or "owed to you" (it is the owner's own money); Home shows it as "To put back in trading". Plan words it "To put back", "Put money back", "Take more". Like any lending, it never touches the daily limit.

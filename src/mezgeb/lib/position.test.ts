@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { negativeAccounts, openingForRealBalance, tradingCapital } from "./position";
+import { isSelfLoan, negativeAccounts, openingForRealBalance, SELF_NAME, tradingCapital } from "./position";
+import { netPosition } from "./derive";
 import type { Account, Debt, DebtProgress, Trip, TripSummary } from "./types";
 
 function account(id: string, role: Account["role"], extra: Partial<Account> = {}): Account {
@@ -49,6 +50,35 @@ describe("trading capital", () => {
     const tc = tradingCapital(accounts, balances, trips, summaries, debts, progress, "ETB");
     expect(tc.byAccount.save).toBeUndefined();
     expect(tc.byAccount.cash).toBeUndefined();
+  });
+});
+
+describe("money I took for myself", () => {
+  const accounts = [account("trade", "trading")];
+  const balances = { trade: 3475500 };
+  const trips = [trip("store", "trade", "stock")];
+  const summaries = { store: summary("store", 4400000) };
+  const debts = [
+    { ...lent("mom", "trade"), counterparty: "Mom" },
+    { ...lent("friend", "trade"), counterparty: "Friend" },
+    { ...lent("me", "trade"), counterparty: SELF_NAME },
+  ] as Debt[];
+  const progress = { mom: left("mom", 1350000), friend: left("friend", 800000), me: left("me", 700000) };
+
+  it("is recognised by name and direction only", () => {
+    expect(isSelfLoan({ direction: "owed_to_me", counterparty: " myself " })).toBe(true);
+    expect(isSelfLoan({ direction: "owed_to_me", counterparty: "Me" })).toBe(true);
+    expect(isSelfLoan({ direction: "i_owe", counterparty: "Myself" })).toBe(false);
+    expect(isSelfLoan({ direction: "owed_to_me", counterparty: "Meron" })).toBe(false);
+  });
+  it("still counts in trading capital", () => {
+    expect(tradingCapital(accounts, balances, trips, summaries, debts, progress, "ETB").worth).toBe(10725500);
+  });
+  it("is not an asset: only other people owe me", () => {
+    const p = netPosition(accounts, balances, debts, progress, Object.values(summaries).map((s) => ({ ...s, status: "open" }) as TripSummary), [], "ETB");
+    expect(p.owedToMe).toBe(2150000);
+    expect(p.selfOwed).toBe(700000);
+    expect(p.assets).toBe(3475500 + 4400000 + 2150000);
   });
 });
 
