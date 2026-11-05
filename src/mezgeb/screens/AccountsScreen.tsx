@@ -6,6 +6,7 @@ import { DataFallback, Money, Sheet, useToast } from "../components/ui";
 import { deleteOrArchive, saveRow, updateRow } from "../lib/db";
 import { accountGroup, GROUP_TITLE, isProtected, type AccountGroup } from "../lib/derive";
 import { formatMinor, sumMinor } from "../lib/money";
+import { negativeAccounts, tradingCapital } from "../lib/position";
 import { useMz } from "../lib/store";
 import { friendlyError } from "../lib/supabase";
 import { INSTITUTION_KIND_LABEL, type Account, type Institution } from "../lib/types";
@@ -20,9 +21,8 @@ export function AccountsScreen() {
   const { accounts, institutions, balances, settings } = data;
   const ccy = settings.base_currency;
 
-  const open = Object.values(data.tripSummaries).filter((t) => t.status === "open");
-  const stockFor = (accountId: string) =>
-    sumMinor(open.filter((t) => data.trips.find((tr) => tr.id === t.trip_id)?.capital_account_id === accountId).map((t) => t.unsold_stock_minor));
+  const tc = tradingCapital(accounts, balances, data.trips, data.tripSummaries, data.debts, data.debtProgress, ccy);
+  const negative = negativeAccounts(accounts, balances);
 
   const active = accounts.filter((a) => !a.is_archived);
   const held = sumMinor(active.filter((a) => a.currency === ccy).map((a) => balances[a.id] ?? 0));
@@ -118,6 +118,18 @@ export function AccountsScreen() {
         </button>
       </header>
 
+      {negative.length > 0 && (
+        <div className="mz-card mz-card--amber mz-card--sm" role="alert">
+          <span className="mz-warn mz-strong" style={{ fontSize: 14 }}>
+            {negative.map((a) => a.name).join(", ")} {negative.length === 1 ? "shows" : "show"} less than zero
+          </span>
+          <span className="mz-small mz-muted">
+            Usually the opening balance was set to today&apos;s amount and older entries were added too, so the same money is counted twice. Tap
+            the account and fill in “Real balance now” with what your bank or wallet app shows. Every entry stays.
+          </span>
+        </div>
+      )}
+
       {groups.map((g) => {
         const list = active.filter((a) => accountGroup(a) === g);
         if (list.length === 0) return null;
@@ -126,23 +138,27 @@ export function AccountsScreen() {
             <section key={g} className="mz-stack" aria-label={GROUP_TITLE[g]}>
               <span className="mz-section-label">{GROUP_TITLE[g]}</span>
               {list.map((a) => {
-                const stock = stockFor(a.id);
-                const capital = (balances[a.id] ?? 0) + stock;
-                const limit = settings.trading_loss_limit_minor;
-                const below = limit > 0 && capital < limit;
+                const part = tc.byAccount[a.id] ?? { cash: balances[a.id] ?? 0, goods: 0, lent: 0, worth: balances[a.id] ?? 0 };
+                const fmt = (m: number) => formatMinor(m, a.currency, { symbol: false });
                 return (
                   <div key={a.id} className="mz-card" style={{ padding: "4px 14px 10px", gap: 4 }}>
                     {row(a, true)}
-                    <div className="mz-inset mz-row-between" style={below ? { color: "var(--mz-amber)" } : undefined}>
-                      <span>+ {formatMinor(stock, a.currency, { symbol: false })} in unsold stock</span>
+                    <div className="mz-inset mz-row-between">
                       <span>
-                        {below ? "Below loss limit " : "Loss limit "}
-                        {formatMinor(limit, a.currency, { symbol: false })}
+                        + {fmt(part.goods)} goods · + {fmt(part.lent)} lent
+                      </span>
+                      <span className="mz-strong" style={{ color: "var(--mz-text)" }}>
+                        worth {fmt(part.worth)}
                       </span>
                     </div>
                   </div>
                 );
               })}
+              {list.length > 0 && settings.trading_loss_limit_minor > 0 && (
+                <p className="mz-note" style={tc.worth < settings.trading_loss_limit_minor ? { color: "var(--mz-amber)" } : undefined}>
+                  Trading capital {formatMinor(tc.worth, ccy)} (cash + goods + lent) · loss limit {formatMinor(settings.trading_loss_limit_minor, ccy)}
+                </p>
+              )}
             </section>
           );
         }
@@ -222,6 +238,7 @@ export function AccountsScreen() {
             <AccountForm
               key={editing.row?.id ?? "new"}
               institutions={institutions}
+              currentBalance={editing.row ? (balances[editing.row.id] ?? editing.row.opening_balance_minor) : undefined}
               initial={editing.row ?? undefined}
               onSubmit={(v) => saveAccount(editing.row?.id ?? null, v as Record<string, unknown>)}
               onArchive={editing.row ? () => toggleArchiveAccount(editing.row as Account) : undefined}

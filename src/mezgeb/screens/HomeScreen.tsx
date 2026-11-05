@@ -89,6 +89,44 @@ export function HomeScreen() {
           </div>
         </div>
       </section>
+      <section aria-label="What you own and owe" className="mz-card mz-card--sm">
+        <div className="mz-kv">
+          <span>Cash in accounts</span>
+          <span>
+            <Money minor={position.cash} currency={ccy} symbol={false} />
+          </span>
+          <span>Goods (in store and on trips)</span>
+          <span>
+            <Money minor={position.unsoldStock} currency={ccy} symbol={false} />
+          </span>
+          <span>Owed to you</span>
+          <span>
+            <Money minor={position.owedToMe} currency={ccy} symbol={false} />
+          </span>
+          <span className="mz-strong" style={{ color: "var(--mz-text)" }}>
+            Total assets
+          </span>
+          <span className="mz-strong">
+            <Money minor={position.assets} currency={ccy} />
+          </span>
+          {position.debts - position.heldForOthers > 0 && (
+            <>
+              <span>Debts I owe</span>
+              <span className="mz-warn">
+                −<Money minor={position.debts - position.heldForOthers} currency={ccy} symbol={false} />
+              </span>
+            </>
+          )}
+          {position.heldForOthers > 0 && (
+            <>
+              <span>Kept for others</span>
+              <span className="mz-warn">
+                −<Money minor={position.heldForOthers} currency={ccy} symbol={false} />
+              </span>
+            </>
+          )}
+        </div>
+      </section>
       {position.skippedCurrencies.length > 0 && (
         <p className="mz-note">
           {position.skippedCurrencies.join(", ")} accounts are left out until you add an exchange rate in Settings.

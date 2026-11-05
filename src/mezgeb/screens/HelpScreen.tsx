@@ -94,6 +94,10 @@ export function HelpScreen() {
             real wealth.
           </li>
           <li>
+            <b>What you own</b>: cash in accounts + goods (in store and on trips, at what you paid) + money owed to you = total assets, then
+            debts and money kept for others.
+          </li>
+          <li>
             <b>Spent today</b>: today&apos;s personal spending against your daily limit, with a warning or a word of praise.
           </li>
           <li>
@@ -149,6 +153,10 @@ export function HelpScreen() {
             <b> Emergency</b>, <b>Savings</b>, <b>USD</b>, <b>Other</b>.
           </li>
           <li>Balances are never typed in. They are the opening balance plus everything recorded since.</li>
+          <li>
+            <b>Real balance now</b> (when you edit an account): type what your bank or wallet app shows, and Mezgeb corrects the opening
+            balance to match. Every entry stays. Use it when a balance is wrong or below zero.
+          </li>
           <li>
             <b>Counts as savings</b> decides whether the account counts toward this year&apos;s savings (on for emergency, savings and USD).
           </li>
@@ -271,7 +279,9 @@ export function HelpScreen() {
       <HelpSection id="trading" title="Trading">
         <ul>
           <li>
-            <b>Capital</b>: trading accounts plus goods not sold yet. <b>Net</b> and <b>Margin</b> are for trips closed this month.
+            <b>Capital</b> = cash on trading accounts + goods bought with trading money (in store or on a trip) + money lent from trading
+            money. Buying goods or lending money changes its form, not its size, so it never looks like a loss. <b>Net</b> and <b>Margin</b>{" "}
+            are for trips closed this month.
           </li>
           <li>
             A <b>trip</b> goes from one city to another. Add the <b>goods</b> you buy (they are paid from the capital account), the{" "}
@@ -285,6 +295,10 @@ export function HelpScreen() {
           <li>The amber warning appears when capital falls below your <b>Trading loss limit</b> (Settings › Income and giving).</li>
         </ul>
         <Example>
+          Your trading account had 107,255 Br. You buy goods for 44,000, lend 13,500 to your mom, 8,000 to a friend and 7,000 to someone who
+          pays back soon. The account now shows 34,755 Br, but Capital still says 107,255 Br: 34,755 cash + 44,000 goods + 28,500 lent.
+        </Example>
+        <Example>
           Arba Minch → Addis Ababa: 50 kg coffee at 350 Br = 17,500; transport 1,200, food 400, lodging 600; sold at 430 Br = 21,500. Net
           1,800 Br, margin 9.1 % (1,800 ÷ 19,700).
         </Example>
@@ -293,7 +307,8 @@ export function HelpScreen() {
       <HelpSection id="store" title="Goods in store">
         <p>
           Sometimes you keep money as goods instead of cash. <Path steps={["Trading", "+ Store goods"]} /> records goods you buy and keep. You
-          can pay from any account, even savings. They count at what you paid, in your net position and (if you choose) your savings.
+          can pay from any account. They count at what you paid in your net position. Goods paid with <b>trading</b> money are part of
+          trading capital; goods paid from other accounts (savings, cash) count as savings when “Stored goods count as savings” is on.
         </p>
         <p>
           Later, either sell them where they are (<b>Record sale</b>), or tap <b>Take these goods on a trip</b>: the same goods become a trip with a
@@ -387,6 +402,16 @@ export function HelpScreen() {
         <p>
           Check the account&apos;s opening balance (Accounts › tap the account), then look for a missing or doubled entry in Home › See all,
           filtered by that account.
+        </p>
+        <h3 className="mz-help__h3">An account shows less than zero.</h3>
+        <p>
+          You probably typed today&apos;s balance as the opening balance and then also added older entries, so the same money is counted
+          twice. Accounts › tap the account › <b>Real balance now</b>: type what your bank app shows and save. Every entry stays.
+        </p>
+        <h3 className="mz-help__h3">I bought goods or lent money from my trading account and it looks like a loss.</h3>
+        <p>
+          Record goods with Trading › + Store goods (or a trip), paid from the trading account, and loans with Plan › + Add person › Credit I
+          gave, Usually from: the trading account. Do not record them as plain expenses. Trading › Capital then counts them.
         </p>
         <h3 className="mz-help__h3">I moved money between my accounts and it shows as spending.</h3>
         <p>Record it as a Transfer, not an Expense. Delete the expense and add a transfer instead.</p>

@@ -148,6 +148,22 @@ const RECIPES: Recipe[] = [
     ),
   },
   {
+    id: "fix",
+    title: "Fix a wrong or negative balance",
+    path: ["Accounts", "tap the account", "Real balance now"],
+    steps: [
+      "Open your bank or wallet app and read the real balance.",
+      "Type it in Real balance now. The hint shows the new opening balance.",
+      "Save. The account now shows the real amount, and every entry stays.",
+    ],
+    example: (
+      <>
+        Trading account shows <b>−37,745</b> Br, the bank app shows <b>34,755</b> Br: type 34,755 → the opening balance becomes 107,255 and
+        the account shows 34,755.
+      </>
+    ),
+  },
+  {
     id: "lend",
     title: "Credit you give (a loan to someone)",
     path: ["Plan", "+ Add person…", "Kind: Credit I gave"],
@@ -163,7 +179,7 @@ const RECIPES: Recipe[] = [
         1,000 → “2,000 owed to you”.
       </>
     ),
-    tip: "Lending is not spending: it never touches your daily limit.",
+    tip: "Lending is not spending: it never touches your daily limit. Lend from the trading account (Usually from) and the loan still counts in Trading › Capital.",
   },
   {
     id: "keep",
@@ -253,7 +269,23 @@ const RECIPES: Recipe[] = [
         <b>Coffee in store</b>, kept in <b>Arba Minch</b>, paid from <b>Awash</b>: 20 kg at 350 Br = 7,000 Br.
       </>
     ),
-    tip: "Items (coffee, honey…) and cities must exist first: Settings › Manage › Cities and trade items.",
+    tip: "Items (coffee, honey…) and cities must exist first: Settings › Manage › Cities and trade items. Goods bought before you used Mezgeb: see the next guide.",
+  },
+  {
+    id: "before",
+    title: "Goods you bought before using Mezgeb",
+    path: ["Accounts", "+ Add", "New account"],
+    steps: [
+      "Make a cash account: Bank or wallet None, name Trading cash, role Trading capital, opening balance = what you paid for the goods.",
+      "Trading › + Store goods, Paid from: Trading cash. Then + Add goods with the real date you bought them.",
+      "Trading cash goes back to 0, your banks do not change, and the goods count in Trading › Capital.",
+      "When you sell, the money arrives in Trading cash. Move it to the bank with a Transfer.",
+    ],
+    example: (
+      <>
+        20 kg coffee bought last month for <b>7,000</b> Br cash: Trading cash opening 7,000 → store → 0, Capital +7,000 in goods.
+      </>
+    ),
   },
   {
     id: "trip",

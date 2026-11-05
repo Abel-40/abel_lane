@@ -113,6 +113,10 @@ export type NetPosition = {
   debts: Minor;
   /** part of the balances that belongs to people I keep money for */
   heldForOthers: Minor;
+  /** money in all accounts (converted to the base currency) */
+  cash: Minor;
+  /** credit given that is still owed to me */
+  owedToMe: Minor;
   net: Minor;
   unsoldStock: Minor;
   /** accounts in another currency without a rate, left out of the totals */
@@ -150,7 +154,7 @@ export function netPosition(
   );
   const assets = sumMinor([...parts, unsoldStock, owedToMe]);
   const owed = iOwe + heldForOthers;
-  return { assets, debts: owed, heldForOthers, net: assets - owed, unsoldStock, skippedCurrencies: Array.from(skipped) };
+  return { assets, debts: owed, heldForOthers, cash: sumMinor(parts), owedToMe, net: assets - owed, unsoldStock, skippedCurrencies: Array.from(skipped) };
 }
 
 /** How much of each salary goes to a debt / goal under the current payday rules. */

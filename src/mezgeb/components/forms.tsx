@@ -6,7 +6,8 @@
 
 import { useState, type FormEvent } from "react";
 import { accountLabel } from "../lib/derive";
-import { formatBp, minorToInput, parseAmount, parsePercentToBp, percentNumberToBp, type Minor } from "../lib/money";
+import { formatBp, formatMinor, minorToInput, parseAmount, parsePercentToBp, percentNumberToBp, type Minor } from "../lib/money";
+import { openingForRealBalance } from "../lib/position";
 import { friendlyError } from "../lib/supabase";
 import {
   DIRECTION_LABEL,
@@ -133,7 +134,19 @@ export function InstitutionForm({ initial, onSubmit, onArchive, onDelete, archiv
 
 /* ── Account ── */
 
-export function AccountForm({ initial, institutions, onSubmit, onArchive, onDelete, archiveLabel }: Common<Account> & { institutions: Institution[] }) {
+export function AccountForm({
+  initial,
+  institutions,
+  currentBalance,
+  onSubmit,
+  onArchive,
+  onDelete,
+  archiveLabel,
+}: Common<Account> & {
+  institutions: Institution[];
+  /** balance Mezgeb shows now (existing accounts): enables "Real balance now", which corrects the opening balance */
+  currentBalance?: Minor;
+}) {
   const [institutionId, setInstitutionId] = useState(initial?.institution_id ?? institutions[0]?.id ?? "");
   const [name, setName] = useState(initial?.name ?? "");
   const [role, setRole] = useState<AccountRole>(initial?.role ?? "spending");
@@ -141,6 +154,11 @@ export function AccountForm({ initial, institutions, onSubmit, onArchive, onDele
   const [opening, setOpening] = useState(initial?.opening_balance_minor !== undefined ? minorToInput(initial.opening_balance_minor) : "0");
   const [openingMinor, setOpeningMinor] = useState<Minor | null>(initial?.opening_balance_minor ?? 0);
   const [notes, setNotes] = useState(initial?.notes ?? "");
+  const [realText, setRealText] = useState("");
+  const [realMinor, setRealMinor] = useState<Minor | null>(null);
+  // "Real balance now": keep every entry and move the opening balance so the account shows the real amount
+  const fixedOpening =
+    currentBalance !== undefined && realText.trim() && realMinor !== null ? openingForRealBalance(initial?.opening_balance_minor ?? 0, currentBalance, realMinor) : null;
   const [isProtected, setProtected] = useState(initial?.is_protected ?? false);
   const [archived, setArchived] = useState(initial?.is_archived ?? false);
   // null = follow the role; true / false once chosen here
@@ -155,12 +173,13 @@ export function AccountForm({ initial, institutions, onSubmit, onArchive, onDele
         run(e, () => {
           if (!name.trim()) return "Give the account a name.";
           if (openingMinor === null) return "The opening balance is not a valid amount.";
+          if (realText.trim() && realMinor === null) return "The real balance is not a valid amount.";
           return {
             institution_id: institutionId || null,
             name: name.trim(),
             role,
             currency,
-            opening_balance_minor: openingMinor,
+            opening_balance_minor: fixedOpening ?? openingMinor,
             notes: notes.trim() || null,
             is_protected: isProtected || PROTECTED_ROLES.includes(role),
             is_archived: archived,
@@ -196,8 +215,25 @@ export function AccountForm({ initial, institutions, onSubmit, onArchive, onDele
           setOpening(t);
           setOpeningMinor(t.trim() === "" ? 0 : m);
         }}
-        hint="What the account held when you started using Mezgeb."
+        hint="What the account held before the first entry you recorded in Mezgeb."
       />
+      {currentBalance !== undefined && (
+        <AmountField
+          label="Real balance now (optional)"
+          value={realText}
+          signed
+          currency={currency}
+          onChange={(t, m) => {
+            setRealText(t);
+            setRealMinor(t.trim() === "" ? null : m);
+          }}
+          hint={
+            fixedOpening !== null
+              ? `Mezgeb shows ${formatMinor(currentBalance, currency)}. Saving sets the opening balance to ${formatMinor(fixedOpening, currency)}, so it shows ${formatMinor(realMinor ?? 0, currency)}. Every entry stays.`
+              : "What your bank or wallet app shows right now. Mezgeb corrects the opening balance to match and keeps every entry."
+          }
+        />
+      )}
       <TextField label="Purpose line" value={notes} onChange={setNotes} placeholder="Taxi, airtime, fun · topped up weekly" maxLength={200} />
       <SwitchRow
         label="Protected"

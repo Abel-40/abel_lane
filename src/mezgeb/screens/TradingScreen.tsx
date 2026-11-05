@@ -6,9 +6,10 @@ import { AmountField, DataFallback, ErrorLine, Money, Sheet, TextField, useToast
 import { deleteRow, insertRow, saveRow, updateRow } from "../lib/db";
 import { daysBetween, monthShort, shortDay, todayISO } from "../lib/dates";
 import { accountLabel } from "../lib/derive";
-import { formatMinor, formatTenths, minorToInput, parseAmount, parseQuantityMilli, percentNumberToBp, quantityTimes, sumMinor } from "../lib/money";
+import { formatMinor, formatTenths, minorToInput, parseAmount, parseQuantityMilli, percentNumberToBp, quantityTimes } from "../lib/money";
 import { useMz } from "../lib/store";
 import { friendlyError, supabase } from "../lib/supabase";
+import { tradingCapital } from "../lib/position";
 import { priceVerdict, usualCostRatioTenths, type Verdict } from "../lib/trading";
 import { COST_KIND_LABEL, type PriceLog, type Trip, type TripCost, type TripCostKind, type TripLine, type TripSummary } from "../lib/types";
 
@@ -49,12 +50,10 @@ export function TradingScreen() {
   const ccy = s.base_currency;
   const summaries = Object.values(tripSummaries);
   const tradingAccounts = accounts.filter((a) => a.role === "trading" && !a.is_archived);
-  const tradingIds = new Set(tradingAccounts.map((a) => a.id));
-  // goods bought with trading capital (on trips or in store); goods paid from savings are not trading capital
-  const stock = sumMinor(
-    trips.filter((t) => t.status === "open" && tradingIds.has(t.capital_account_id)).map((t) => tripSummaries[t.id]?.unsold_stock_minor ?? 0),
-  );
-  const capital = sumMinor(tradingAccounts.map((a) => balances[a.id] ?? 0)) + stock;
+  // Trading capital = cash on trading accounts + goods bought with it (store and trips) + money lent from it.
+  // Goods paid from savings are not trading capital.
+  const tc = tradingCapital(accounts, balances, trips, tripSummaries, data.debts, data.debtProgress, ccy);
+  const capital = tc.worth;
   const below = s.trading_loss_limit_minor > 0 && capital < s.trading_loss_limit_minor;
   const net = data.thisMonth?.trading_net_minor ?? 0;
   const margin = tenthsFromPercent(data.thisMonth?.trading_margin_percent);
@@ -98,7 +97,7 @@ export function TradingScreen() {
           <span className="mz-stat__value">
             <Money minor={capital} currency={ccy} symbol={false} />
           </span>
-          <span className="mz-stat__note">{formatMinor(stock, ccy, { symbol: false })} in stock</span>
+          <span className="mz-stat__note">cash + goods + lent</span>
         </div>
         <div className="mz-stat">
           <span className="mz-stat__label">Net, {monthShort(todayISO())}</span>
@@ -114,13 +113,41 @@ export function TradingScreen() {
         </div>
       </section>
 
+      <section aria-label="What trading capital is made of" className="mz-card mz-card--sm">
+        <div className="mz-kv">
+          <span>Cash on trading accounts</span>
+          <span className={tc.cash < 0 ? "mz-warn" : undefined}>
+            <Money minor={tc.cash} currency={ccy} symbol={false} />
+          </span>
+          <span>Goods bought (store and trips)</span>
+          <span>
+            <Money minor={tc.goods} currency={ccy} symbol={false} />
+          </span>
+          <span>Lent from trading money</span>
+          <span>
+            <Money minor={tc.lent} currency={ccy} symbol={false} />
+          </span>
+          <span className="mz-strong" style={{ color: "var(--mz-text)" }}>
+            Trading capital
+          </span>
+          <span className="mz-strong">
+            <Money minor={capital} currency={ccy} />
+          </span>
+        </div>
+        {tc.cash < 0 && (
+          <span className="mz-small mz-warn">
+            Cash below zero usually means the opening balance and older entries count the same money twice. Fix it in Accounts › the trading account › Real balance now.
+          </span>
+        )}
+      </section>
+
       {below && (
         <div className="mz-card mz-card--amber mz-card--sm" role="alert">
           <span className="mz-row-center mz-warn mz-strong" style={{ fontSize: 14 }}>
             <AlertIcon /> Capital is below your loss limit
           </span>
           <span className="mz-small mz-muted">
-            {formatMinor(capital, ccy)} including stock, limit {formatMinor(s.trading_loss_limit_minor, ccy)}. Pause new trips and review what went wrong.
+            {formatMinor(capital, ccy)} including goods and money lent, limit {formatMinor(s.trading_loss_limit_minor, ccy)}. Pause new trips and review what went wrong.
           </span>
         </div>
       )}

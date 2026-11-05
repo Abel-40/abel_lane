@@ -24,12 +24,16 @@ export function spentByDay(data: MzData): Record<ISODate, Minor> {
   return out;
 }
 
-/** Value of goods kept in store (stock holdings) at cost, in the base currency. */
+/**
+ * Goods kept in store as savings, at cost, in the base currency. Goods paid with trading capital are trading
+ * money (they count in Trading › Capital), so they are left out here.
+ */
 export function storedGoodsMinor(data: MzData): Minor {
+  const trading = new Set(data.accounts.filter((a) => a.role === "trading").map((a) => a.id));
   return sumMinor(
-    Object.values(data.tripSummaries)
-      .filter((t) => t.kind === "stock" && t.status === "open")
-      .map((t) => t.unsold_stock_minor),
+    data.trips
+      .filter((t) => t.kind === "stock" && t.status === "open" && !trading.has(t.capital_account_id))
+      .map((t) => data.tripSummaries[t.id]?.unsold_stock_minor ?? 0),
   );
 }
 
